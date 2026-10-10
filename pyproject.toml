@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gridcast"
+version = "0.1.0"
+description = "Electricity demand forecasting under uncertainty"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "numpy==2.5.3", "pandas==3.0.6", "pyarrow==26.0.0", "PyYAML==6.0.3",
+  "matplotlib==3.11.2", "statsmodels==0.15.0", "openpyxl==3.1.5", "holidays==0.106",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1", "ruff==0.17.0"]
+
+[project.scripts]
+gridcast = "gridcast.data:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

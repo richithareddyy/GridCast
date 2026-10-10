@@ -1,0 +1,7 @@
+{
+  "Adjusted demand": "This column displays the demand reported by the balancing authority in MWh unless imputation was required. When imputation was required, this column displays the imputed demand.\n",
+  "Demand": "Demand is a calculated value representing the amount of electricity load within the balancing authority\u2019s electric system. A BA derives its demand value by taking the total metered net electricity generation within its electric system and subtracting the total metered net electricity interchange occurring between the BA and its neighboring BAs; electricity that is stored using an energy storage technology is reported as negative generation resulting in a reduced demand.  This column reflects the actual data reported to EIA in MWh. \n",
+  "Imputed demand": "EIA imputes for anomalous values for total demand if the value is missing or reported as negative, zero, or at least 1.5 times greater than the maximum of past total demand values reported by that BA. This column displays imputed values in MWh when they are made.\n",
+  "Local time": "The end of the hour in local time\n",
+  "UTC time": "The end of the hour in Coordinated Universal Time (UTC) \n"
+}

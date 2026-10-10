@@ -1,0 +1,68 @@
+# All boundaries refer to interval START in UTC, with exclusive end bounds.
+experiment_version: 1
+status: frozen_milestone_1_pending_review
+dataset: eia930_isne
+target: demand_mw
+units: MW
+frequency: 1h
+timezone: UTC
+calendar_timezone: America/New_York
+forecast:
+  task: next_24_hour_path
+  horizon_hours: 24
+  origin_hour_utc: 0
+  origin_stride_hours: 24
+  label: average demand during [origin+h-1h, origin+h) for h=1..24
+  assumed_reporting_delay_hours: 1
+  available_demand: interval_end <= origin - 1h
+  available_weather: weather_hour_end <= origin - 1h
+  vintage: retrospective_latest_revised_not_as_published
+  future_observed_weather: excluded_from_primary_comparison
+  conditional_weather_experiment: optional_separate_realized_weather_upper_information_benchmark
+periods:
+  train: {start: '2020-01-01T00:00:00Z', end: '2023-01-01T00:00:00Z'}
+  validation: {start: '2023-01-01T00:00:00Z', end: '2023-10-01T00:00:00Z'}
+  calibration: {start: '2023-10-01T00:00:00Z', end: '2024-01-01T00:00:00Z'}
+  test: {start: '2024-01-01T00:00:00Z', end: '2025-01-01T00:00:00Z'}
+eda: {partition: train, test_access: schema_and_quality_checks_only}
+backtesting:
+  scheme: expanding_window
+  folds: monthly_validation_blocks
+  refit_frequency: month_start
+  prediction_frequency: daily_00_UTC
+  all_training_labels_must_end_by: origin_minus_reporting_delay
+  final_model_selection: validation_only_before_calibration_and_test
+  final_test_refits: monthly_with_fixed_hyperparameters_and_only_matured_labels
+  store: every_origin_horizon_model_actual_prediction_and_fold
+baselines:
+  naive: last_available_observation_repeated_24_times
+  daily: target_end_minus_24h_if_available_otherwise_minus_48h
+  daily_latency_note: final_horizon_uses_48h_lag_because_24h_lag_not_yet_published
+  weekly: target_end_minus_168h
+  seasonal_lag_clock: elapsed_UTC_hours_not_local_clock_day
+metrics: [MAE, RMSE, WAPE, MASE]
+mase: {seasonal_lag_hours: 168, scale_fit: each_fold_training_only}
+conditions:
+  peak: local_interval_start_hour_16_to_20_inclusive
+  holiday: US_federal_calendar_actual_and_observed_dates
+  extremes: {quantile: 0.95, fitted_on: initial_training_demand, fixed_across_models: true}
+  extreme_temperature: {lower_quantile: 0.05, upper_quantile: 0.95, fitted_on: initial_training_weather}
+  seasons: {winter: [12, 1, 2], spring: [3, 4, 5], summer: [6, 7, 8], autumn: [9, 10, 11]}
+uncertainty:
+  levels: [0.50, 0.80, 0.95]
+  planned_method: rolling_past_out_of_sample_absolute_residual_quantiles_by_horizon
+  initial_calibration_partition: calibration
+  rolling_window_days: 90
+  updates: only_after_actuals_available_at_origin
+  evaluation: coverage_width_and_interval_score_overall_and_by_condition
+  caveat: serial_dependence_and_drift_preclude_IID_distribution_free_coverage_claims
+comparison:
+  planned_test: paired_daily_loss_differences_with_HAC_or_block_bootstrap
+  block_days: 7
+  uncertainty_resamples: 2000
+  multiplicity: Holm_adjustment_for_multiple_model_comparisons
+random_seeds: {numpy: 42, boosting: 42, deep_learning: 42}
+models_planned_not_implemented:
+  statistical: dynamic_harmonic_regression_with_autoregressive_errors
+  boosting: LightGBM
+  deep_learning: one_compact_LSTM

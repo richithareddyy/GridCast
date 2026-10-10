@@ -1,0 +1,39 @@
+dataset: eia930_isne
+provider: U.S. Energy Information Administration
+respondent: ISNE
+region: New England balancing authority
+source_url: https://www.eia.gov/electricity/gridmonitor/knownissues/xls/ISNE.xlsx
+sheet: Published Hourly Data
+raw_filename: eia_ISNE.xlsx
+target_column: Demand
+source_units: MWh
+output_target: demand_mw
+output_units: MW
+conversion: one-hour energy MWh divided by one hour gives average MW
+source_timestamp: UTC time
+source_timestamp_convention: interval_end
+index: timestamp_utc
+index_convention: interval_start
+storage_timezone: UTC
+calendar_timezone: America/New_York
+frequency: 1h
+start: '2020-01-01T00:00:00Z'
+end_exclusive: '2025-01-01T00:00:00Z'
+missing_target_policy: preserve_null_and_flag_never_impute_for_scoring
+invalid_target_policy: preserve_source_value_mask_nonpositive_or_nonfinite_in_model_target
+duplicate_timestamp_policy: fail_no_automatic_deduplication
+weather:
+  provider: NOAA NCEI Integrated Surface Database via NOAA NODD
+  source_url_template: https://noaa-global-hourly-pds.s3.amazonaws.com/{year}/{station}.csv
+  years: [2020, 2021, 2022, 2023, 2024]
+  stations:
+    - {id: '72509014739', label: boston, name_contains: [BOSTON], latitude: 42.3606, longitude: -71.0097}
+    - {id: '72508014740', label: hartford, name_contains: [HARTFORD], latitude: 41.9375, longitude: -72.6819}
+    - {id: '72507014765', label: providence, name_contains: [PROVIDENCE, RHODE ISLAND T.F. GREEN], latitude: 41.7225, longitude: -71.4325}
+  accepted_quality_codes: ['0', '1', '4', '5']
+  accepted_report_types: [FM-15, FM-16]
+  units: degrees_C
+  aggregation: median_per_exact_timestamp_then_mean_within_UTC_interval
+  region_proxy: equal_mean_of_all_three_stations_no_partial_station_mean
+  missing_policy: retain_null_no_interpolation_or_backfill
+  use: observed_context_and_past_covariates_only

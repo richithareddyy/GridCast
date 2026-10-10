@@ -1,0 +1,224 @@
+{
+  "data_config_sha256": "725ad368b538e2feed4a615a420e2ecaa69f5fc83065c186544369c0765f3ec5",
+  "demand": {
+    "duplicate_utc_timestamps": 0,
+    "eia_adjusted_differs_from_reported": 0,
+    "eia_imputed_hours": 0,
+    "end_exclusive_utc": "2025-01-01 00:00:00+00:00",
+    "interval_hours": 1,
+    "invalid_demand": 0,
+    "invalid_demand_timestamps": [],
+    "last_interval_start_utc": "2024-12-31 23:00:00+00:00",
+    "leap_day_hours_utc": 48,
+    "local_23_hour_dates": [
+      "2020-03-08",
+      "2021-03-14",
+      "2022-03-13",
+      "2023-03-12",
+      "2024-03-10"
+    ],
+    "local_25_hour_dates": [
+      "2020-11-01",
+      "2021-11-07",
+      "2022-11-06",
+      "2023-11-05",
+      "2024-11-03"
+    ],
+    "local_wall_clock_repeated_hours": 5,
+    "missing_demand": 0,
+    "missing_interval_timestamps": [],
+    "missing_intervals": 0,
+    "normalized_rows": 43848,
+    "out_of_study_rows_not_selected": 55008,
+    "partial_local_boundary_dates": {
+      "2019-12-31": 5,
+      "2024-12-31": 19
+    },
+    "source_rows_in_study": 43848,
+    "source_units": "MWh",
+    "start_utc": "2020-01-01 00:00:00+00:00",
+    "target_units": "MW",
+    "utc_local_end_mismatches": 0,
+    "was_sorted": true,
+    "workbook_hourly_rows": 98856
+  },
+  "evaluation_config_sha256": "9de9fa300d4f578e29ce79334eec52fe2e11e787872ef0aad7ffdb1e3de3107c",
+  "partitions": {
+    "calibration": {
+      "end": "2024-01-01T00:00:00Z",
+      "rows": 2208,
+      "start": "2023-10-01T00:00:00Z"
+    },
+    "test": {
+      "end": "2025-01-01T00:00:00Z",
+      "rows": 8784,
+      "start": "2024-01-01T00:00:00Z"
+    },
+    "train": {
+      "end": "2023-01-01T00:00:00Z",
+      "rows": 26304,
+      "start": "2020-01-01T00:00:00Z"
+    },
+    "validation": {
+      "end": "2023-10-01T00:00:00Z",
+      "rows": 6552,
+      "start": "2023-01-01T00:00:00Z"
+    }
+  },
+  "processed_column_count": 34,
+  "processed_columns": [
+    "demand_mwh_reported",
+    "eia_adjusted_mwh",
+    "eia_imputed_mwh",
+    "source_excel_row",
+    "missing_interval",
+    "invalid_demand",
+    "missing_demand",
+    "demand_mw",
+    "boston_temperature_c",
+    "boston_dewpoint_c",
+    "hartford_temperature_c",
+    "hartford_dewpoint_c",
+    "providence_temperature_c",
+    "providence_dewpoint_c",
+    "weather_temperature_c",
+    "temperature_c_station_count",
+    "weather_dewpoint_c",
+    "dewpoint_c_station_count",
+    "weather_missing",
+    "weather_available_at",
+    "heating_degrees_c",
+    "cooling_degrees_c",
+    "local_time",
+    "utc_offset_hours",
+    "hour",
+    "weekday",
+    "month",
+    "year",
+    "weekend",
+    "holiday_name",
+    "holiday",
+    "leap_day",
+    "peak_hour",
+    "demand_available_at"
+  ],
+  "source_hashes": {
+    "eia_ISNE.xlsx": "ed0812073e8ed5ce49ff7fd3e3617b6d17cd05cb6dda70fbb790da181db706c7",
+    "iso_smd_template.xlsx": "6dce969e5b818403e1d649c1e5d7290449d089e9f9f0ed8ca4d1d14b1a229856",
+    "noaa_72507014765_2020.csv": "6154acc26c252bd02d8bc841ab01469621700d32c9ddfbcab17d9ed5394a81f3",
+    "noaa_72507014765_2021.csv": "02695b4dad96eef772bbde6cb45d25d8684ec5a5692102f351540625ff9a3df2",
+    "noaa_72507014765_2022.csv": "41a0434fae300fd927cb450849127fc688caae754b089b507dac1005b6019680",
+    "noaa_72507014765_2023.csv": "3bbdb36be811238177c2885e5d7dfc5c2f2b0fddaa21305bacd8f1289c77fa25",
+    "noaa_72507014765_2024.csv": "19d2318bafe39e749db76a661b3ab1d750fc224bd72f18b3cd32d325343e8307",
+    "noaa_72508014740_2020.csv": "1f7c46b4da69b280b43bc3717bca93f6081c8bbba2facb4b37f9c2469a67b6e4",
+    "noaa_72508014740_2021.csv": "b5359de339b187f6053c69551505dc326985f96e36bfe7e4f41a8b081002ac72",
+    "noaa_72508014740_2022.csv": "0393918308adcdd25708c252a595ad127006a23695ac618aa68631ff09172120",
+    "noaa_72508014740_2023.csv": "fdea3d9eb97d06c5d27c1fd335eb7679712fc2a53c9d6184b963f26e6114a9b0",
+    "noaa_72508014740_2024.csv": "c9cccceafc5c651d356a6afb71f96de4ebf8f5c26a82d6960ba12fe0889fef9c",
+    "noaa_72509014739_2020.csv": "beb89c47ef8eb02903783f6c7b398d582ecd81e61cd67b2ace0b12ddffda44bb",
+    "noaa_72509014739_2021.csv": "c6bb5947807091b166d2b9ea0d650e5be505c76f519994263c82a7f5d49251c6",
+    "noaa_72509014739_2022.csv": "be5394a20a35ae0e6eb2d603dd8a1431dbe4f443153dc5972670bbde07046c38",
+    "noaa_72509014739_2023.csv": "2654aba24fe8fe2ad2ad36686346f92d9dc812caf507a53ec2e94638aacbccd9",
+    "noaa_72509014739_2024.csv": "be1ddf31fabe9aeeeeaca7d10867ce44a46eef73676d8ac52b521fe321dfa586"
+  },
+  "weather": {
+    "alignment": {
+      "aggregation": "UTC [hour, hour+1); no time interpolation; simultaneous reports median",
+      "availability": "assumed hour end + 1h; historical publication time unknown",
+      "expected_hours": 43848,
+      "joined_hours": 43848,
+      "missing_regional_dewpoint_hours": 226,
+      "missing_regional_temperature_hours": 149,
+      "station_weighting": "equal 1/3; all three required; proxy, not population/load weighted"
+    },
+    "boston": {
+      "accepted_type_rows": 54054,
+      "accepted_types": [
+        "FM-15",
+        "FM-16"
+      ],
+      "dewpoint_inconsistent_rows": 0,
+      "dewpoint_rejected_rows": 1939,
+      "excluded_type_rows": 16099,
+      "latitude": 42.3606,
+      "longitude": -71.0097,
+      "missing_dewpoint_hours": 59,
+      "missing_temperature_hours": 41,
+      "raw_rows": 70153,
+      "report_types": {
+        "FM-12": 14172,
+        "FM-15": 43819,
+        "FM-16": 10235,
+        "SOD  ": 1827,
+        "SOM  ": 60,
+        "SY-MT": 40
+      },
+      "simultaneous_accepted_reports_collapsed": 3,
+      "station_id": "72509014739",
+      "station_names": [
+        "BOSTON LOGAN INTERNATIONAL AIRPORT, MA US",
+        "BOSTON, MA US"
+      ],
+      "temperature_rejected_rows": 1921
+    },
+    "hartford": {
+      "accepted_type_rows": 54426,
+      "accepted_types": [
+        "FM-15",
+        "FM-16"
+      ],
+      "dewpoint_inconsistent_rows": 0,
+      "dewpoint_rejected_rows": 1930,
+      "excluded_type_rows": 10666,
+      "latitude": 41.9375,
+      "longitude": -72.6819,
+      "missing_dewpoint_hours": 48,
+      "missing_temperature_hours": 45,
+      "raw_rows": 65092,
+      "report_types": {
+        "FM-12": 8753,
+        "FM-15": 43817,
+        "FM-16": 10609,
+        "SOD  ": 1827,
+        "SOM  ": 60,
+        "SY-MT": 26
+      },
+      "simultaneous_accepted_reports_collapsed": 6,
+      "station_id": "72508014740",
+      "station_names": [
+        "HARTFORD BRADLEY INTERNATIONAL AIRPORT, CT US"
+      ],
+      "temperature_rejected_rows": 1935
+    },
+    "providence": {
+      "accepted_type_rows": 56409,
+      "accepted_types": [
+        "FM-15",
+        "FM-16"
+      ],
+      "dewpoint_inconsistent_rows": 0,
+      "dewpoint_rejected_rows": 2137,
+      "excluded_type_rows": 10616,
+      "latitude": 41.7225,
+      "longitude": -71.4325,
+      "missing_dewpoint_hours": 158,
+      "missing_temperature_hours": 91,
+      "raw_rows": 67025,
+      "report_types": {
+        "FM-12": 8717,
+        "FM-15": 43803,
+        "FM-16": 12606,
+        "SOD  ": 1815,
+        "SOM  ": 60,
+        "SY-MT": 24
+      },
+      "simultaneous_accepted_reports_collapsed": 5,
+      "station_id": "72507014765",
+      "station_names": [
+        "PROVIDENCE, RI US",
+        "RHODE ISLAND T.F. GREEN INTERNATIONAL AIRPORT, RI US"
+      ],
+      "temperature_rejected_rows": 1982
+    }
+  }
+}

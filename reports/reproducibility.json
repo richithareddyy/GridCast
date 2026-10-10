@@ -1,0 +1,127 @@
+{
+  "all_match": true,
+  "artifact_count": 27,
+  "artifacts": {
+    "data/interim/demand.parquet": {
+      "match": true,
+      "sha256": "5d8791a29701bd90b55d7d06030f4885a32c2896edd00037d86465bdc9d2fb14"
+    },
+    "data/interim/weather_boston_qc.parquet": {
+      "match": true,
+      "sha256": "0865a247c7923f9cb35e9fe618b0a263a983e47c297439da8a0421d01f2fd356"
+    },
+    "data/interim/weather_hartford_qc.parquet": {
+      "match": true,
+      "sha256": "3d35547827222b0ce51b20080918ff81f05af1f122805623c49e465609d7b8ae"
+    },
+    "data/interim/weather_providence_qc.parquet": {
+      "match": true,
+      "sha256": "2c65e264e3a72b463a8a4d13e18545dac453d74e9342b386ec6304b32ad2a3d1"
+    },
+    "data/processed/calibration.parquet": {
+      "match": true,
+      "sha256": "06ab7707b1b86ab46035b483a682279180f32e7db72facb2b0fe907c45586668"
+    },
+    "data/processed/test.parquet": {
+      "match": true,
+      "sha256": "39a202b96392983d296eca003cc6118e2b4796be8cccaff09e194e237f0ec364"
+    },
+    "data/processed/train.parquet": {
+      "match": true,
+      "sha256": "ac319c92b63bc7575aa3f267b664e9cc541342074f5764b6adb6dc2efa7f5c59"
+    },
+    "data/processed/validation.parquet": {
+      "match": true,
+      "sha256": "c6d20e7db1b225c6bf1ce46c3f13f82c9890f3dabca4df0c72d9d6ad30d9d7fe"
+    },
+    "reports/data_quality.json": {
+      "match": true,
+      "sha256": "8f450334c2d14a8511d4710e76d5cf134b6c7de93b8a83061a8c13c2ee32dbc8"
+    },
+    "reports/eda_findings.md": {
+      "match": true,
+      "sha256": "c3b65658f3e529c5135ebca05c569065be54d18d962131800c67251610ffc5cf"
+    },
+    "reports/eda_summary.json": {
+      "match": true,
+      "sha256": "352a0716af6a5b0a08ba36d89a0eee7b25abccaaf3f9c9525d57491d7ac969e5"
+    },
+    "reports/figures/01_demand_history.png": {
+      "match": true,
+      "sha256": "a33176040ac3f1de6ff8459d897d4d2763aadd2ecb55046e6d1c54d74eaac6f9"
+    },
+    "reports/figures/02_daily_weekly_patterns.png": {
+      "match": true,
+      "sha256": "94f1e0dfeca6d91b618c7617d83904eb75423929c9eccb47b018f33693d3afd0"
+    },
+    "reports/figures/03_month_hour_heatmap.png": {
+      "match": true,
+      "sha256": "e22fbd7ddfc96586ed0a16ad9f0e9ee4e8367d665865f85edc27950aef61b0cd"
+    },
+    "reports/figures/04_weather_relationship.png": {
+      "match": true,
+      "sha256": "1122f83ac012f70a9bc394b420b688ddebd2cc6e78a2b1757ad31bba443da68b"
+    },
+    "reports/figures/05_autocorrelation_annual_cycle.png": {
+      "match": true,
+      "sha256": "175ddbd24e6e8b8e1c071a6c78eb76d8d8df35d58e6837a3163a7dfe559f9d2e"
+    },
+    "reports/figures/06_descriptive_decomposition.png": {
+      "match": true,
+      "sha256": "67137d99dcc9442392b595e8bc40de8d9dfd1141d70facce2b8139e844e457dc"
+    },
+    "reports/figures/07_calendar_extremes.png": {
+      "match": true,
+      "sha256": "d4b15ae0c4945350154644b5b63f5ee3e29cceb012b700c4dde9441bbfa84d66"
+    },
+    "reports/figures/08_chronological_protocol.png": {
+      "match": true,
+      "sha256": "9b71144cd78e92fca1670b8c9e0f50faf89cdaf11280754768954739673d3efe"
+    },
+    "reports/frozen_thresholds.json": {
+      "match": true,
+      "sha256": "aeb75e7a59cfebfc275dc92d623a36686832f771f0fd23ef7364693a5261cd46"
+    },
+    "reports/source_definitions.json": {
+      "match": true,
+      "sha256": "33b687cbc5748c9a98c556bdbcb1cba5a42c87ad9f952c226a82f0bcd3433cfa"
+    },
+    "reports/tables/demand_by_holiday.csv": {
+      "match": true,
+      "sha256": "13675200613f1b80922e31cdfbef6fcdbb1db41374dbcf8bd165e18f5388b8cd"
+    },
+    "reports/tables/demand_by_hour.csv": {
+      "match": true,
+      "sha256": "38377f9efc17a89c2980d2596614fc58c18396beadf27cd29790cc5371a72d73"
+    },
+    "reports/tables/demand_by_month.csv": {
+      "match": true,
+      "sha256": "d9c4cacdaee55168b32c6d764c1aa7d34d2d119912dad0d6ad28e57cb81cb771"
+    },
+    "reports/tables/demand_by_weekday.csv": {
+      "match": true,
+      "sha256": "0e0a5329293e8695b5d0f790a310b6ae3e0853c4eee6a02efc4e2a14cb292328"
+    },
+    "reports/tables/extreme_training_days.csv": {
+      "match": true,
+      "sha256": "3ef0f8fa6bfe205d8358edd8425257a7d5e7fffa58519033d94bc927546bd1cd"
+    },
+    "reports/transformations.json": {
+      "match": true,
+      "sha256": "0a9699adf505837602101d4a6226487c06b899f9c49356cf0c7f6320c7e558c0"
+    }
+  },
+  "dependencies": {
+    "PyYAML": "6.0.3",
+    "holidays": "0.106",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.3",
+    "openpyxl": "3.1.5",
+    "pandas": "3.0.6",
+    "pyarrow": "26.0.0",
+    "statsmodels": "0.15.0"
+  },
+  "method": "offline rebuild from checksum-verified raw snapshots in an isolated directory",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.12.15"
+}

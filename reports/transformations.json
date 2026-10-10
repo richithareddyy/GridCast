@@ -1,0 +1,12 @@
+{
+  "transformations": [
+    "selected ISNE reported Demand and UTC study window; kept source row lineage",
+    "converted EIA hour-ending UTC to interval-start UTC; checked local metadata",
+    "reindexed complete hourly grid, flagged missing/invalid values, no target imputation",
+    "MWh / one hour -> average MW; source reported, adjusted and imputed columns retained",
+    "decoded NOAA 0.1 C fields; QC flags and excluded report types preserved in interim",
+    "median simultaneous reports; mean within UTC hour; all-three-station regional mean",
+    "derived local calendar and federal holidays; retained leap days and both DST hours",
+    "wrote isolated chronological partitions; test used for integrity checks only"
+  ]
+}

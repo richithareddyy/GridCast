@@ -1,0 +1,138 @@
+{
+  "eia_ISNE.xlsx": {
+    "bytes": 77957207,
+    "etag": "\"80988c7a858dd1:0\"",
+    "last_modified": "Fri, 09 Oct 2026 16:08:53 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:26.900920+00:00",
+    "sha256": "ed0812073e8ed5ce49ff7fd3e3617b6d17cd05cb6dda70fbb790da181db706c7",
+    "url": "https://www.eia.gov/electricity/gridmonitor/knownissues/xls/ISNE.xlsx"
+  },
+  "iso_smd_template.xlsx": {
+    "bytes": 2739254,
+    "etag": null,
+    "last_modified": null,
+    "retrieved_at_utc": "2026-10-10T02:59:27.211949+00:00",
+    "sha256": "6dce969e5b818403e1d649c1e5d7290449d089e9f9f0ed8ca4d1d14b1a229856",
+    "url": "https://www.iso-ne.com/static-assets/documents/2016/08/smd_hourly_template_v0.xlsx"
+  },
+  "noaa_72507014765_2020.csv": {
+    "bytes": 7677965,
+    "etag": "\"a2b275cd88810afae0e4a6696aaab3d1\"",
+    "last_modified": "Wed, 07 May 2025 23:09:02 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:24.317147+00:00",
+    "sha256": "6154acc26c252bd02d8bc841ab01469621700d32c9ddfbcab17d9ed5394a81f3",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2020/72507014765.csv"
+  },
+  "noaa_72507014765_2021.csv": {
+    "bytes": 7588694,
+    "etag": "\"86866340ddd8cb738d0e7cee35c5d9b9\"",
+    "last_modified": "Thu, 05 Oct 2023 09:43:18 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:25.505870+00:00",
+    "sha256": "02695b4dad96eef772bbde6cb45d25d8684ec5a5692102f351540625ff9a3df2",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2021/72507014765.csv"
+  },
+  "noaa_72507014765_2022.csv": {
+    "bytes": 8069328,
+    "etag": "\"f4ce060acfb2a934765b4ff75df9dd82\"",
+    "last_modified": "Thu, 11 Apr 2024 12:53:39 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:26.501473+00:00",
+    "sha256": "41a0434fae300fd927cb450849127fc688caae754b089b507dac1005b6019680",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2022/72507014765.csv"
+  },
+  "noaa_72507014765_2023.csv": {
+    "bytes": 8379221,
+    "etag": "\"8111828280c9ec87870058699627f773\"",
+    "last_modified": "Fri, 02 Jan 2026 09:26:01 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:30.551842+00:00",
+    "sha256": "3bbdb36be811238177c2885e5d7dfc5c2f2b0fddaa21305bacd8f1289c77fa25",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2023/72507014765.csv"
+  },
+  "noaa_72507014765_2024.csv": {
+    "bytes": 8544755,
+    "etag": "\"854a3b0f5c7aba3ec91be29a574a7614\"",
+    "last_modified": "Sat, 01 Mar 2025 06:47:27 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:27.684554+00:00",
+    "sha256": "19d2318bafe39e749db76a661b3ab1d750fc224bd72f18b3cd32d325343e8307",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2024/72507014765.csv"
+  },
+  "noaa_72508014740_2020.csv": {
+    "bytes": 7818660,
+    "etag": "\"42a5ec1594ea20a63e26c1fee0d1e692\"",
+    "last_modified": "Wed, 07 May 2025 23:32:29 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:18.239522+00:00",
+    "sha256": "1f7c46b4da69b280b43bc3717bca93f6081c8bbba2facb4b37f9c2469a67b6e4",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2020/72508014740.csv"
+  },
+  "noaa_72508014740_2021.csv": {
+    "bytes": 8148009,
+    "etag": "\"03d6a4d0d6facfa4c80594d8e3e3a7c9\"",
+    "last_modified": "Thu, 05 Oct 2023 09:13:24 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:22.661847+00:00",
+    "sha256": "b5359de339b187f6053c69551505dc326985f96e36bfe7e4f41a8b081002ac72",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2021/72508014740.csv"
+  },
+  "noaa_72508014740_2022.csv": {
+    "bytes": 7870829,
+    "etag": "\"4a71975756cbc1b7ad82e8df94e43a0c\"",
+    "last_modified": "Thu, 11 Apr 2024 12:58:34 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:22.044100+00:00",
+    "sha256": "0393918308adcdd25708c252a595ad127006a23695ac618aa68631ff09172120",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2022/72508014740.csv"
+  },
+  "noaa_72508014740_2023.csv": {
+    "bytes": 8295033,
+    "etag": "\"954c27c23ff8afe9b1e6e0a0ffbfdf9c\"",
+    "last_modified": "Fri, 02 Jan 2026 09:24:31 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:23.173598+00:00",
+    "sha256": "fdea3d9eb97d06c5d27c1fd335eb7679712fc2a53c9d6184b963f26e6114a9b0",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2023/72508014740.csv"
+  },
+  "noaa_72508014740_2024.csv": {
+    "bytes": 8515544,
+    "etag": "\"191ad05edb1fec6b87d1a1906a8da235\"",
+    "last_modified": "Sat, 01 Mar 2025 06:53:49 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:23.970866+00:00",
+    "sha256": "c9cccceafc5c651d356a6afb71f96de4ebf8f5c26a82d6960ba12fe0889fef9c",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2024/72508014740.csv"
+  },
+  "noaa_72509014739_2020.csv": {
+    "bytes": 7879783,
+    "etag": "\"03dcfe034290402e80566377d7dde9b8\"",
+    "last_modified": "Wed, 07 May 2025 23:16:06 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:15.170247+00:00",
+    "sha256": "beb89c47ef8eb02903783f6c7b398d582ecd81e61cd67b2ace0b12ddffda44bb",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2020/72509014739.csv"
+  },
+  "noaa_72509014739_2021.csv": {
+    "bytes": 8077366,
+    "etag": "\"e8db765028c2293da63f770a4f75c9cf\"",
+    "last_modified": "Thu, 05 Oct 2023 08:59:09 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:15.466176+00:00",
+    "sha256": "c6bb5947807091b166d2b9ea0d650e5be505c76f519994263c82a7f5d49251c6",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2021/72509014739.csv"
+  },
+  "noaa_72509014739_2022.csv": {
+    "bytes": 8415384,
+    "etag": "\"bacb216a9dc4ef4071e31d336c220a0f\"",
+    "last_modified": "Thu, 11 Apr 2024 12:52:26 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:16.294251+00:00",
+    "sha256": "be5394a20a35ae0e6eb2d603dd8a1431dbe4f443153dc5972670bbde07046c38",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2022/72509014739.csv"
+  },
+  "noaa_72509014739_2023.csv": {
+    "bytes": 8784897,
+    "etag": "\"65839deb24d0b335278642cefef25dc7\"",
+    "last_modified": "Fri, 02 Jan 2026 09:14:58 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:20.759909+00:00",
+    "sha256": "2654aba24fe8fe2ad2ad36686346f92d9dc812caf507a53ec2e94638aacbccd9",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2023/72509014739.csv"
+  },
+  "noaa_72509014739_2024.csv": {
+    "bytes": 8387857,
+    "etag": "\"f00f6f97b7327325ec71b3ea5ea00d3e\"",
+    "last_modified": "Sat, 01 Mar 2025 06:53:27 GMT",
+    "retrieved_at_utc": "2026-10-10T02:59:17.302584+00:00",
+    "sha256": "be1ddf31fabe9aeeeeaca7d10867ce44a46eef73676d8ac52b521fe321dfa586",
+    "url": "https://noaa-global-hourly-pds.s3.amazonaws.com/2024/72509014739.csv"
+  }
+}

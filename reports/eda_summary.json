@@ -1,0 +1,54 @@
+{
+  "acf_168": 0.7178217470986576,
+  "acf_24": 0.8742482423646419,
+  "annual_mean_mw_utc_year": {
+    "2020": 13160.717099271402,
+    "2021": 13370.086073059361,
+    "2022": 13347.939497716896
+  },
+  "demand_by_temperature_bin": {
+    "0_to_10": {
+      "hours": 8248,
+      "mean_mw": 12672.276551891367
+    },
+    "10_to_20": {
+      "hours": 8029,
+      "mean_mw": 11742.966620998879
+    },
+    "20_to_25": {
+      "hours": 4309,
+      "mean_mw": 14161.968438152704
+    },
+    "above_25": {
+      "hours": 2318,
+      "mean_mw": 17817.3011216566
+    },
+    "below_0": {
+      "hours": 3330,
+      "mean_mw": 14299.570870870872
+    }
+  },
+  "extreme_definition": "demand >= training q0.95",
+  "extreme_demand_threshold_mw": 17971.399999999994,
+  "extreme_temperature_high_c": 27.066666666666663,
+  "extreme_temperature_low_c": -3.7000000000000006,
+  "holiday_mean_mw": 12772.315170940172,
+  "last_interval_start_utc": "2022-12-31 23:00:00+00:00",
+  "last_vs_first_annual_mean_pct": 1.4225850843329724,
+  "max_mw": 25101.0,
+  "max_timestamp_utc": "2021-06-29 21:00:00+00:00",
+  "mean_mw": 13292.79360553528,
+  "min_mw": 8156.0,
+  "nonholiday_mean_mw": 13311.997634815516,
+  "peak_average_local_hour": 18,
+  "peak_average_local_month": 8,
+  "scope": "initial_training_only",
+  "start_utc": "2020-01-01 00:00:00+00:00",
+  "train_rows": 26304,
+  "training_extreme_hours": 1316,
+  "trough_average_local_hour": 3,
+  "weather_complete_hours": 26234,
+  "weather_missing_hours": 70,
+  "weekday_mean_mw": 13569.9567484173,
+  "weekend_mean_mw": 12598.796589849473
+}

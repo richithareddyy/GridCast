@@ -1,0 +1,8 @@
+{
+  "extreme_demand_threshold_mw": 17971.399999999994,
+  "extreme_temperature_high_c": 27.066666666666663,
+  "extreme_temperature_low_c": -3.7000000000000006,
+  "last_interval_start_utc": "2022-12-31 23:00:00+00:00",
+  "scope": "initial_training_only",
+  "start_utc": "2020-01-01 00:00:00+00:00"
+}
