@@ -1,4 +1,4 @@
-"""Known calendar context. Target lags and forecasting arrive in Milestone 2."""
+"""Calendar and forecast-origin predictors with explicit temporal availability."""
 
 import holidays
 import pandas as pd
@@ -41,3 +41,44 @@ def available_history(frame: pd.DataFrame, origin, reporting_delay_hours: int = 
     if reporting_delay_hours < 0:
         raise ValidationError("Reporting delay cannot be negative")
     return frame.loc[frame.index + pd.Timedelta(hours=1 + reporting_delay_hours) <= origin].copy()
+
+
+def validate_history(series: pd.Series):
+    """Require a real hourly axis before positional lags or autoregressive fitting."""
+    if not isinstance(series.index, pd.DatetimeIndex) or str(series.index.tz) != "UTC":
+        raise ValidationError("Demand history must have a UTC DatetimeIndex")
+    if series.empty or series.index.has_duplicates or not series.index.is_monotonic_increasing:
+        raise ValidationError("History must be nonempty, sorted and unique")
+    if not series.index.equals(pd.date_range(series.index[0], series.index[-1], freq="h")):
+        raise ValidationError("History must be an exact hourly grid; represent gaps explicitly")
+
+
+def forecast_features(series: pd.Series, origin, horizon=24, delay=1):
+    """A forecast-origin feature matrix; target observations never enter predictors.
+
+    origin_last_demand represents the latest available history. Target lag_24 can be unknown;
+    leave it null and record availability rather than reading across the cutoff.
+    """
+    validate_history(series)
+    origin = pd.Timestamp(origin)
+    if horizon < 1 or delay < 0 or origin.tz is None:
+        raise ValidationError("Invalid forecast horizon, origin or reporting delay")
+    history = available_history(series.to_frame("y"), origin, delay).y
+    if history.empty:
+        raise ValidationError("No demand is available at this forecast origin")
+    targets = pd.date_range(origin, periods=horizon, freq="h")
+    features = calendar_features(targets).drop(columns=["local_time", "holiday_name"])
+    features["horizon"] = range(1, horizon + 1)
+    features["origin_last_demand"] = history.iloc[-1]
+    for lag in [24, 48, 168]:
+        sources = targets - pd.Timedelta(hours=lag)
+        features[f"lag_{lag}"] = history.reindex(sources).to_numpy()
+        features[f"lag_{lag}_available"] = features[f"lag_{lag}"].notna()
+    for window in [24, 168]:
+        tail = history.iloc[-window:]
+        complete = len(tail) == window and tail.notna().all()
+        for name, method in [("mean", "mean"), ("std", "std"), ("min", "min"), ("max", "max")]:
+            features[f"rolling_{window}_{name}"] = getattr(tail, method)() if complete else float("nan")
+    features.attrs["latest_history_start"] = str(history.index[-1])
+    features.attrs["latest_history_available_at"] = str(history.index[-1] + pd.Timedelta(hours=delay + 1))
+    return features

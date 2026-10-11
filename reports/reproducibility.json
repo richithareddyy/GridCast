@@ -1,10 +1,14 @@
 {
   "all_match": true,
-  "artifact_count": 27,
+  "artifact_count": 41,
   "artifacts": {
     "data/interim/demand.parquet": {
       "match": true,
       "sha256": "5d8791a29701bd90b55d7d06030f4885a32c2896edd00037d86465bdc9d2fb14"
+    },
+    "data/interim/validation_features.parquet": {
+      "match": true,
+      "sha256": "459d762adf689bd37d0122c83d2495dc8cea5c32474c215fe21578e03891267d"
     },
     "data/interim/weather_boston_qc.parquet": {
       "match": true,
@@ -34,9 +38,17 @@
       "match": true,
       "sha256": "c6d20e7db1b225c6bf1ce46c3f13f82c9890f3dabca4df0c72d9d6ad30d9d7fe"
     },
+    "reports/backtest_summary.json": {
+      "match": true,
+      "sha256": "7867979f2dabe581bf98cdff3bbd909b9e305a1eda2d29632e042fcbc8d0bb67"
+    },
+    "reports/baseline_findings.md": {
+      "match": true,
+      "sha256": "28bc868539462e9d3b0c6bc5209a3d7c72d3aa27329424379ee359f96b8d0851"
+    },
     "reports/data_quality.json": {
       "match": true,
-      "sha256": "8f450334c2d14a8511d4710e76d5cf134b6c7de93b8a83061a8c13c2ee32dbc8"
+      "sha256": "23a59d05ea2611d854a13b53129fae75aa6cce2257315b74af68fac5597e8d5e"
     },
     "reports/eda_findings.md": {
       "match": true,
@@ -78,13 +90,41 @@
       "match": true,
       "sha256": "9b71144cd78e92fca1670b8c9e0f50faf89cdaf11280754768954739673d3efe"
     },
+    "reports/figures/09_model_comparison.png": {
+      "match": true,
+      "sha256": "8c4b4db4c4bd5a523ab6a9c001d997939b8ce7d8ccd4ccd8fcca05d5e1f063a9"
+    },
+    "reports/figures/10_fold_horizon_errors.png": {
+      "match": true,
+      "sha256": "ae8e4a9f8f8c5466d08fecd8e886c051270f981325da8e55285843de0100675c"
+    },
+    "reports/figures/11_validation_forecasts.png": {
+      "match": true,
+      "sha256": "b2d951b5d5e40216bd56fd504db08ea28fb7c27a13f6aee14c0cbca689e4cdc2"
+    },
+    "reports/figures/12_error_conditions.png": {
+      "match": true,
+      "sha256": "282499eae2f8388f27156604974131b4ce84ab84a7f43dd299e8413c2456da73"
+    },
     "reports/frozen_thresholds.json": {
       "match": true,
       "sha256": "aeb75e7a59cfebfc275dc92d623a36686832f771f0fd23ef7364693a5261cd46"
     },
+    "reports/predictions/validation.parquet": {
+      "match": true,
+      "sha256": "06a0577280f204756becb7f33df1ecf4f59dcdb001825e943cb1cb269d66962e"
+    },
     "reports/source_definitions.json": {
       "match": true,
       "sha256": "33b687cbc5748c9a98c556bdbcb1cba5a42c87ad9f952c226a82f0bcd3433cfa"
+    },
+    "reports/statistical_fits.json": {
+      "match": true,
+      "sha256": "4852994f16667a1972a8dc09576323c2cb17e2563b160ac7ba38c29a3fd3659f"
+    },
+    "reports/tables/condition_metrics.csv": {
+      "match": true,
+      "sha256": "297509eaa2da9d6aed7ceda47d06893b1d31bf10697a3855b36c2facff6e1705"
     },
     "reports/tables/demand_by_holiday.csv": {
       "match": true,
@@ -105,6 +145,22 @@
     "reports/tables/extreme_training_days.csv": {
       "match": true,
       "sha256": "3ef0f8fa6bfe205d8358edd8425257a7d5e7fffa58519033d94bc927546bd1cd"
+    },
+    "reports/tables/fold_metrics.csv": {
+      "match": true,
+      "sha256": "bf78426470e65e7c6458295327259feb04abcbecbf7ac8345e244ba8775fa52a"
+    },
+    "reports/tables/horizon_metrics.csv": {
+      "match": true,
+      "sha256": "bdfebb9cfba7a6e78907f7dc16b0795453866ca63ffc4df794e72c945a5c23ef"
+    },
+    "reports/tables/model_comparison.csv": {
+      "match": true,
+      "sha256": "2d1ef5b170f5df8c7d419dc0ad05b0af4a878cb4d69b64f3d200e2b50b99d328"
+    },
+    "reports/tables/origin_audit.csv": {
+      "match": true,
+      "sha256": "9f237e722cbb408903ce1b939c90f823b3fcb3f27958b54fe9c2afc750bf8d50"
     },
     "reports/transformations.json": {
       "match": true,

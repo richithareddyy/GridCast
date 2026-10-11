@@ -7,8 +7,8 @@
 and when do sophisticated models actually outperform strong seasonal baselines?**
 A secondary question asks whether residuals identify unusual demand behavior.
 
-**Milestone 1: data pipeline and EDA complete, awaiting review.** There are no forecasting scores
-or trained models yet. This is a data science project focused on temporal evaluation, uncertainty
+**Milestones 1–2 complete: data, EDA, baselines and validation backtesting.**
+Calibration and final-test outcomes remain unscored. This is a data science project focused on temporal evaluation, uncertainty
 and honest comparison.
 
 ## Dataset
@@ -132,15 +132,29 @@ comparisons, training extreme episodes and the evaluation timeline. Each title s
 
 ## Models
 
-Planned after review: persistence, daily and weekly seasonal naive; dynamic harmonic regression
-with autoregressive errors; LightGBM; and one compact LSTM, only after the other models work.
-Multiple periodicities in EDA motivate dynamic regression rather than a large single-season SARIMA.
-No advanced model is presumed better. Parameters will be selected only within validation.
+Implemented: persistence, daily and weekly seasonal naive, and **dynamic harmonic regression
+with AR(1) errors**. Persistence repeats the last available demand. The statistical model uses
+three Fourier harmonics each for daily, weekly and annual cycles, a linear trend, weekend and
+holiday indicators, and daily-by-weekend interactions. Calendar features use Eastern local time;
+the AR process advances in elapsed UTC hours. There are no weather predictors.
+
+Coefficients and AR(1) correlation are estimated jointly by iterative feasible GLS, with a
+50-iteration cap and relative tolerance 1e-6. All nine fits converge. Coefficients refit monthly;
+the residual state updates at each daily origin using the latest available observation.
+The reporting delay makes forecast residual propagation steps **2–25**, not 1–24.
+Orders were fixed before this run; there is no hyperparameter search in Milestone 2.
+Fit coefficients, convergence and training endpoints are saved in `reports/statistical_fits.json`.
 
 Under the one-hour delay, daily seasonal naive uses `target_end−24h` for horizons 1–23 and
 `target_end−48h` for horizon 24; the previous-day value for that final hour is unpublished.
-This availability-adjusted rule will be clearly labeled. Weekly naive uses elapsed 168-hour lags;
-UTC seasonal lags do not always match local clock hours across DST.
+Weekly naive uses elapsed 168-hour lags; UTC seasonal lags do not always match local clock hours
+across DST. Each origin's availability and final-hour fallback are audited.
+
+The reusable feature matrix contains known future calendar values, the origin's last available
+demand, target-relative 24/48/168-hour lags with availability flags, and complete-window 24/168-hour
+trailing summaries. The unavailable final-horizon 24-hour lag stays null. Rolling summaries end
+at the reporting cutoff. These features prepare later models; the current statistical model
+uses its documented harmonic design. LightGBM and a compact LSTM remain for Milestone 3.
 
 ## Backtesting
 
@@ -153,25 +167,55 @@ All bounds below are UTC **interval starts**, with exclusive end dates.
 | Calibration | 2023-10-01 | 2024-01-01 | 2,208 | Reserved out-of-sample residuals, no model selection |
 | Final test | 2024-01-01 | 2025-01-01 | 8,784 | Sealed until model choices are finalized |
 
-Refit monthly and issue daily paths. All training labels must have matured by the origin's
-reporting cutoff, including at split boundaries. Save every origin/horizon/fold prediction.
+The backtester refits monthly and issues daily paths. Every training label has matured by the
+origin's reporting cutoff, including at split boundaries. Every origin/horizon/fold prediction
+is saved. Only the train and validation partitions are loaded by the forecasting runner.
 Test refits may use matured past test labels with fixed hyperparameters; no test-based tuning.
 The calibration quarter sacrifices autumn/winter model-selection coverage to separate model
 selection from initial interval estimation. Report that limitation rather than reusing the test.
 
 ## Results
 
-**No model results yet.** Future outputs will report MAE, RMSE, WAPE and training-scaled weekly
-MASE, by fold and condition. Paired daily losses will use dependence-aware uncertainty (HAC or
-block bootstrap), with multiple-comparison correction. Small differences need statistical and
-practical interpretation; no scores are fabricated in this milestone.
+<!-- BEGIN BACKTEST RESULTS -->
+Validation only: January–September 2023; nine expanding monthly folds, 273 daily origins, 24 horizons per origin.
+
+| Model | MAE (MW) | RMSE (MW) | WAPE (%) | MASE | Peak MAE | Extreme MAE |
+|---|---:|---:|---:|---:|---:|---:|
+| Naive | 2,515.5 | 3,003.1 | 19.46 | 1.876 | 957.8 | 1,663.7 |
+| Daily seasonal naive (available) | 924.3 | 1,288.9 | 7.15 | 0.689 | 990.7 | 1,761.2 |
+| Weekly seasonal naive | 1,438.3 | 1,987.1 | 11.13 | 1.072 | 1,576.3 | 3,202.4 |
+| Harmonic regression + AR(1) | 1,008.5 | 1,283.8 | 7.80 | 0.752 | 873.6 | 1,415.5 |
+
+**Lowest validation MAE: Daily seasonal naive (available).** Harmonic regression + AR(1) has 9.1% higher MAE than the stronger seasonal baseline (Daily seasonal naive (available)). This is a point-estimate comparison, not a claim of statistical significance or final-test performance.
+
+WAPE is expressed in percent. MASE uses each fold's available training-only 168-hour scale. Peak means local hours 16–20; extreme means the fixed initial-training 95th percentile. Condition groups overlap. All models are scored on identical labels.
+
+Source: `reports/tables/model_comparison.csv`; individual forecasts are stored in `reports/predictions/validation.parquet`. Calibration and final test remain unscored.
+<!-- END BACKTEST RESULTS -->
+
+![Validation model comparison](reports/figures/09_model_comparison.png)
+![Errors by month and horizon](reports/figures/10_fold_horizon_errors.png)
+
+The daily baseline wins overall MAE, while harmonic regression reduces peak-hour and extreme-demand
+MAE and has slightly lower RMSE. Harmonic regression wins four monthly MAE comparisons; the daily
+baseline wins five. This motivates condition-specific evaluation without assuming complexity wins.
+Dependence-aware paired-loss intervals and multiple-comparison adjustment remain for the later
+uncertainty analysis; these validation point estimates alone do not establish significance.
 
 ## Error Analysis
 
 The frozen taxonomy covers weekdays, weekends, federal actual/observed holidays, local 16:00–20:00
-peak hours, meteorological seasons, extreme demand and extreme temperature. Report counts and
-missing-weather membership; do not treat unknown temperature as normal. Holiday comparisons are
+peak hours, meteorological seasons, extreme demand and extreme temperature. The generated
+`condition_metrics.csv` reports counts and missing-weather membership separately; unknown
+temperature is never treated as normal. Observed weather is joined only after predictions exist. Holiday comparisons are
 unadjusted and federal holidays do not capture all regional or market-calendar effects.
+
+Because every forecast starts at 00 UTC, horizon and local hour are linked; the horizon plot
+does not isolate the causal effect of lead time. The first validation week is plotted by a fixed
+calendar rule, not selected for favorable predictions.
+
+![First validation week](reports/figures/11_validation_forecasts.png)
+![Errors under different conditions](reports/figures/12_error_conditions.png)
 
 ## Extreme Demand
 
@@ -188,7 +232,7 @@ Dependence and drift invalidate an unqualified IID conformal guarantee. Calibrat
 
 ## Anomalies
 
-Deferred until genuine out-of-sample forecasts exist. Interval violations will be called
+Deferred to Milestone 4, after interval calibration is implemented. Interval violations will be called
 **forecast anomalies**, with observed demand, forecast, residual, interval, calendar and weather
 context. They are not evidence of outages or emergencies without external ground truth.
 Rolling error/bias/variance and coverage analysis will follow in Milestone 4.
@@ -208,7 +252,8 @@ Requires **CPython 3.12**, tested on macOS arm64. Run from this repository:
 ```bash
 make setup       # Isolated .venv; pinned direct/transitive dependencies
 make data        # Download or verify immutable sources, validate, align, partition
-make analysis    # Data pipeline + training-only EDA; no notebook execution required
+make analysis    # Data pipeline + training-only EDA + validation backtests
+make backtest    # Re-run forecasts from existing processed development partitions
 make test        # Unit and temporal-leakage tests, offline
 make lint        # Static code checks
 make reproduce   # Isolated offline rebuild; compare generated artifact SHA-256 hashes
@@ -226,18 +271,18 @@ Streamlit and `make app` arrive in Milestone 5, after real forecast outputs exis
 
 ```text
 configs/       data.yaml, evaluation.yaml, sources.lock.json
-src/gridcast/  data.py, validation.py, features.py, eda.py, audit.py
-notebooks/     01_eda.ipynb
-reports/       quality/provenance/EDA/reproducibility JSON, findings, tables, eight figures
-tests/         time contracts, source immutability, NOAA QC, future-mutation leakage tests
+src/gridcast/  data, validation, features, eda, baselines, models, evaluation, backtesting, visualization, audit
+notebooks/     01_eda.ipynb, 02_forecasting.ipynb
+reports/       provenance, fits, predictions, findings, metrics, twelve figures, replay audit
+tests/         time contracts, source immutability, QC, forecasting and future-mutation tests
 data/          raw (immutable), interim (lineage/QC), processed (four isolated partitions)
 ```
 
 Raw/intermediate/processed files, the virtual environment and scratch work are ignored by Git.
 `reports/transformations.json` documents each transformation; `reports/run_log.jsonl` logs local
 runs. On failure, a diagnostic JSON is written and processing stops. No observations are silently
-removed or filled. Forecasting modules and notebooks will be added only when implemented.
+removed or filled. Prediction Parquet and metric tables are tracked; raw source snapshots are not.
 
-Six milestones: **1 Data (complete)** → 2 Baselines + Backtesting → 3 Machine Learning →
+Six milestones: **1 Data (complete)** → **2 Baselines + Backtesting (complete)** → 3 Machine Learning →
 4 Uncertainty + Anomalies → 5 Application → 6 Final Audit. Work pauses here for review;
 push/remote setup belongs to the final milestone.

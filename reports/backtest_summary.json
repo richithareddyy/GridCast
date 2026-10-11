@@ -1,0 +1,23 @@
+{
+  "all_fits_converged": true,
+  "best_validation_mae_model": "daily",
+  "daily_latency_fallbacks": 273,
+  "evaluation_config_sha256": "8bf94a055f410f01bee226086a2afff200d5f4224f992630a9d2dc12fe8603f6",
+  "feature_rows": 6552,
+  "folds": 9,
+  "hours_per_model": 6552,
+  "input_hashes": {
+    "train": "ac319c92b63bc7575aa3f267b664e9cc541342074f5764b6adb6dc2efa7f5c59",
+    "validation": "c6d20e7db1b225c6bf1ce46c3f13f82c9890f3dabca4df0c72d9d6ad30d9d7fe"
+  },
+  "models": {
+    "daily": "Daily seasonal naive (available)",
+    "dhr_ar1": "Harmonic regression + AR(1)",
+    "naive": "Naive",
+    "weekly": "Weekly seasonal naive"
+  },
+  "origins": 273,
+  "prediction_rows": 26208,
+  "scope": "validation_only",
+  "thresholds_sha256": "aeb75e7a59cfebfc275dc92d623a36686832f771f0fd23ef7364693a5261cd46"
+}

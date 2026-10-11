@@ -1,6 +1,6 @@
 # All boundaries refer to interval START in UTC, with exclusive end bounds.
-experiment_version: 1
-status: frozen_milestone_1_pending_review
+experiment_version: 2
+status: milestone_2_validation_protocol
 dataset: eia930_isne
 target: demand_mw
 units: MW
@@ -63,6 +63,28 @@ comparison:
   multiplicity: Holm_adjustment_for_multiple_model_comparisons
 random_seeds: {numpy: 42, boosting: 42, deep_learning: 42}
 models_planned_not_implemented:
-  statistical: dynamic_harmonic_regression_with_autoregressive_errors
   boosting: LightGBM
   deep_learning: one_compact_LSTM
+
+statistical_model:
+  name: dhr_ar1
+  estimator: statsmodels_GLSAR_iterative_feasible_GLS
+  daily_fourier_order: 3
+  weekly_fourier_order: 3
+  annual_fourier_order: 3
+  weekend_daily_interactions: true
+  holiday: true
+  linear_trend_reference: '2020-01-01T00:00:00Z'
+  ar_order: 1
+  max_iterations: 50
+  relative_tolerance: 0.000001
+  future_weather: none
+  tuning: none_in_milestone_2
+features:
+  historical_lags: [1, 24, 48, 168]
+  lag_1_definition: last_available_observation_at_origin_not_target_minus_1
+  unavailable_target_lag: null_with_explicit_availability_flag
+  rolling_windows_hours: [24, 168]
+  rolling_cutoff: last_available_hour_at_origin
+  rolling_missing_policy: require_complete_window
+  weather: excluded_from_milestone_2_predictors

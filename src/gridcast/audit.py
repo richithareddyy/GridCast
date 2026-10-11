@@ -1,4 +1,4 @@
-"""Rebuild Milestone 1 offline in an isolated directory and compare artifact hashes."""
+"""Rebuild data, EDA and validation backtests offline in an isolated directory and compare artifact hashes."""
 
 import argparse
 import importlib.metadata
@@ -8,6 +8,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
+from gridcast.backtesting import run as backtest_run
 from gridcast.data import run as data_run
 from gridcast.data import sha256, write_json
 from gridcast.eda import run as eda_run
@@ -21,12 +22,16 @@ def run(root: Path):
         "reports/eda_summary.json",
         "reports/frozen_thresholds.json",
         "reports/eda_findings.md",
+        "reports/backtest_summary.json",
+        "reports/statistical_fits.json",
+        "reports/baseline_findings.md",
     ]
     for folder, pattern in [
         ("data/processed", "*.parquet"),
         ("data/interim", "*.parquet"),
         ("reports/figures", "*.png"),
         ("reports/tables", "*.csv"),
+        ("reports/predictions", "*.parquet"),
     ]:
         files.extend(str(p.relative_to(root)) for p in sorted((root / folder).glob(pattern)))
     if not files or not (root / "reports/eda_summary.json").exists():
@@ -43,6 +48,7 @@ def run(root: Path):
         with patch("urllib.request.urlopen", side_effect=RuntimeError("Network forbidden in replay")):
             data_run(clean)
             eda_run(clean)
+            backtest_run(clean)
         checks = {
             name: {
                 "sha256": sha256(root / name),
