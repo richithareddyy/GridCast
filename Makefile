@@ -3,6 +3,10 @@ export OPENBLAS_NUM_THREADS := 1
 export OMP_NUM_THREADS := 1
 export VECLIB_MAXIMUM_THREADS := 1
 export PYTHONPATH := $(CURDIR)/src
+# Use one OpenMP runtime for LightGBM and PyTorch on macOS. No duplicate-runtime bypass.
+ifeq ($(shell uname -s),Darwin)
+export DYLD_LIBRARY_PATH := $(CURDIR)/.venv/lib/python3.12/site-packages/torch/lib
+endif
 export MPLCONFIGDIR := $(CURDIR)/work/matplotlib
 
 .PHONY: data analysis test lint reproduce setup backtest
@@ -10,6 +14,7 @@ setup:
 	python3.12 -m venv .venv
 	$(PYTHON) -m pip install -r requirements.lock
 	$(PYTHON) -m pip install --no-deps --no-build-isolation .
+	$(PYTHON) -m gridcast.learning
 data:
 	$(PYTHON) -m gridcast.data --root .
 analysis: data

@@ -66,3 +66,40 @@ def condition_scores(predictions: pd.DataFrame, thresholds: dict):
             for model in sorted(p.model.unique())
         ]
     )
+
+
+def paired_comparisons(predictions, max_lags=7):
+    """Daily paired MAE differences vs the predeclared daily baseline, HAC + Holm."""
+    import statsmodels.api as sm
+    from scipy.stats import norm
+    from statsmodels.stats.multitest import multipletests
+
+    p = predictions.copy()
+    p["absolute_error"] = (p.actual - p.prediction).abs()
+    losses = p.groupby(["origin_utc", "model"]).absolute_error.mean().unstack("model")
+    if losses.isna().any().any() or "daily" not in losses:
+        raise ValidationError("Paired comparison requires matched origins and the daily baseline")
+    rows = []
+    for model in losses.columns.drop("daily"):
+        delta = (losses[model] - losses.daily).to_numpy()
+        if len(delta) <= max_lags + 1:
+            raise ValidationError("Too few origins for the requested HAC lag")
+        fitted = sm.OLS(delta, np.ones((len(delta), 1))).fit(cov_type="HAC", cov_kwds={"maxlags": max_lags})
+        mean, se = float(fitted.params[0]), float(fitted.bse[0])
+        p_value = float(2 * norm.sf(abs(mean / se))) if se > 0 else float(mean == 0)
+        rows.append(
+            {
+                "model": model,
+                "reference": "daily",
+                "daily_origins": len(delta),
+                "hac_lags": max_lags,
+                "mean_mae_difference_mw": mean,
+                "hac_standard_error": se,
+                "ci95_low": mean - 1.959963984540054 * se,
+                "ci95_high": mean + 1.959963984540054 * se,
+                "p_value": p_value,
+            }
+        )
+    result = pd.DataFrame(rows)
+    result["p_holm"] = multipletests(result.p_value, method="holm")[1]
+    return result

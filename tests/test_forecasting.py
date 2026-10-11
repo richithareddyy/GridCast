@@ -147,6 +147,7 @@ def test_ar_residual_forecast_bridges_unpublished_hour():
 
 def synthetic_study():
     cfg = load_config(ROOT, "evaluation.yaml")
+    cfg.pop("learning", None)  # This fixture isolates the classical backtester.
     cfg["periods"]["validation"] = {"start": "2023-01-01T00:00Z", "end": "2023-01-03T00:00Z"}
     idx = pd.date_range("2022-01-01", "2023-01-03", inclusive="left", freq="h", tz="UTC")
     frame = calendar_features(idx)

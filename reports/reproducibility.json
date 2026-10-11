@@ -1,6 +1,6 @@
 {
   "all_match": true,
-  "artifact_count": 41,
+  "artifact_count": 63,
   "artifacts": {
     "data/interim/demand.parquet": {
       "match": true,
@@ -8,7 +8,7 @@
     },
     "data/interim/validation_features.parquet": {
       "match": true,
-      "sha256": "459d762adf689bd37d0122c83d2495dc8cea5c32474c215fe21578e03891267d"
+      "sha256": "f3d043296bd7d2d821323fbd7cdb39c2efe7e1030e5d8c15720c0fa75ac9df53"
     },
     "data/interim/weather_boston_qc.parquet": {
       "match": true,
@@ -40,15 +40,15 @@
     },
     "reports/backtest_summary.json": {
       "match": true,
-      "sha256": "7867979f2dabe581bf98cdff3bbd909b9e305a1eda2d29632e042fcbc8d0bb67"
+      "sha256": "8616a345dec2f4c552f95e0c09532871bc1e9db3d25f8bb58834c3139fdd75e0"
     },
     "reports/baseline_findings.md": {
       "match": true,
-      "sha256": "28bc868539462e9d3b0c6bc5209a3d7c72d3aa27329424379ee359f96b8d0851"
+      "sha256": "5c0f7d72e29199984fae1873ef39730cc96f1e111abc1c16db9e361b040bd54a"
     },
     "reports/data_quality.json": {
       "match": true,
-      "sha256": "23a59d05ea2611d854a13b53129fae75aa6cce2257315b74af68fac5597e8d5e"
+      "sha256": "3a25a5f16f548ad5b04ed34497f1dd50672df5bd0880686010055416b0a9425c"
     },
     "reports/eda_findings.md": {
       "match": true,
@@ -92,27 +92,111 @@
     },
     "reports/figures/09_model_comparison.png": {
       "match": true,
-      "sha256": "8c4b4db4c4bd5a523ab6a9c001d997939b8ce7d8ccd4ccd8fcca05d5e1f063a9"
+      "sha256": "48f6f57d1873d81562948a1c2557fb0045d65e53a82e5b27ee8d5b7767c581aa"
     },
     "reports/figures/10_fold_horizon_errors.png": {
       "match": true,
-      "sha256": "ae8e4a9f8f8c5466d08fecd8e886c051270f981325da8e55285843de0100675c"
+      "sha256": "8ff650a290a788f02e89a33f56d99a4daaf947302e5af40beb8dd3e371c20214"
     },
     "reports/figures/11_validation_forecasts.png": {
       "match": true,
-      "sha256": "b2d951b5d5e40216bd56fd504db08ea28fb7c27a13f6aee14c0cbca689e4cdc2"
+      "sha256": "753d03064d0ca5acd06752251e9a4066bd7a63126c4716f5aff689d3305d1b63"
     },
     "reports/figures/12_error_conditions.png": {
       "match": true,
-      "sha256": "282499eae2f8388f27156604974131b4ce84ab84a7f43dd299e8413c2456da73"
+      "sha256": "8b6ba43147bd4a8d51a88cc541f3b23c8afbc0308bca66763d9463ffb8b8020d"
+    },
+    "reports/figures/13_paired_comparisons.png": {
+      "match": true,
+      "sha256": "56e8b1925438df5b82274b665ab6dec2aa161a490335ff86e77ad95aabde394f"
+    },
+    "reports/figures/14_feature_importance.png": {
+      "match": true,
+      "sha256": "f4db621cc9b925478cfdb8bb55b67564dab1cbde7c486492f5422cab2727a1b4"
     },
     "reports/frozen_thresholds.json": {
       "match": true,
       "sha256": "aeb75e7a59cfebfc275dc92d623a36686832f771f0fd23ef7364693a5261cd46"
     },
+    "reports/model_selection.json": {
+      "match": true,
+      "sha256": "9c46fcd60e0bbb277670acd5eac4d97cfc2e16c64b416f10eed6bdd6ac7ace44"
+    },
+    "reports/models/2023-01_lightgbm.txt": {
+      "match": true,
+      "sha256": "9ecea0eaed41d7ddd59328907b08782d0153f317ab2ce809f885db961272d14e"
+    },
+    "reports/models/2023-01_lstm.npz": {
+      "match": true,
+      "sha256": "8a63dbeeb2d79d48ab04c77df9deaa9fc4c196397b82815759f2f3cdccfcac39"
+    },
+    "reports/models/2023-02_lightgbm.txt": {
+      "match": true,
+      "sha256": "a79c36e50d79a4f0fd1b56fc5dbfd5cf9536b33ea71e6abda1e0a36d8724f526"
+    },
+    "reports/models/2023-02_lstm.npz": {
+      "match": true,
+      "sha256": "0605862855b92c8c8c14dfa67bb3c84a374547e691b92fb1e4e209bdafe8bc5f"
+    },
+    "reports/models/2023-03_lightgbm.txt": {
+      "match": true,
+      "sha256": "9904eb0cc51b0d02e293cb938bcbb46d5e6680c76812dd64b0b16e89b094c16b"
+    },
+    "reports/models/2023-03_lstm.npz": {
+      "match": true,
+      "sha256": "4369af3add4023984a974686e6845a1a4da51ec9e577c4d65c36a544b2e50321"
+    },
+    "reports/models/2023-04_lightgbm.txt": {
+      "match": true,
+      "sha256": "5cfced65bd473994ac89e0e0a3d147e2221947177000280852c5a406827fecf6"
+    },
+    "reports/models/2023-04_lstm.npz": {
+      "match": true,
+      "sha256": "3e7d1fa3f9064df37505d33a81198e8f9013d84cc2043aaefbdf520568f375af"
+    },
+    "reports/models/2023-05_lightgbm.txt": {
+      "match": true,
+      "sha256": "1f13ef534d4408a550420851f1056f224d211b9bc2b7616fab35189a2f89c3ea"
+    },
+    "reports/models/2023-05_lstm.npz": {
+      "match": true,
+      "sha256": "ed60a0926d7891095fb54532c649a97c74251ce35adc9914ef971f734c3cb048"
+    },
+    "reports/models/2023-06_lightgbm.txt": {
+      "match": true,
+      "sha256": "f0a69e69d323b9644da40d09dae7ed55c98d9dc6d9c105e9d0283de126f081e1"
+    },
+    "reports/models/2023-06_lstm.npz": {
+      "match": true,
+      "sha256": "4879f67b67c8792b5745f89f652cf95bc8ad2b2b2b244b9627eb82cc5e6189e6"
+    },
+    "reports/models/2023-07_lightgbm.txt": {
+      "match": true,
+      "sha256": "7a0756213bdb0b5ffe44eda6cb5b96365f9c4d62baa07d36428a1f2dfba88146"
+    },
+    "reports/models/2023-07_lstm.npz": {
+      "match": true,
+      "sha256": "76a47a70a9160bfbea74314af29675e6f7424a95fcadd0a57614d06a9bae22ad"
+    },
+    "reports/models/2023-08_lightgbm.txt": {
+      "match": true,
+      "sha256": "831b7c566e94c51621401385b0e910507ca44c2b431678ab7acf8ba823f84946"
+    },
+    "reports/models/2023-08_lstm.npz": {
+      "match": true,
+      "sha256": "25f844fd745da469ed939ab9b4f0f860c15cc92ff13e445c9cb2d85f57c71cee"
+    },
+    "reports/models/2023-09_lightgbm.txt": {
+      "match": true,
+      "sha256": "c3fddbaab5ccc31f06aaa83b1ea38f560a1ebbc3d94e5bc953d51bf37fd108fe"
+    },
+    "reports/models/2023-09_lstm.npz": {
+      "match": true,
+      "sha256": "c5175c527003ac819aa55af16a51232e565770395e4cd594dd773cdcca9400e7"
+    },
     "reports/predictions/validation.parquet": {
       "match": true,
-      "sha256": "06a0577280f204756becb7f33df1ecf4f59dcdb001825e943cb1cb269d66962e"
+      "sha256": "aae6cad9ccc69c5605723d1f72936a22d230026fa947e2c47b2704b0991f8d49"
     },
     "reports/source_definitions.json": {
       "match": true,
@@ -120,11 +204,11 @@
     },
     "reports/statistical_fits.json": {
       "match": true,
-      "sha256": "4852994f16667a1972a8dc09576323c2cb17e2563b160ac7ba38c29a3fd3659f"
+      "sha256": "eede3d00ec8d4e81cbc77c7bf6db8a69e1dba5442ef9ec31f0c1eefc103f3dfd"
     },
     "reports/tables/condition_metrics.csv": {
       "match": true,
-      "sha256": "297509eaa2da9d6aed7ceda47d06893b1d31bf10697a3855b36c2facff6e1705"
+      "sha256": "3c45d5ed9aef264fc49650cb7f7f03d8f00a376a05e91229cf484f00b8e20e72"
     },
     "reports/tables/demand_by_holiday.csv": {
       "match": true,
@@ -148,19 +232,23 @@
     },
     "reports/tables/fold_metrics.csv": {
       "match": true,
-      "sha256": "bf78426470e65e7c6458295327259feb04abcbecbf7ac8345e244ba8775fa52a"
+      "sha256": "79686daf6b89f2fc2277e65a6a047e47aecf0a3dbfbc4156954410f1e933bc71"
     },
     "reports/tables/horizon_metrics.csv": {
       "match": true,
-      "sha256": "bdfebb9cfba7a6e78907f7dc16b0795453866ca63ffc4df794e72c945a5c23ef"
+      "sha256": "fab19bbce79063b2e6d7e878ec5a13742112a586429c0229d2318794cd4425b7"
     },
     "reports/tables/model_comparison.csv": {
       "match": true,
-      "sha256": "2d1ef5b170f5df8c7d419dc0ad05b0af4a878cb4d69b64f3d200e2b50b99d328"
+      "sha256": "853ec31e6b663a4f9d496d37b17ba33a216fdac276dd7c4b2d03a81030856328"
     },
     "reports/tables/origin_audit.csv": {
       "match": true,
       "sha256": "9f237e722cbb408903ce1b939c90f823b3fcb3f27958b54fe9c2afc750bf8d50"
+    },
+    "reports/tables/paired_comparisons.csv": {
+      "match": true,
+      "sha256": "598720ac95545a3f0c80edd3dc6a8bc1d370da1ce27940efbdf7855bec4fc61d"
     },
     "reports/transformations.json": {
       "match": true,
@@ -170,12 +258,14 @@
   "dependencies": {
     "PyYAML": "6.0.3",
     "holidays": "0.106",
+    "lightgbm": "4.7.0",
     "matplotlib": "3.11.2",
     "numpy": "2.5.3",
     "openpyxl": "3.1.5",
     "pandas": "3.0.6",
     "pyarrow": "26.0.0",
-    "statsmodels": "0.15.0"
+    "statsmodels": "0.15.0",
+    "torch": "2.14.1"
   },
   "method": "offline rebuild from checksum-verified raw snapshots in an isolated directory",
   "platform": "macOS-26.6.2-arm64-arm-64bit",

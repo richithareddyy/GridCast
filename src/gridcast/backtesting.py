@@ -19,6 +19,8 @@ MODEL_LABELS = {
     "daily": "Daily seasonal naive (available)",
     "weekly": "Weekly seasonal naive",
     "dhr_ar1": "Harmonic regression + AR(1)",
+    "lightgbm": "LightGBM residual correction",
+    "lstm": "LSTM residual correction",
 }
 
 
@@ -51,7 +53,7 @@ def load_development(root: Path, evaluation: dict):
     return joined
 
 
-def backtest(development: pd.DataFrame, evaluation: dict):
+def backtest(development: pd.DataFrame, evaluation: dict, artifact_dir=None):
     settings = evaluation["forecast"]
     horizon = settings["horizon_hours"]
     delay = settings["assumed_reporting_delay_hours"]
@@ -60,6 +62,15 @@ def backtest(development: pd.DataFrame, evaluation: dict):
     y = development.demand_mw
     validate_history(y)
     records, feature_frames, audits, fits = [], [], [], []
+    samples = None
+    if "learning" in evaluation:
+        from gridcast.learning import LearnedModels, build_samples
+
+        if evaluation["learning"]["reporting_delay_hours"] != delay:
+            raise ValidationError("Learner and evaluation reporting delays disagree")
+        print("Building origin-aligned supervised paths (development partitions only)", flush=True)
+        samples = build_samples(y, evaluation["learning"]["lookback_hours"], delay)
+
     for fold, start, stop in monthly_folds(evaluation):
         train = available_history(y.to_frame("y"), start, delay).y
         scale = mase_scale(train, evaluation["mase"]["seasonal_lag_hours"])
@@ -78,6 +89,14 @@ def backtest(development: pd.DataFrame, evaluation: dict):
                 "coefficients": model.coefficients.to_dict(),
             }
         )
+        learners = None
+        if samples is not None:
+            print(f"Fold {fold}: fitting LightGBM and LSTM", flush=True)
+            learners = LearnedModels(evaluation["learning"]).fit(samples, start, artifact_dir)
+            fits[-1]["learning"] = learners.audit
+            print(
+                f"  Selected {learners.audit['tree_rounds']} trees, {learners.audit['lstm_epochs']} epochs", flush=True
+            )
         print(f"Fold {fold}: {len(train):,} training hours, AR(1)={model.rho:.4f}", flush=True)
         for origin in pd.date_range(start, stop, freq="24h", inclusive="left"):
             history = available_history(y.to_frame("y"), origin, delay).y
@@ -85,7 +104,14 @@ def backtest(development: pd.DataFrame, evaluation: dict):
             base = predict_baselines(history, origin, horizon, delay)
             model_predictions = base[["naive", "daily", "weekly"]].copy()
             model_predictions["dhr_ar1"] = model.predict(history, origin, horizon, delay)
+            if learners is not None:
+                for name, values in learners.predict(history, origin).items():
+                    model_predictions[name] = values
             features = forecast_features(history, origin, horizon, delay)
+            if learners is not None:
+                from gridcast.learning import origin_inputs
+
+                features = origin_inputs(history, origin, evaluation["learning"]["lookback_hours"], delay)[0]
             features["origin_utc"] = origin
             features["fold"] = fold
             features.index.name = "target_start_utc"
@@ -105,7 +131,7 @@ def backtest(development: pd.DataFrame, evaluation: dict):
             )
             # Actuals and observed future weather join only AFTER all forecasts and predictors exist.
             context = development.reindex(model_predictions.index)
-            for model_name in MODEL_LABELS:
+            for model_name in model_predictions.columns:
                 frame = pd.DataFrame(
                     {
                         "origin_utc": origin,
@@ -141,6 +167,8 @@ def results_text(overall: pd.DataFrame, conditions: pd.DataFrame, predictions: p
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for model, label in MODEL_LABELS.items():
+        if model not in table.index:
+            continue
         row = table.loc[model]
         lines.append(
             f"| {label} | {row.MAE:,.1f} | {row.RMSE:,.1f} | {row.WAPE:.2f} | "
@@ -164,14 +192,37 @@ def results_text(overall: pd.DataFrame, conditions: pd.DataFrame, predictions: p
         "Source: `reports/tables/model_comparison.csv`; individual forecasts are stored in "
         "`reports/predictions/validation.parquet`. Calibration and final test remain unscored.",
     ]
+    for name in ["lightgbm", "lstm"]:
+        if name in table.index:
+            improvement = 100 * (1 - table.loc[name, "MAE"] / table.loc["daily", "MAE"])
+            peak_change = 100 * (1 - peak[name] / peak["daily"])
+            extreme_change = 100 * (1 - extreme[name] / extreme["daily"])
+            lines.append(
+                f"\n{MODEL_LABELS[name]}: MAE reduction vs daily seasonal = **{improvement:.1f}%** overall, "
+                f"**{peak_change:.1f}%** at peak hours and **{extreme_change:.1f}%** during extreme demand. "
+                "Negative reductions indicate worse performance."
+            )
+    fold_winners = (
+        predictions.assign(loss=(predictions.actual - predictions.prediction).abs())
+        .groupby(["fold", "model"])
+        .loss.mean()
+        .unstack()
+        .idxmin(axis=1)
+        .value_counts()
+    )
+    lines.append("\nMonthly MAE wins: " + "; ".join(f"{MODEL_LABELS[k]} {v}" for k, v in fold_winners.items()) + ".")
     return "\n".join(lines) + "\n"
 
 
 def run(root: Path):
     evaluation = load_config(root, "evaluation.yaml")
     development = load_development(root, evaluation)
+    predictions, features, origin_audit, fits = backtest(development, evaluation, root / "reports/models")
+    return write_outputs(root, evaluation, predictions, features, origin_audit, fits)
+
+
+def write_outputs(root, evaluation, predictions, features, origin_audit, fits):
     thresholds = json.loads((root / "reports/frozen_thresholds.json").read_text())
-    predictions, features, origin_audit, fits = backtest(development, evaluation)
     for directory in ["reports/predictions", "reports/tables", "reports/figures"]:
         (root / directory).mkdir(parents=True, exist_ok=True)
     predictions.to_parquet(root / "reports/predictions/validation.parquet", index=False)
@@ -185,8 +236,15 @@ def run(root: Path):
         "horizon_metrics": score_groups(predictions, ["horizon", "model"]),
         "condition_metrics": conditions,
     }
+    from gridcast.evaluation import paired_comparisons
+
+    outputs["paired_comparisons"] = paired_comparisons(predictions, evaluation["comparison"]["block_days"])
     for name, table in outputs.items():
-        table.to_csv(root / f"reports/tables/{name}.csv", index=False, float_format="%.9f")
+        table.to_csv(
+            root / f"reports/tables/{name}.csv",
+            index=False,
+            float_format="%.12g" if name == "paired_comparisons" else "%.9f",
+        )
     write_json(root / "reports/statistical_fits.json", fits)
     write_json(
         root / "reports/backtest_summary.json",
@@ -206,10 +264,43 @@ def run(root: Path):
             "input_hashes": {name: sha256(root / f"data/processed/{name}.parquet") for name in ["train", "validation"]},
         },
     )
-    from gridcast.visualization import backtest_figures
+    best = str(overall.loc[overall.MAE.idxmin(), "model"])
+    write_json(
+        root / "reports/model_selection.json",
+        {
+            "selected_model": best,
+            "frozen_lightgbm_parameters": evaluation["learning"]["lightgbm"]["parameters"],
+            "frozen_boost_rounds": int(np.median([fit["learning"]["tree_rounds"] for fit in fits])),
+            "deployment_round_rule": "median selected rounds across validation folds; fixed before calibration/test",
+            "seed": evaluation["learning"]["seed"],
+            "lookback_hours": evaluation["learning"]["lookback_hours"],
+            "reporting_delay_hours": evaluation["forecast"]["assumed_reporting_delay_hours"],
+            "rule": "lowest overall validation MAE among the six predefined model procedures",
+            "selection_period": evaluation["periods"]["validation"],
+            "calibration_and_test_scored": False,
+            "evaluation_config_sha256": sha256(root / "configs/evaluation.yaml"),
+            "validation_predictions_sha256": sha256(root / "reports/predictions/validation.parquet"),
+            "caveat": "validation-selected winner; final-test generalization is not yet established",
+        },
+    )
+    from gridcast.visualization import backtest_figures, learning_figures
 
     backtest_figures(predictions, outputs, root)
+    learning_figures(outputs["paired_comparisons"], fits, root)
     findings = results_text(overall, conditions, predictions)
+    comparison = outputs["paired_comparisons"]
+    findings += "\nPaired daily MAE differences vs the predeclared daily baseline (negative favors the model):\n\n"
+    findings += "| Model | Difference (MW) | HAC 95% interval | Holm-adjusted p |\n|---|---:|---:|---:|\n"
+    for row in comparison.itertuples():
+        findings += (
+            f"| {MODEL_LABELS[row.model]} | {row.mean_mae_difference_mw:.1f} | "
+            f"[{row.ci95_low:.1f}, {row.ci95_high:.1f}] | {row.p_holm:.4g} |\n"
+        )
+    findings += (
+        "\nHAC uses seven daily lags; intervals are pointwise asymptotic intervals, while p-values "
+        "use Holm correction across all five comparisons. These are exploratory validation comparisons, "
+        "not a correction for model selection or a final-test claim.\n"
+    )
     (root / "reports/baseline_findings.md").write_text(findings)
     readme = root / "README.md"
     contents = readme.read_text()

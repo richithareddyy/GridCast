@@ -7,7 +7,7 @@
 and when do sophisticated models actually outperform strong seasonal baselines?**
 A secondary question asks whether residuals identify unusual demand behavior.
 
-**Milestones 1–2 complete: data, EDA, baselines and validation backtesting.**
+**Milestones 1–3 complete: data, EDA, backtesting and six-model validation comparison.**
 Calibration and final-test outcomes remain unscored. This is a data science project focused on temporal evaluation, uncertainty
 and honest comparison.
 
@@ -154,7 +154,37 @@ The reusable feature matrix contains known future calendar values, the origin's 
 demand, target-relative 24/48/168-hour lags with availability flags, and complete-window 24/168-hour
 trailing summaries. The unavailable final-horizon 24-hour lag stays null. Rolling summaries end
 at the reporting cutoff. These features prepare later models; the current statistical model
-uses its documented harmonic design. LightGBM and a compact LSTM remain for Milestone 3.
+uses its documented harmonic design.
+
+**LightGBM** fits a shared horizon-aware model to demand minus the available daily baseline.
+It uses the origin feature matrix plus cyclic hour/weekday/month encodings and the daily template.
+The model has 15 leaves, learning rate 0.03, minimum 80 rows per leaf and L2 penalty 1. It learns
+missing-value routing for the unavailable final-horizon lag. There is no target imputation.
+
+**One compact LSTM** encodes the last 168 available hourly demand values with 16 hidden units.
+A shared two-layer decoder combines that state with known target calendar values and daily/weekly
+templates, producing all 24 residual corrections at once. There is no teacher forcing or use of
+actual demand inside the forecast path. The daily baseline skip connection gives the network a
+strong starting point; it must learn a useful correction. This is a modest neural benchmark, not
+an architecture search. Both learners use the same delay and weather exclusion as the baselines.
+
+Each monthly fit reserves the last **60 available training origins** for internal stopping.
+Inner training excludes every 24-hour label path not fully published at the stopping window's
+first origin. LightGBM selects up to 600 rounds (patience 40); the LSTM selects up to 40 epochs
+(patience 6). Both minimize squared error during training and select duration by stopping-window
+MAE. They then restart and refit on all matured training paths for that duration. LSTM training
+uses Adam (0.001), weight decay 0.0001, gradient clipping 1, chronological batches of 64 and a
+training-input-only mean/standard deviation. Inner and full refit scalers are fitted separately.
+All other hyperparameters are fixed in configuration. Monthly refits may learn from already
+observed earlier validation months; they never use the current forecast month or later labels.
+
+CPU execution, one thread and fixed seed 42 support deterministic replay.
+[LightGBM determinism settings](https://lightgbm.readthedocs.io/en/latest/Parameters.html#deterministic)
+and [PyTorch deterministic algorithms](https://docs.pytorch.org/docs/stable/generated/torch.use_deterministic_algorithms.html)
+are explicit. Every monthly tree model and LSTM state is saved under `reports/models/`, with
+feature schema, training boundaries, stopping curves, selected durations and normalization in
+`reports/statistical_fits.json`. The normalized mean split-gain plot describes model usage;
+it does not identify causal drivers.
 
 ## Backtesting
 
@@ -185,22 +215,48 @@ Validation only: January–September 2023; nine expanding monthly folds, 273 dai
 | Daily seasonal naive (available) | 924.3 | 1,288.9 | 7.15 | 0.689 | 990.7 | 1,761.2 |
 | Weekly seasonal naive | 1,438.3 | 1,987.1 | 11.13 | 1.072 | 1,576.3 | 3,202.4 |
 | Harmonic regression + AR(1) | 1,008.5 | 1,283.8 | 7.80 | 0.752 | 873.6 | 1,415.5 |
+| LightGBM residual correction | 723.7 | 1,019.2 | 5.60 | 0.539 | 823.2 | 1,662.8 |
+| LSTM residual correction | 751.9 | 1,043.4 | 5.82 | 0.560 | 838.4 | 1,618.8 |
 
-**Lowest validation MAE: Daily seasonal naive (available).** Harmonic regression + AR(1) has 9.1% higher MAE than the stronger seasonal baseline (Daily seasonal naive (available)). This is a point-estimate comparison, not a claim of statistical significance or final-test performance.
+**Lowest validation MAE: LightGBM residual correction.** Harmonic regression + AR(1) has 9.1% higher MAE than the stronger seasonal baseline (Daily seasonal naive (available)). This is a point-estimate comparison, not a claim of statistical significance or final-test performance.
 
 WAPE is expressed in percent. MASE uses each fold's available training-only 168-hour scale. Peak means local hours 16–20; extreme means the fixed initial-training 95th percentile. Condition groups overlap. All models are scored on identical labels.
 
 Source: `reports/tables/model_comparison.csv`; individual forecasts are stored in `reports/predictions/validation.parquet`. Calibration and final test remain unscored.
+
+LightGBM residual correction: MAE reduction vs daily seasonal = **21.7%** overall, **16.9%** at peak hours and **5.6%** during extreme demand. Negative reductions indicate worse performance.
+
+LSTM residual correction: MAE reduction vs daily seasonal = **18.7%** overall, **15.4%** at peak hours and **8.1%** during extreme demand. Negative reductions indicate worse performance.
+
+Monthly MAE wins: LightGBM residual correction 8; LSTM residual correction 1.
+
+Paired daily MAE differences vs the predeclared daily baseline (negative favors the model):
+
+| Model | Difference (MW) | HAC 95% interval | Holm-adjusted p |
+|---|---:|---:|---:|
+| Harmonic regression + AR(1) | 84.2 | [5.4, 163.0] | 0.03616 |
+| LightGBM residual correction | -200.6 | [-242.5, -158.6] | 3.12e-20 |
+| LSTM residual correction | -172.4 | [-217.4, -127.3] | 1.912e-13 |
+| Naive | 1591.3 | [1432.5, 1750.1] | 3.58e-85 |
+| Weekly seasonal naive | 514.0 | [303.0, 725.0] | 3.609e-06 |
+
+HAC uses seven daily lags; intervals are pointwise asymptotic intervals, while p-values use Holm correction across all five comparisons. These are exploratory validation comparisons, not a correction for model selection or a final-test claim.
 <!-- END BACKTEST RESULTS -->
 
 ![Validation model comparison](reports/figures/09_model_comparison.png)
 ![Errors by month and horizon](reports/figures/10_fold_horizon_errors.png)
 
-The daily baseline wins overall MAE, while harmonic regression reduces peak-hour and extreme-demand
-MAE and has slightly lower RMSE. Harmonic regression wins four monthly MAE comparisons; the daily
-baseline wins five. This motivates condition-specific evaluation without assuming complexity wins.
-Dependence-aware paired-loss intervals and multiple-comparison adjustment remain for the later
-uncertainty analysis; these validation point estimates alone do not establish significance.
+The generated comparison includes all six models, condition-specific reductions and monthly
+wins. The model with lowest overall validation MAE is recorded in `reports/model_selection.json`
+for subsequent calibration. Its deployment tree count is frozen to the median selected count
+across validation folds before calibration/test; later monthly refits cannot tune on test outcomes.
+Selection on validation can be optimistic; final-test performance
+is still unknown. Differences use paired daily MAE, seven-lag HAC standard errors and Holm
+adjustment across five comparisons against the predeclared daily baseline. Pointwise confidence
+intervals are not simultaneous intervals and do not correct for model selection.
+
+![Paired comparisons](reports/figures/13_paired_comparisons.png)
+![LightGBM input usage](reports/figures/14_feature_importance.png)
 
 ## Error Analysis
 
@@ -241,13 +297,16 @@ Rolling error/bias/variance and coverage analysis will follow in Milestone 4.
 
 Three training years include pandemic disruption. Latest-revised load and QC'd weather can differ
 from values available historically. The availability delay is assumed, not reconstructed from
-publication logs. Three airports imperfectly cover a six-state region; weather gaps remain.
+publication logs. Neural training is capped at 40 epochs; hitting the cap does not demonstrate
+convergence. Nine monthly fits and one seed are insufficient to characterize training-seed
+variability. Inner stopping windows favor recent conditions and provide limited rare-event data.
+No comparison establishes general superiority of a model family. Three airports imperfectly cover a six-state region; weather gaps remain.
 Demand excludes some behind-the-meter activity and follows EIA's balancing-authority definition,
 not household consumption. The one-region study cannot establish cross-grid generalization.
 
 ## Reproducing the Analysis
 
-Requires **CPython 3.12**, tested on macOS arm64. Run from this repository:
+Requires **CPython 3.12**, tested on macOS arm64 (macOS 14+ for the pinned PyTorch wheel). Run from this repository:
 
 ```bash
 make setup       # Isolated .venv; pinned direct/transitive dependencies
@@ -264,6 +323,11 @@ provider download URLs are mutable. A changed remote or cached hash fails closed
 refresh a frozen experiment. [requirements.lock](requirements.lock) pins the dependency closure;
 [reproducibility.json](reports/reproducibility.json) records the tested runtime and output hashes.
 Bitwise figure reproducibility is verified on this runtime, not promised across operating systems.
+On macOS, Make sets `DYLD_LIBRARY_PATH` to the installed PyTorch library directory so LightGBM
+and PyTorch share one OpenMP runtime. The duplicate-runtime bypass is never enabled. Use the
+Make commands for fitting and tests; direct Python invocations that import both libraries must
+use the same environment. The setup smoke test exercises both libraries in one process.
+
 Notebooks are optional views of the same outputs; a Jupyter frontend is not needed by the pipeline.
 Streamlit and `make app` arrive in Milestone 5, after real forecast outputs exist.
 
@@ -271,9 +335,9 @@ Streamlit and `make app` arrive in Milestone 5, after real forecast outputs exis
 
 ```text
 configs/       data.yaml, evaluation.yaml, sources.lock.json
-src/gridcast/  data, validation, features, eda, baselines, models, evaluation, backtesting, visualization, audit
+src/gridcast/  data, validation, features, eda, baselines, models, learning, evaluation, backtesting, visualization, audit
 notebooks/     01_eda.ipynb, 02_forecasting.ipynb
-reports/       provenance, fits, predictions, findings, metrics, twelve figures, replay audit
+reports/       provenance, fits, predictions, findings, metrics, fourteen figures, replay audit
 tests/         time contracts, source immutability, QC, forecasting and future-mutation tests
 data/          raw (immutable), interim (lineage/QC), processed (four isolated partitions)
 ```
@@ -283,6 +347,6 @@ Raw/intermediate/processed files, the virtual environment and scratch work are i
 runs. On failure, a diagnostic JSON is written and processing stops. No observations are silently
 removed or filled. Prediction Parquet and metric tables are tracked; raw source snapshots are not.
 
-Six milestones: **1 Data (complete)** → **2 Baselines + Backtesting (complete)** → 3 Machine Learning →
+Six milestones: **1 Data (complete)** → **2 Baselines + Backtesting (complete)** → **3 Machine Learning (complete)** →
 4 Uncertainty + Anomalies → 5 Application → 6 Final Audit. Work pauses here for review;
-push/remote setup belongs to the final milestone.
+each completed milestone is committed and pushed to the configured GitHub remote.

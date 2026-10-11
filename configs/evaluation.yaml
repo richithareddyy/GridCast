@@ -1,6 +1,6 @@
 # All boundaries refer to interval START in UTC, with exclusive end bounds.
-experiment_version: 2
-status: milestone_2_validation_protocol
+experiment_version: 3
+status: milestone_3_validation_protocol
 dataset: eia930_isne
 target: demand_mw
 units: MW
@@ -57,14 +57,14 @@ uncertainty:
   evaluation: coverage_width_and_interval_score_overall_and_by_condition
   caveat: serial_dependence_and_drift_preclude_IID_distribution_free_coverage_claims
 comparison:
-  planned_test: paired_daily_loss_differences_with_HAC_or_block_bootstrap
+  test: paired_daily_MAE_differences_with_HAC
+  reference: daily_seasonal_naive_predeclared
+  interval: pointwise_asymptotic_95_percent
+  scope: exploratory_validation_not_adjusted_for_model_selection
   block_days: 7
   uncertainty_resamples: 2000
   multiplicity: Holm_adjustment_for_multiple_model_comparisons
 random_seeds: {numpy: 42, boosting: 42, deep_learning: 42}
-models_planned_not_implemented:
-  boosting: LightGBM
-  deep_learning: one_compact_LSTM
 
 statistical_model:
   name: dhr_ar1
@@ -87,4 +87,45 @@ features:
   rolling_windows_hours: [24, 168]
   rolling_cutoff: last_available_hour_at_origin
   rolling_missing_policy: require_complete_window
-  weather: excluded_from_milestone_2_predictors
+  weather: excluded_from_primary_predictors
+
+learning:
+  seed: 42
+  lookback_hours: 168
+  reporting_delay_hours: 1
+  target: residual_from_available_daily_seasonal_baseline
+  strategy: shared_model_direct_24_hour_path
+  training_origins: daily_00_UTC_with_all_24_labels_published_by_fit_origin
+  inner_stopping_days: 60
+  stopping_split: last_60_available_training_origins_with_label_maturity_purge
+  refit: fresh_full_available_training_fit_at_selected_rounds_or_epochs
+  lightgbm:
+    max_rounds: 600
+    patience: 40
+    parameters:
+      objective: regression
+      metric: l1
+      learning_rate: 0.03
+      num_leaves: 15
+      min_data_in_leaf: 80
+      lambda_l2: 1.0
+      feature_fraction: 1.0
+      bagging_fraction: 1.0
+      num_threads: 1
+      deterministic: true
+      force_col_wise: true
+      verbosity: -1
+  lstm:
+    hidden_size: 16
+    max_epochs: 40
+    patience: 6
+    batch_size: 64
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    gradient_clip: 1.0
+    device: cpu
+    sequence: last_168_available_hourly_demand_values
+    decoder: shared_MLP_with_known_calendar_daily_and_weekly_templates
+    normalization: mean_std_of_training_sequence_inputs_only
+    selection_metric: inner_stopping_MAE
+    training_loss: MSE

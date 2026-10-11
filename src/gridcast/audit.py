@@ -23,6 +23,7 @@ def run(root: Path):
         "reports/frozen_thresholds.json",
         "reports/eda_findings.md",
         "reports/backtest_summary.json",
+        "reports/model_selection.json",
         "reports/statistical_fits.json",
         "reports/baseline_findings.md",
     ]
@@ -32,6 +33,8 @@ def run(root: Path):
         ("reports/figures", "*.png"),
         ("reports/tables", "*.csv"),
         ("reports/predictions", "*.parquet"),
+        ("reports/models", "*.txt"),
+        ("reports/models", "*.npz"),
     ]:
         files.extend(str(p.relative_to(root)) for p in sorted((root / folder).glob(pattern)))
     if not files or not (root / "reports/eda_summary.json").exists():
@@ -65,6 +68,8 @@ def run(root: Path):
         "dependencies": {
             name: importlib.metadata.version(name)
             for name in [
+                "lightgbm",
+                "torch",
                 "numpy",
                 "pandas",
                 "pyarrow",
