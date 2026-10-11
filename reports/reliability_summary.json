@@ -1,0 +1,18 @@
+{
+  "all_residuals_matured": true,
+  "anomaly_episodes": 175,
+  "anomaly_hours": 541,
+  "calibration_hours": 2208,
+  "evaluation_config_sha256": "2efb3a39d075472f06a4b233a038ce06cd9b31e1d5ef3caeeb1b0b7f9c8209a8",
+  "input_hashes": {
+    "calibration": "06ab7707b1b86ab46035b483a682279180f32e7db72facb2b0fe907c45586668",
+    "test": "39a202b96392983d296eca003cc6118e2b4796be8cccaff09e194e237f0ec364",
+    "train": "ac319c92b63bc7575aa3f267b664e9cc541342074f5764b6adb6dc2efa7f5c59",
+    "validation": "c6d20e7db1b225c6bf1ce46c3f13f82c9890f3dabca4df0c72d9d6ad30d9d7fe"
+  },
+  "interval_rows": 26352,
+  "residual_count_max": 90,
+  "residual_count_min": 89,
+  "selection_sha256": "e0a7c7d5fd0b101e8ed916371f92ffb1940a81dbeab492dd8a1fe48720f4b20a",
+  "test_hours": 8784
+}

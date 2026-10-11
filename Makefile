@@ -9,7 +9,7 @@ export DYLD_LIBRARY_PATH := $(CURDIR)/.venv/lib/python3.12/site-packages/torch/l
 endif
 export MPLCONFIGDIR := $(CURDIR)/work/matplotlib
 
-.PHONY: data analysis test lint reproduce setup backtest
+.PHONY: data analysis test lint reproduce setup backtest reliability
 setup:
 	python3.12 -m venv .venv
 	$(PYTHON) -m pip install -r requirements.lock
@@ -20,6 +20,7 @@ data:
 analysis: data
 	$(PYTHON) -m gridcast.eda --root .
 	$(PYTHON) -m gridcast.backtesting --root .
+	$(PYTHON) -m gridcast.reliability --root .
 backtest:
 	$(PYTHON) -m gridcast.backtesting --root .
 test:
@@ -28,3 +29,5 @@ lint:
 	.venv/bin/ruff check src tests
 reproduce:
 	$(PYTHON) -m gridcast.audit --root .
+reliability:
+	$(PYTHON) -m gridcast.reliability --root .

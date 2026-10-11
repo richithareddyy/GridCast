@@ -42,7 +42,7 @@
     "was_sorted": true,
     "workbook_hourly_rows": 98856
   },
-  "evaluation_config_sha256": "29093bec5045d478aaeb8f5459ccc02a96f5e219736802d477fbc71d4caba058",
+  "evaluation_config_sha256": "2efb3a39d075472f06a4b233a038ce06cd9b31e1d5ef3caeeb1b0b7f9c8209a8",
   "partitions": {
     "calibration": {
       "end": "2024-01-01T00:00:00Z",

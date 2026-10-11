@@ -2,7 +2,7 @@
   "all_fits_converged": true,
   "best_validation_mae_model": "lightgbm",
   "daily_latency_fallbacks": 273,
-  "evaluation_config_sha256": "29093bec5045d478aaeb8f5459ccc02a96f5e219736802d477fbc71d4caba058",
+  "evaluation_config_sha256": "2efb3a39d075472f06a4b233a038ce06cd9b31e1d5ef3caeeb1b0b7f9c8209a8",
   "feature_rows": 6552,
   "folds": 9,
   "hours_per_model": 6552,

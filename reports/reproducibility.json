@@ -1,6 +1,6 @@
 {
   "all_match": true,
-  "artifact_count": 63,
+  "artifact_count": 98,
   "artifacts": {
     "data/interim/demand.parquet": {
       "match": true,
@@ -40,15 +40,15 @@
     },
     "reports/backtest_summary.json": {
       "match": true,
-      "sha256": "8616a345dec2f4c552f95e0c09532871bc1e9db3d25f8bb58834c3139fdd75e0"
+      "sha256": "8b53fe41e5897cd315b12b427269071ebed03ab3004cb3c33403e1c06df144bf"
     },
     "reports/baseline_findings.md": {
       "match": true,
-      "sha256": "5c0f7d72e29199984fae1873ef39730cc96f1e111abc1c16db9e361b040bd54a"
+      "sha256": "7a9dad3f2545cfb0bfc116758172501d035a5e348ba3b9a44150693b34944247"
     },
     "reports/data_quality.json": {
       "match": true,
-      "sha256": "3a25a5f16f548ad5b04ed34497f1dd50672df5bd0880686010055416b0a9425c"
+      "sha256": "780d3fd73881184c7957f906ce64655e621b35a0307b8aeaf2a38264abf1d671"
     },
     "reports/eda_findings.md": {
       "match": true,
@@ -114,13 +114,37 @@
       "match": true,
       "sha256": "f4db621cc9b925478cfdb8bb55b67564dab1cbde7c486492f5422cab2727a1b4"
     },
+    "reports/figures/15_prediction_intervals.png": {
+      "match": true,
+      "sha256": "3222113e6067d731a28f71e2609281cd4b809168e836bfd3906d75f2021014b1"
+    },
+    "reports/figures/16_interval_calibration.png": {
+      "match": true,
+      "sha256": "bfd43eaff81184e895116c2512074dbfeaf583eb9cd97d86776ee17fc1b522a2"
+    },
+    "reports/figures/17_interval_width_score.png": {
+      "match": true,
+      "sha256": "09531d2ed3e7a50464273e013016f1a2dbed3f59e5ccb446647888ef394f6da2"
+    },
+    "reports/figures/18_rolling_reliability.png": {
+      "match": true,
+      "sha256": "8ac926cbd25f2ad8ada4db0608a5c8655468239c3e549d9695192da05a5d7d9b"
+    },
+    "reports/figures/19_forecast_anomalies.png": {
+      "match": true,
+      "sha256": "69237dfe62a5ca0906c8b80ae81c70e43d897080e33adde5e8076e993bcbe68e"
+    },
+    "reports/figures/20_extreme_demand_intervals.png": {
+      "match": true,
+      "sha256": "bc4ef0c9ecc47bdb7ce227676ac3a4b27fc4ff24b684599f8ef7821f3afe58ce"
+    },
     "reports/frozen_thresholds.json": {
       "match": true,
       "sha256": "aeb75e7a59cfebfc275dc92d623a36686832f771f0fd23ef7364693a5261cd46"
     },
     "reports/model_selection.json": {
       "match": true,
-      "sha256": "9c46fcd60e0bbb277670acd5eac4d97cfc2e16c64b416f10eed6bdd6ac7ace44"
+      "sha256": "e0a7c7d5fd0b101e8ed916371f92ffb1940a81dbeab492dd8a1fe48720f4b20a"
     },
     "reports/models/2023-01_lightgbm.txt": {
       "match": true,
@@ -194,9 +218,89 @@
       "match": true,
       "sha256": "c5175c527003ac819aa55af16a51232e565770395e4cd594dd773cdcca9400e7"
     },
+    "reports/predictions/reserved.parquet": {
+      "match": true,
+      "sha256": "bb954a39595d6a00cede67fb1c0029d903b50ba7b49374c3791863eceef3a360"
+    },
+    "reports/predictions/test_intervals.parquet": {
+      "match": true,
+      "sha256": "4a19190aec86e44b94220807b7e044e5001b41074fb366420064f61d49f813f0"
+    },
     "reports/predictions/validation.parquet": {
       "match": true,
       "sha256": "aae6cad9ccc69c5605723d1f72936a22d230026fa947e2c47b2704b0991f8d49"
+    },
+    "reports/reliability_findings.md": {
+      "match": true,
+      "sha256": "599b5658dbaa53227ce09e39ff82d3a318cab268f498025d954d0f9306726e50"
+    },
+    "reports/reliability_summary.json": {
+      "match": true,
+      "sha256": "d3e2acf5812daa5260e60568f02ee1287dc02f4d87a83f2269ef32cdbdaa1aab"
+    },
+    "reports/reserved_fits.json": {
+      "match": true,
+      "sha256": "cbd478ec0b26186fb005c992434c6ae86cbab4888d18117588ae01da33f11fb5"
+    },
+    "reports/reserved_models/2023-10_lightgbm.txt": {
+      "match": true,
+      "sha256": "7fd658a0d3b348393c6709d39359e687555c9fca90f16bcf4c87e0c6f9a29842"
+    },
+    "reports/reserved_models/2023-11_lightgbm.txt": {
+      "match": true,
+      "sha256": "92a06ab4c0de69d593925c3ef0a0ae10bd0048b7cea1dbbe356d2658efc45556"
+    },
+    "reports/reserved_models/2023-12_lightgbm.txt": {
+      "match": true,
+      "sha256": "b9022d65674cde64f48d7e76903d5a143311791e70d1668e2439851c3d762622"
+    },
+    "reports/reserved_models/2024-01_lightgbm.txt": {
+      "match": true,
+      "sha256": "cc7208efe3105c02cf47711c379e4a5c854d76e99ee77426cab20a6e4f8718c5"
+    },
+    "reports/reserved_models/2024-02_lightgbm.txt": {
+      "match": true,
+      "sha256": "e4d4a99242718a70c9cd306354d59c00dd2e4af29e380d45b5e29fe64fa9753e"
+    },
+    "reports/reserved_models/2024-03_lightgbm.txt": {
+      "match": true,
+      "sha256": "15506e39e9063cbbe04ec0a501be4f955c9f26e55cc0a9df3f6353dc2ac052c7"
+    },
+    "reports/reserved_models/2024-04_lightgbm.txt": {
+      "match": true,
+      "sha256": "077e542b7ffa1b0227959a0b364ee94908e4fc9668e960f46f80632ecd6606a7"
+    },
+    "reports/reserved_models/2024-05_lightgbm.txt": {
+      "match": true,
+      "sha256": "5f913e686fabb7c93a74603789f2c22809018ce0e0239bd15155680cca0861df"
+    },
+    "reports/reserved_models/2024-06_lightgbm.txt": {
+      "match": true,
+      "sha256": "16a9c50e5051411ae078307074afd4d71f7e917927b364273f91b556c17f268a"
+    },
+    "reports/reserved_models/2024-07_lightgbm.txt": {
+      "match": true,
+      "sha256": "66f192311fd5fce547d8f98983ea2b1099101ba2ac2e671c0e30fc5437a26ba3"
+    },
+    "reports/reserved_models/2024-08_lightgbm.txt": {
+      "match": true,
+      "sha256": "d01f692860d68ed9bb9f822ff9e4c7e24a7216e7ba881f34789847d3b9cbecec"
+    },
+    "reports/reserved_models/2024-09_lightgbm.txt": {
+      "match": true,
+      "sha256": "ec651a1047a4123ffe148f512e079233b770b4444180a532de3f82faa3d3b777"
+    },
+    "reports/reserved_models/2024-10_lightgbm.txt": {
+      "match": true,
+      "sha256": "bf19aa03b033fa94d73ff1ed837b6b79c87c2f8a78ba002025a87866e9b75e2e"
+    },
+    "reports/reserved_models/2024-11_lightgbm.txt": {
+      "match": true,
+      "sha256": "c2c7dce9350ced588181931cef331445feae5c8719e7ac3a1d0fa18032b924ef"
+    },
+    "reports/reserved_models/2024-12_lightgbm.txt": {
+      "match": true,
+      "sha256": "587c6f49783b8c5988b21fca582dd5f2a4f1af997fd8efd2ab55e76c45d6d27e"
     },
     "reports/source_definitions.json": {
       "match": true,
@@ -205,6 +309,10 @@
     "reports/statistical_fits.json": {
       "match": true,
       "sha256": "eede3d00ec8d4e81cbc77c7bf6db8a69e1dba5442ef9ec31f0c1eefc103f3dfd"
+    },
+    "reports/tables/anomaly_episodes.csv": {
+      "match": true,
+      "sha256": "a23ec8ad12d19fdee36ac96b28fbc03743b4fe99c7ad844c8c45eadf73f292c6"
     },
     "reports/tables/condition_metrics.csv": {
       "match": true,
@@ -234,9 +342,25 @@
       "match": true,
       "sha256": "79686daf6b89f2fc2277e65a6a047e47aecf0a3dbfbc4156954410f1e933bc71"
     },
+    "reports/tables/forecast_anomalies.csv": {
+      "match": true,
+      "sha256": "adcb5ec46efaf6973282919f40587bb079bd5a5ffdcafe6030b0be2f6058e086"
+    },
     "reports/tables/horizon_metrics.csv": {
       "match": true,
       "sha256": "fab19bbce79063b2e6d7e878ec5a13742112a586429c0229d2318794cd4425b7"
+    },
+    "reports/tables/interval_conditions.csv": {
+      "match": true,
+      "sha256": "57b005d68d193a3de5907c2184826b440f847826d7d73d05ae74d882fddb514e"
+    },
+    "reports/tables/interval_horizons.csv": {
+      "match": true,
+      "sha256": "56194ee4c5de56debfc9adfb4fcb00e457b331883a5bfe5942746e31e536fa14"
+    },
+    "reports/tables/interval_months.csv": {
+      "match": true,
+      "sha256": "5872379073bc75100b2d39e88880b042ae17c0b610447d1e6ccea25723916c62"
     },
     "reports/tables/model_comparison.csv": {
       "match": true,
@@ -249,6 +373,22 @@
     "reports/tables/paired_comparisons.csv": {
       "match": true,
       "sha256": "598720ac95545a3f0c80edd3dc6a8bc1d370da1ce27940efbdf7855bec4fc61d"
+    },
+    "reports/tables/rolling_reliability.csv": {
+      "match": true,
+      "sha256": "9a0603d389b5b38ef08602a03b27ef49978b4e3e2cc7bdcffc43f4523f70baac"
+    },
+    "reports/tables/test_condition_metrics.csv": {
+      "match": true,
+      "sha256": "c9262cec73b616fd5277e61b942106514e6125b5b53b7c75a1a6255144011c2c"
+    },
+    "reports/tables/test_model_comparison.csv": {
+      "match": true,
+      "sha256": "7f744d2b1261717e1d35e3585bebbcb88e8d00377d4ed9ed1d6cb466b8d18f9d"
+    },
+    "reports/tables/test_month_metrics.csv": {
+      "match": true,
+      "sha256": "975d1f418d90188ab8ee16efe50f96013fd97935a68d06f7ee4e6098e60c9c35"
     },
     "reports/transformations.json": {
       "match": true,

@@ -1,4 +1,4 @@
-"""Rebuild data, EDA and validation backtests offline in an isolated directory and compare artifact hashes."""
+"""Rebuild the complete analysis offline in isolation and compare artifact hashes."""
 
 import argparse
 import importlib.metadata
@@ -12,6 +12,7 @@ from gridcast.backtesting import run as backtest_run
 from gridcast.data import run as data_run
 from gridcast.data import sha256, write_json
 from gridcast.eda import run as eda_run
+from gridcast.reliability import run as reliability_run
 
 
 def run(root: Path):
@@ -24,6 +25,9 @@ def run(root: Path):
         "reports/eda_findings.md",
         "reports/backtest_summary.json",
         "reports/model_selection.json",
+        "reports/reliability_summary.json",
+        "reports/reserved_fits.json",
+        "reports/reliability_findings.md",
         "reports/statistical_fits.json",
         "reports/baseline_findings.md",
     ]
@@ -35,6 +39,7 @@ def run(root: Path):
         ("reports/predictions", "*.parquet"),
         ("reports/models", "*.txt"),
         ("reports/models", "*.npz"),
+        ("reports/reserved_models", "*.txt"),
     ]:
         files.extend(str(p.relative_to(root)) for p in sorted((root / folder).glob(pattern)))
     if not files or not (root / "reports/eda_summary.json").exists():
@@ -52,6 +57,7 @@ def run(root: Path):
             data_run(clean)
             eda_run(clean)
             backtest_run(clean)
+            reliability_run(clean)
         checks = {
             name: {
                 "sha256": sha256(root / name),

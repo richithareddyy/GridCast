@@ -7,8 +7,8 @@
 and when do sophisticated models actually outperform strong seasonal baselines?**
 A secondary question asks whether residuals identify unusual demand behavior.
 
-**Milestones 1–3 complete: data, EDA, backtesting and six-model validation comparison.**
-Calibration and final-test outcomes remain unscored. This is a data science project focused on temporal evaluation, uncertainty
+**Milestones 1–4 complete: forecasting, uncertainty, calibration and forecast anomalies.**
+Final-test evaluation follows frozen validation choices; no final-test tuning is performed. This is a data science project focused on temporal evaluation, uncertainty
 and honest comparison.
 
 ## Dataset
@@ -83,7 +83,8 @@ submission within 60 minutes of hour end. [EIA-930 instructions](https://www.eia
 ## Preventing Leakage
 
 - Training, validation, calibration and test are separate Parquet files. EDA reads **only training**.
-  The final test receives schema/time/QC checks, not distributional exploration or model selection.
+  Final-test outcomes are opened only after model selection and the interval protocol are frozen;
+  they never select models, features, tree counts, thresholds or interval settings.
 - The availability helper excludes the latest unpublished hour. Lag features must be evaluated
   relative to the forecast origin, not just shifted against the target. Future calendar features
   are known; future demand, weather, market prices and adjusted load are not feature inputs.
@@ -195,7 +196,7 @@ All bounds below are UTC **interval starts**, with exclusive end dates.
 | Initial training | 2020-01-01 | 2023-01-01 | 26,304 | EDA, initial fit, fixed extreme thresholds |
 | Validation | 2023-01-01 | 2023-10-01 | 6,552 | Nine expanding monthly folds; model selection |
 | Calibration | 2023-10-01 | 2024-01-01 | 2,208 | Reserved out-of-sample residuals, no model selection |
-| Final test | 2024-01-01 | 2025-01-01 | 8,784 | Sealed until model choices are finalized |
+| Final test | 2024-01-01 | 2025-01-01 | 8,784 | Evaluation after choices freeze; no tuning |
 
 The backtester refits monthly and issues daily paths. Every training label has matured by the
 origin's reporting cutoff, including at split boundaries. Every origin/horizon/fold prediction
@@ -222,7 +223,7 @@ Validation only: January–September 2023; nine expanding monthly folds, 273 dai
 
 WAPE is expressed in percent. MASE uses each fold's available training-only 168-hour scale. Peak means local hours 16–20; extreme means the fixed initial-training 95th percentile. Condition groups overlap. All models are scored on identical labels.
 
-Source: `reports/tables/model_comparison.csv`; individual forecasts are stored in `reports/predictions/validation.parquet`. Calibration and final test remain unscored.
+Source: `reports/tables/model_comparison.csv`; individual forecasts are stored in `reports/predictions/validation.parquet`. Calibration and final test do not contribute to these validation results.
 
 LightGBM residual correction: MAE reduction vs daily seasonal = **21.7%** overall, **16.9%** at peak hours and **5.6%** during extreme demand. Negative reductions indicate worse performance.
 
@@ -248,10 +249,9 @@ HAC uses seven daily lags; intervals are pointwise asymptotic intervals, while p
 
 The generated comparison includes all six models, condition-specific reductions and monthly
 wins. The model with lowest overall validation MAE is recorded in `reports/model_selection.json`
-for subsequent calibration. Its deployment tree count is frozen to the median selected count
+for calibration and final-test forecasting. Its deployment tree count is frozen to the median selected count
 across validation folds before calibration/test; later monthly refits cannot tune on test outcomes.
-Selection on validation can be optimistic; final-test performance
-is still unknown. Differences use paired daily MAE, seven-lag HAC standard errors and Holm
+Selection on validation can be optimistic; final-test results appear separately below. Differences use paired daily MAE, seven-lag HAC standard errors and Holm
 adjustment across five comparisons against the predeclared daily baseline. Pointwise confidence
 intervals are not simultaneous intervals and do not correct for model selection.
 
@@ -281,17 +281,76 @@ on test data. A large demand value is not by itself a data error or forecast ano
 
 ## Forecast Uncertainty
 
-Planned 50%, 80% and 95% intervals use past out-of-sample residuals by horizon, initially from the
-calibration quarter and subsequently a rolling 90-day window. Only matured residuals may update
-intervals. Coverage, width and interval score must be assessed overall and by condition.
-Dependence and drift invalidate an unqualified IID conformal guarantee. Calibration is empirical.
+The selected LightGBM uses **425 trees**, the median stopping count from the nine validation
+fits, with all other point-model settings fixed. It refits monthly on matured historical paths;
+there is no test-period early stopping, model replacement or parameter search. The calibration
+quarter produces out-of-sample residuals using this same frozen procedure.
+
+For each test origin and horizon, symmetric **50%, 80% and 95% intervals** use absolute forecast
+residuals from the preceding **90 elapsed days**, including only labels published by that origin.
+The initial pool comes from October–December 2023; matured test residuals then enter the rolling
+pool. Radius is the `ceil((n+1)*coverage)`-th ordered absolute residual. At least 30 residuals and
+a finite admissible rank are required; the implementation fails instead of silently clipping a
+rank or borrowing future residuals. Every interval records its residual count, rank and latest
+residual availability. The last horizon excludes the previous day's unpublished last label.
+
+These are empirical rolling residual intervals. Serial dependence, drift, model refits and
+heteroskedasticity prevent an unqualified IID conformal coverage guarantee; the order-statistic
+choice alone does not establish one. [Research on dependent-data predictive inference](https://proceedings.mlr.press/v75/chernozhukov18a.html)
+explains why dependence requires separate treatment. No adaptive conformal theorem is claimed
+for this implementation.
+
+Coverage, mean width and the Winkler interval score are reported overall, by horizon, month and
+condition. The score adds width to `2/(1-coverage)` times the distance outside the bounds;
+lower is better. [Forecast evaluation reference](https://otexts.com/fpp3/toolbox.html#evaluating-distributional-forecast-accuracy).
+The 95% anomaly threshold, calibration window, minimum count and monitoring window were fixed
+before reading test outcomes; poor conditional coverage is reported without post-test retuning.
+
+<!-- BEGIN RELIABILITY RESULTS -->
+Final test: 2024, 8,784 hourly targets; LightGBM with 425 frozen trees and monthly expanding refits.
+
+Point MAE: **705.2 MW** vs **907.8 MW** for daily seasonal naive; RMSE **1,008.0 MW**, WAPE **5.41%**, MASE **0.524**.
+
+| Nominal | Coverage | Mean width (MW) | Interval score (MW) | Peak coverage | Extreme-demand coverage |
+|---|---:|---:|---:|---:|---:|
+| 50% | 51.25% | 1,152.2 | 2,313.7 | 50.55% | 25.15% |
+| 80% | 78.85% | 2,268.5 | 3,447.9 | 77.87% | 58.19% |
+| 95% | 93.84% | 3,939.9 | 4,997.4 | 93.77% | 84.50% |
+
+At nominal 95%, coverage is **93.84% overall** and **84.50% during extreme demand**. Aggregate calibration does not imply reliable coverage in the high-demand tail.
+
+There are **541** hourly 95% interval violations in **175** contiguous UTC episodes. These are forecast anomalies, not verified outages or failures.
+
+The same horizon-wise calibration window is used for every condition; no post-test recalibration or interval-width tuning is performed. Condition groups overlap, and rare-event estimates have limited effective sample size. Coverage is empirical, not a distribution-free guarantee.
+
+Full trailing-window MAE ranges from **437.4 to 1,292.7 MW**; 95% coverage ranges from **77.2% to 100.0%**. These descriptive changes are not a formal causal or structural-break diagnosis.
+<!-- END RELIABILITY RESULTS -->
+
+![Issued prediction intervals](reports/figures/15_prediction_intervals.png)
+![Interval calibration](reports/figures/16_interval_calibration.png)
+![Interval width and score](reports/figures/17_interval_width_score.png)
+![Maximum-demand diagnostic](reports/figures/20_extreme_demand_intervals.png)
+
+The first-week example is fixed by calendar. The maximum-demand window is an explicitly
+post-hoc diagnostic chosen by actual demand, not an example selected to make forecasts look good.
 
 ## Anomalies
 
-Deferred to Milestone 4, after interval calibration is implemented. Interval violations will be called
-**forecast anomalies**, with observed demand, forecast, residual, interval, calendar and weather
-context. They are not evidence of outages or emergencies without external ground truth.
-Rolling error/bias/variance and coverage analysis will follow in Milestone 4.
+A **forecast anomaly** is an actual value strictly outside its issued 95% interval. Endpoints
+count as covered. `forecast_anomalies.csv` records issue/target/availability times, prediction,
+actual, signed residual, bounds, calendar and observed weather context. Severity is absolute
+residual divided by interval radius, not a Gaussian z-score. Consecutive flagged UTC hours form
+an episode in `anomaly_episodes.csv`; its start/end timestamps identify the first/last flagged
+interval starts, and `hours` gives the episode duration. No external ground truth establishes outages, emergencies
+or causes; interval misses alone do not establish any of those interpretations.
+
+The reliability monitor uses only matured test labels in a trailing **30-day window** at each
+daily issue time, with a minimum 168 hours. It tracks MAE, RMSE, residual mean and variance, and
+95% interval coverage. Early windows are partial and their counts are shown. These are descriptive
+reliability diagnostics, not a formal change-point detector or production alerting system.
+
+![Forecast anomaly timeline](reports/figures/19_forecast_anomalies.png)
+![Trailing reliability](reports/figures/18_rolling_reliability.png)
 
 ## Limitations
 
@@ -311,8 +370,9 @@ Requires **CPython 3.12**, tested on macOS arm64 (macOS 14+ for the pinned PyTor
 ```bash
 make setup       # Isolated .venv; pinned direct/transitive dependencies
 make data        # Download or verify immutable sources, validate, align, partition
-make analysis    # Data pipeline + training-only EDA + validation backtests
-make backtest    # Re-run forecasts from existing processed development partitions
+make analysis    # Data + EDA + validation + frozen-model uncertainty and final-test evaluation
+make backtest    # Re-run six-model validation and regenerate model-selection evidence
+make reliability # Re-run frozen calibration/test forecast intervals and diagnostics
 make test        # Unit and temporal-leakage tests, offline
 make lint        # Static code checks
 make reproduce   # Isolated offline rebuild; compare generated artifact SHA-256 hashes
@@ -335,9 +395,9 @@ Streamlit and `make app` arrive in Milestone 5, after real forecast outputs exis
 
 ```text
 configs/       data.yaml, evaluation.yaml, sources.lock.json
-src/gridcast/  data, validation, features, eda, baselines, models, learning, evaluation, backtesting, visualization, audit
-notebooks/     01_eda.ipynb, 02_forecasting.ipynb
-reports/       provenance, fits, predictions, findings, metrics, fourteen figures, replay audit
+src/gridcast/  data, validation, features, eda, baselines, models, learning, evaluation, backtesting, uncertainty, anomalies, reliability, visualization, audit
+notebooks/     01_eda.ipynb, 02_forecasting.ipynb, 03_uncertainty_anomalies.ipynb
+reports/       provenance, fits, predictions, findings, metrics, twenty figures, replay audit
 tests/         time contracts, source immutability, QC, forecasting and future-mutation tests
 data/          raw (immutable), interim (lineage/QC), processed (four isolated partitions)
 ```
@@ -348,5 +408,5 @@ runs. On failure, a diagnostic JSON is written and processing stops. No observat
 removed or filled. Prediction Parquet and metric tables are tracked; raw source snapshots are not.
 
 Six milestones: **1 Data (complete)** → **2 Baselines + Backtesting (complete)** → **3 Machine Learning (complete)** →
-4 Uncertainty + Anomalies → 5 Application → 6 Final Audit. Work pauses here for review;
+**4 Uncertainty + Anomalies (complete)** → 5 Application → 6 Final Audit. Work pauses here for review;
 each completed milestone is committed and pushed to the configured GitHub remote.

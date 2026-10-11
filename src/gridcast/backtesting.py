@@ -190,7 +190,8 @@ def results_text(overall: pd.DataFrame, conditions: pd.DataFrame, predictions: p
         "95th percentile. Condition groups overlap. All models are scored on identical labels.",
         "",
         "Source: `reports/tables/model_comparison.csv`; individual forecasts are stored in "
-        "`reports/predictions/validation.parquet`. Calibration and final test remain unscored.",
+        "`reports/predictions/validation.parquet`. Calibration and final test do not contribute "
+        "to these validation results.",
     ]
     for name in ["lightgbm", "lstm"]:
         if name in table.index:
@@ -277,7 +278,7 @@ def write_outputs(root, evaluation, predictions, features, origin_audit, fits):
             "reporting_delay_hours": evaluation["forecast"]["assumed_reporting_delay_hours"],
             "rule": "lowest overall validation MAE among the six predefined model procedures",
             "selection_period": evaluation["periods"]["validation"],
-            "calibration_and_test_scored": False,
+            "reserved_outcomes_used_for_selection": False,
             "evaluation_config_sha256": sha256(root / "configs/evaluation.yaml"),
             "validation_predictions_sha256": sha256(root / "reports/predictions/validation.parquet"),
             "caveat": "validation-selected winner; final-test generalization is not yet established",

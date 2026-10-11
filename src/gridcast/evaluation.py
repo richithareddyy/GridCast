@@ -41,7 +41,7 @@ def score_groups(predictions: pd.DataFrame, groups):
     return pd.DataFrame(rows)
 
 
-def condition_scores(predictions: pd.DataFrame, thresholds: dict):
+def condition_masks(predictions: pd.DataFrame, thresholds: dict):
     p = predictions
     weather = p.weather_temperature_c
     masks = {
@@ -59,6 +59,12 @@ def condition_scores(predictions: pd.DataFrame, thresholds: dict):
         "summer": p.month.isin([6, 7, 8]),
         "autumn": p.month.isin([9, 10, 11]),
     }
+    return masks
+
+
+def condition_scores(predictions: pd.DataFrame, thresholds: dict):
+    p = predictions
+    masks = condition_masks(p, thresholds)
     return pd.DataFrame(
         [
             {"condition": name, "model": model, **metrics(p.loc[mask & p.model.eq(model)])}

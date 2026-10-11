@@ -123,3 +123,122 @@ def learning_figures(comparison, fits, root):
         "Descriptive model importance; correlated features share gain. This is not causal attribution.", fontsize=9
     )
     save(fig, root, "14_feature_importance.png")
+
+
+def reliability_figures(intervals, outputs, root):
+
+    figure_style()
+    first = intervals.target_start_utc.min()
+
+    def interval_plot(window, title, filename):
+        fig, ax = plt.subplots(figsize=(12, 4), layout="constrained")
+        for level, alpha in [(0.95, 0.15), (0.8, 0.22), (0.5, 0.35)]:
+            part = window.loc[window.level.eq(level)].sort_values("target_start_utc")
+            ax.fill_between(
+                part.target_start_utc,
+                part.lower.to_numpy() / 1000,
+                part.upper.to_numpy() / 1000,
+                color="#245880",
+                alpha=alpha,
+                label=f"{level:.0%} interval",
+            )
+        part = window.loc[window.level.eq(0.95)].sort_values("target_start_utc")
+        ax.plot(part.target_start_utc, part.actual / 1000, color="black", lw=1.2, label="Actual")
+        ax.plot(part.target_start_utc, part.prediction / 1000, color="#138d90", lw=1.2, label="LightGBM")
+        ax.set(title=title, ylabel="Average load (GW)", xlabel="UTC interval start")
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+        ax.legend(ncol=5, fontsize=8)
+        save(fig, root, filename)
+
+    interval_plot(
+        intervals.loc[intervals.target_start_utc < first + pd.Timedelta(days=7)],
+        "Do forecast intervals contain demand in the first test week?",
+        "15_prediction_intervals.png",
+    )
+    metrics = outputs["interval_conditions"]
+    fig, ax = plt.subplots(figsize=(7, 5), layout="constrained")
+    for condition, label in [
+        ("overall", "All test hours"),
+        ("peak_hours", "Peak hours"),
+        ("extreme_demand", "Extreme demand"),
+        ("extreme_temperature", "Extreme temperature"),
+    ]:
+        part = metrics.loc[metrics.condition.eq(condition)].sort_values("level")
+        ax.plot(part.level * 100, part.coverage * 100, "o-", label=f"{label} (n={int(part.n.iloc[0])})")
+    ax.plot([40, 100], [40, 100], "--", color="black", label="Nominal = observed")
+    ax.set(
+        xlim=(40, 100),
+        ylim=(0, 100),
+        title="Are intervals calibrated across test conditions?",
+        xlabel="Nominal coverage (%)",
+        ylabel="Observed coverage (%)",
+    )
+    ax.legend(fontsize=8)
+    save(fig, root, "16_interval_calibration.png")
+    names = ["overall", "normal_weekday", "weekend", "holiday", "peak_hours", "extreme_demand", "extreme_temperature"]
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4), layout="constrained")
+    for ax, value, title in zip(
+        axes,
+        ["mean_width_mw", "interval_score_mw"],
+        ["How wide are the intervals?", "What is the width-and-miss penalty?"],
+        strict=True,
+    ):
+        part = metrics.pivot(index="condition", columns="level", values=value).reindex(names)
+        part.rename(columns={0.5: "50%", 0.8: "80%", 0.95: "95%"}).plot.bar(
+            ax=ax, rot=35, color=["#91b6cb", "#5085a4", "#245880"]
+        )
+        ax.set(title=title, ylabel="MW", xlabel="")
+        ax.set_xticklabels(
+            ["All", "Weekday", "Weekend", "Holiday", "Peak", "Extreme load", "Extreme temp."], ha="right"
+        )
+        ax.legend(title="Nominal", fontsize=8)
+    save(fig, root, "17_interval_width_score.png")
+    rolling = outputs["rolling_reliability"]
+    fig, axes = plt.subplots(3, 2, figsize=(12, 8), layout="constrained")
+    measures = [
+        ("MAE", "MAE (MW)"),
+        ("RMSE", "RMSE (MW)"),
+        ("residual_mean_mw", "Residual mean (MW)"),
+        ("residual_variance_mw2", "Residual variance (MW²)"),
+        ("coverage_95", "95% interval coverage"),
+        ("n", "Matured hours"),
+    ]
+    for ax, (column, label) in zip(axes.flat, measures, strict=True):
+        ax.plot(rolling.as_of_utc, rolling[column], color="#245880")
+        ax.set(ylabel=label, xlabel="As-of date (UTC)")
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
+        if column == "coverage_95":
+            ax.axhline(0.95, ls="--", color="#c46b2a")
+            ax.set_ylim(0, 1)
+        if column == "residual_mean_mw":
+            ax.axhline(0, ls="--", color="#c46b2a")
+    fig.suptitle("How does trailing 30-day forecast reliability change?", fontsize=14)
+    fig.supxlabel(
+        "Past matured test labels only; first windows require 168 hours and grow to a full month.", fontsize=9
+    )
+    save(fig, root, "18_rolling_reliability.png")
+    p = intervals.loc[intervals.level.eq(0.95)].sort_values("target_start_utc")
+    events = outputs["forecast_anomalies"]
+    fig, ax = plt.subplots(figsize=(12, 4), layout="constrained")
+    radius = (p.upper - p.lower) / 2
+    ax.fill_between(p.target_start_utc, -radius, radius, color="#245880", alpha=0.15, label="95% residual band")
+    ax.plot(p.target_start_utc, p.actual - p.prediction, color="#245880", lw=0.4, label="Residual")
+    ax.scatter(events.target_start_utc, events.residual_mw, s=5, color="#c46b2a", label="Interval violation", zorder=3)
+    ax.axhline(0, color="black", lw=0.8)
+    ax.set(
+        title="When does demand fall outside its issued 95% interval?",
+        ylabel="Actual − forecast (MW)",
+        xlabel="UTC interval start",
+    )
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
+    ax.legend(ncol=3, fontsize=8)
+    save(fig, root, "19_forecast_anomalies.png")
+    peak = p.loc[p.actual.idxmax(), "target_start_utc"].floor("D")
+    interval_plot(
+        intervals.loc[
+            (intervals.target_start_utc >= peak - pd.Timedelta(days=2))
+            & (intervals.target_start_utc < peak + pd.Timedelta(days=3))
+        ],
+        "How did issued intervals behave around maximum test demand?",
+        "20_extreme_demand_intervals.png",
+    )

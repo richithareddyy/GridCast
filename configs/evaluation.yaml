@@ -1,6 +1,6 @@
 # All boundaries refer to interval START in UTC, with exclusive end bounds.
-experiment_version: 3
-status: milestone_3_validation_protocol
+experiment_version: 4
+status: milestone_4_frozen_reliability_protocol
 dataset: eia930_isne
 target: demand_mw
 units: MW
@@ -50,7 +50,15 @@ conditions:
   seasons: {winter: [12, 1, 2], spring: [3, 4, 5], summer: [6, 7, 8], autumn: [9, 10, 11]}
 uncertainty:
   levels: [0.50, 0.80, 0.95]
-  planned_method: rolling_past_out_of_sample_absolute_residual_quantiles_by_horizon
+  method: rolling_past_out_of_sample_absolute_residual_quantiles_by_horizon
+  enabled: true
+  rank: ceil_n_plus_1_times_nominal_coverage
+  minimum_samples_per_horizon: 30
+  anomaly_level: 0.95
+  monitor_window_days: 30
+  monitor_minimum_hours: 168
+  deployment_rounds: median_validation_selected_tree_counts_fixed_before_reserved_outcomes
+  fail_on_insufficient_history: true
   initial_calibration_partition: calibration
   rolling_window_days: 90
   updates: only_after_actuals_available_at_origin

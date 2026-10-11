@@ -1,0 +1,137 @@
+[
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2023-10-01 00:00:00+00:00",
+    "fold": "2023-10",
+    "latest_training_label_available_at": "2023-09-30 01:00:00+00:00",
+    "latest_training_origin": "2023-09-29 00:00:00+00:00",
+    "mase_scale": 1373.6361550463487,
+    "training_origins": 1360
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2023-11-01 00:00:00+00:00",
+    "fold": "2023-11",
+    "latest_training_label_available_at": "2023-10-31 01:00:00+00:00",
+    "latest_training_origin": "2023-10-30 00:00:00+00:00",
+    "mase_scale": 1359.8976997397624,
+    "training_origins": 1391
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2023-12-01 00:00:00+00:00",
+    "fold": "2023-12",
+    "latest_training_label_available_at": "2023-11-30 01:00:00+00:00",
+    "latest_training_origin": "2023-11-29 00:00:00+00:00",
+    "mase_scale": 1351.5774062252935,
+    "training_origins": 1421
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-01-01 00:00:00+00:00",
+    "fold": "2024-01",
+    "latest_training_label_available_at": "2023-12-31 01:00:00+00:00",
+    "latest_training_origin": "2023-12-30 00:00:00+00:00",
+    "mase_scale": 1341.469522854277,
+    "training_origins": 1452
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-02-01 00:00:00+00:00",
+    "fold": "2024-02",
+    "latest_training_label_available_at": "2024-01-31 01:00:00+00:00",
+    "latest_training_origin": "2024-01-30 00:00:00+00:00",
+    "mase_scale": 1345.5977440444458,
+    "training_origins": 1483
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-03-01 00:00:00+00:00",
+    "fold": "2024-03",
+    "latest_training_label_available_at": "2024-02-29 01:00:00+00:00",
+    "latest_training_origin": "2024-02-28 00:00:00+00:00",
+    "mase_scale": 1339.9716526764828,
+    "training_origins": 1512
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-04-01 00:00:00+00:00",
+    "fold": "2024-04",
+    "latest_training_label_available_at": "2024-03-31 01:00:00+00:00",
+    "latest_training_origin": "2024-03-30 00:00:00+00:00",
+    "mase_scale": 1338.7743196957847,
+    "training_origins": 1543
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-05-01 00:00:00+00:00",
+    "fold": "2024-05",
+    "latest_training_label_available_at": "2024-04-30 01:00:00+00:00",
+    "latest_training_origin": "2024-04-29 00:00:00+00:00",
+    "mase_scale": 1331.6198576681923,
+    "training_origins": 1573
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-06-01 00:00:00+00:00",
+    "fold": "2024-06",
+    "latest_training_label_available_at": "2024-05-31 01:00:00+00:00",
+    "latest_training_origin": "2024-05-30 00:00:00+00:00",
+    "mase_scale": 1322.2013854655838,
+    "training_origins": 1604
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-07-01 00:00:00+00:00",
+    "fold": "2024-07",
+    "latest_training_label_available_at": "2024-06-30 01:00:00+00:00",
+    "latest_training_origin": "2024-06-29 00:00:00+00:00",
+    "mase_scale": 1336.6853271527903,
+    "training_origins": 1634
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-08-01 00:00:00+00:00",
+    "fold": "2024-08",
+    "latest_training_label_available_at": "2024-07-31 01:00:00+00:00",
+    "latest_training_origin": "2024-07-30 00:00:00+00:00",
+    "mase_scale": 1356.0567650661135,
+    "training_origins": 1665
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-09-01 00:00:00+00:00",
+    "fold": "2024-09",
+    "latest_training_label_available_at": "2024-08-31 01:00:00+00:00",
+    "latest_training_origin": "2024-08-30 00:00:00+00:00",
+    "mase_scale": 1375.2571225246006,
+    "training_origins": 1696
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-10-01 00:00:00+00:00",
+    "fold": "2024-10",
+    "latest_training_label_available_at": "2024-09-30 01:00:00+00:00",
+    "latest_training_origin": "2024-09-29 00:00:00+00:00",
+    "mase_scale": 1371.6236165030984,
+    "training_origins": 1726
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-11-01 00:00:00+00:00",
+    "fold": "2024-11",
+    "latest_training_label_available_at": "2024-10-31 01:00:00+00:00",
+    "latest_training_origin": "2024-10-30 00:00:00+00:00",
+    "mase_scale": 1358.201065971811,
+    "training_origins": 1757
+  },
+  {
+    "boost_rounds": 425,
+    "fit_origin_utc": "2024-12-01 00:00:00+00:00",
+    "fold": "2024-12",
+    "latest_training_label_available_at": "2024-11-30 01:00:00+00:00",
+    "latest_training_origin": "2024-11-29 00:00:00+00:00",
+    "mase_scale": 1348.5142890415746,
+    "training_origins": 1787
+  }
+]

@@ -1,8 +1,7 @@
 {
-  "calibration_and_test_scored": false,
   "caveat": "validation-selected winner; final-test generalization is not yet established",
   "deployment_round_rule": "median selected rounds across validation folds; fixed before calibration/test",
-  "evaluation_config_sha256": "29093bec5045d478aaeb8f5459ccc02a96f5e219736802d477fbc71d4caba058",
+  "evaluation_config_sha256": "2efb3a39d075472f06a4b233a038ce06cd9b31e1d5ef3caeeb1b0b7f9c8209a8",
   "frozen_boost_rounds": 425,
   "frozen_lightgbm_parameters": {
     "bagging_fraction": 1.0,
@@ -20,6 +19,7 @@
   },
   "lookback_hours": 168,
   "reporting_delay_hours": 1,
+  "reserved_outcomes_used_for_selection": false,
   "rule": "lowest overall validation MAE among the six predefined model procedures",
   "seed": 42,
   "selected_model": "lightgbm",
