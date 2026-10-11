@@ -7,7 +7,7 @@
 and when do sophisticated models actually outperform strong seasonal baselines?**
 A secondary question asks whether residuals identify unusual demand behavior.
 
-**Milestones 1–4 complete: forecasting, uncertainty, calibration and forecast anomalies.**
+**Milestones 1–5 complete: forecasting, uncertainty, anomalies and an interactive analytical application.**
 Final-test evaluation follows frozen validation choices; no final-test tuning is performed. This is a data science project focused on temporal evaluation, uncertainty
 and honest comparison.
 
@@ -373,6 +373,8 @@ make data        # Download or verify immutable sources, validate, align, partit
 make analysis    # Data + EDA + validation + frozen-model uncertainty and final-test evaluation
 make backtest    # Re-run six-model validation and regenerate model-selection evidence
 make reliability # Re-run frozen calibration/test forecast intervals and diagnostics
+make app-data    # Rebuild tracked retrospective application history (requires processed data)
+make app         # Start the analytical console at localhost:8501
 make test        # Unit and temporal-leakage tests, offline
 make lint        # Static code checks
 make reproduce   # Isolated offline rebuild; compare generated artifact SHA-256 hashes
@@ -389,11 +391,30 @@ Make commands for fitting and tests; direct Python invocations that import both 
 use the same environment. The setup smoke test exercises both libraries in one process.
 
 Notebooks are optional views of the same outputs; a Jupyter frontend is not needed by the pipeline.
-Streamlit and `make app` arrive in Milestone 5, after real forecast outputs exist.
+### Interactive Application
+
+Run `make app`, then open http://localhost:8501. The eight views cover the overview, demand exploration,
+forecasts, model comparisons, extreme events, anomalies, reliability and methodology. Forecast controls
+select evaluation period, model, daily origin and (for final-test LightGBM) interval level. Downloads contain
+the selected forecast or monthly anomaly residuals. Plotly charts support hover, zoom and image export.
+
+A clean checkout includes the observations and evaluation artifacts needed by the app; no raw download or
+model training is triggered by opening a page. `make app-data` deterministically rebuilds the small
+`reports/app/history.parquet` snapshot from the four processed partitions, with a source-hash manifest.
+Exploration defaults to training data and explicitly labels retrospective validation/calibration/test views.
+The final-test selector exposes only the two evaluated models. Missing artifacts produce an actionable error.
+
+Streamlit and Plotly are pinned in the dependency lock. PyArrow is pinned to 25.0.1 to satisfy Streamlit's
+supported range; existing research artifacts remain unchanged. The prior full replay audit records the
+Milestone 4 runtime (PyArrow 26.0.0); it is not a claim of a new bitwise replay on the application runtime.
+Application tests exercise all sections, model/partition controls and snapshot-to-forecast consistency.
+The server binds to loopback by default.
 
 ## Repository Structure
 
 ```text
+app/           Streamlit analytical console
+.streamlit/    theme and local server settings
 configs/       data.yaml, evaluation.yaml, sources.lock.json
 src/gridcast/  data, validation, features, eda, baselines, models, learning, evaluation, backtesting, uncertainty, anomalies, reliability, visualization, audit
 notebooks/     01_eda.ipynb, 02_forecasting.ipynb, 03_uncertainty_anomalies.ipynb
@@ -408,5 +429,5 @@ runs. On failure, a diagnostic JSON is written and processing stops. No observat
 removed or filled. Prediction Parquet and metric tables are tracked; raw source snapshots are not.
 
 Six milestones: **1 Data (complete)** → **2 Baselines + Backtesting (complete)** → **3 Machine Learning (complete)** →
-**4 Uncertainty + Anomalies (complete)** → 5 Application → 6 Final Audit. Work pauses here for review;
+**4 Uncertainty + Anomalies (complete)** → **5 Application (complete)** → 6 Final Audit. Work pauses here for review;
 each completed milestone is committed and pushed to the configured GitHub remote.

@@ -26,8 +26,14 @@ backtest:
 test:
 	$(PYTHON) -m pytest -q
 lint:
-	.venv/bin/ruff check src tests
+	.venv/bin/ruff check src tests app
 reproduce:
 	$(PYTHON) -m gridcast.audit --root .
 reliability:
 	$(PYTHON) -m gridcast.reliability --root .
+
+.PHONY: app app-data
+app:
+	$(PYTHON) -m streamlit run app/streamlit_app.py
+app-data:
+	$(PYTHON) -m gridcast.dashboard --root .
