@@ -13,6 +13,7 @@ from gridcast.data import run as data_run
 from gridcast.data import sha256, write_json
 from gridcast.eda import run as eda_run
 from gridcast.reliability import run as reliability_run
+from gridcast.reporting import run as reporting_run
 
 
 def run(root: Path):
@@ -40,6 +41,8 @@ def run(root: Path):
         ("reports/models", "*.txt"),
         ("reports/models", "*.npz"),
         ("reports/reserved_models", "*.txt"),
+        ("reports/results", "*.json"),
+        ("reports/results", "*.md"),
     ]:
         files.extend(str(p.relative_to(root)) for p in sorted((root / folder).glob(pattern)))
     if not files or not (root / "reports/eda_summary.json").exists():
@@ -58,6 +61,7 @@ def run(root: Path):
             eda_run(clean)
             backtest_run(clean)
             reliability_run(clean)
+            reporting_run(clean)
         checks = {
             name: {
                 "sha256": sha256(root / name),

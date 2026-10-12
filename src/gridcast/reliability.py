@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from gridcast.anomalies import anomaly_events, rolling_reliability
-from gridcast.data import load_config, sha256, write_json
+from gridcast.data import load_config, sha256, update_readme, write_json
 from gridcast.evaluation import condition_scores, mase_scale, score_groups
 from gridcast.features import available_history, validate_history
 from gridcast.learning import build_samples, origin_inputs, tree_data
@@ -101,6 +101,7 @@ def forecast_reserved(study, evaluation, selection, artifact_dir=None):
 
 def evaluate_reliability(points, evaluation, thresholds):
     selected = points.loc[points.model.eq("lightgbm")].copy()
+    test_points = points.loc[points.partition.eq("test")]
     test = selected.loc[selected.partition.eq("test")]
     spec = evaluation["uncertainty"]
     tables = []
@@ -129,9 +130,9 @@ def evaluate_reliability(points, evaluation, thresholds):
         evaluation["forecast"]["assumed_reporting_delay_hours"],
     )
     outputs = interval_tables(intervals, thresholds)
-    outputs["test_model_comparison"] = score_groups(points.loc[points.partition.eq("test")], ["model"])
-    outputs["test_condition_metrics"] = condition_scores(points.loc[points.partition.eq("test")], thresholds)
-    outputs["test_month_metrics"] = score_groups(points.loc[points.partition.eq("test")], ["fold", "model"])
+    outputs["test_model_comparison"] = score_groups(test_points, ["model"])
+    outputs["test_condition_metrics"] = condition_scores(test_points, thresholds)
+    outputs["test_month_metrics"] = score_groups(test_points, ["fold", "model"])
     outputs["forecast_anomalies"] = events
     outputs["anomaly_episodes"] = episodes
     outputs["rolling_reliability"] = rolling
@@ -233,13 +234,7 @@ def write_outputs(root, evaluation, selection, thresholds, points, fits):
     reliability_figures(intervals, outputs, root)
     findings = findings_text(outputs, selection, evaluation)
     (root / "reports/reliability_findings.md").write_text(findings)
-    readme = root / "README.md"
-    text = readme.read_text()
-    begin, end = "<!-- BEGIN RELIABILITY RESULTS -->", "<!-- END RELIABILITY RESULTS -->"
-    if begin in text:
-        before, rest = text.split(begin, 1)
-        _, after = rest.split(end, 1)
-        readme.write_text(before + begin + "\n" + findings + end + after)
+    update_readme(root, "RELIABILITY RESULTS", findings)
     print(
         "Reliability evaluation complete: frozen choices, calibration followed by prequential final test.", flush=True
     )

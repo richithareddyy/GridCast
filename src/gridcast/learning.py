@@ -46,7 +46,7 @@ def origin_inputs(y, origin, lookback=168, delay=1):
     features = forecast_features(y, origin, delay=delay)
     base = predict_baselines(y, origin, delay=delay).daily.to_numpy()
     features["daily_baseline"] = base
-    # Cyclic target calendar is known at issue time. No observed weather enters either learner.
+    # Target calendar is known at issue time; observed future weather is excluded.
     for column, period in [("hour", 24), ("weekday", 7), ("month", 12)]:
         for name, function in [("sin", np.sin), ("cos", np.cos)]:
             features[f"{column}_{name}"] = function(2 * np.pi * features[column] / period)
@@ -63,7 +63,6 @@ def origin_inputs(y, origin, lookback=168, delay=1):
     history = available_history(y.to_frame("y"), origin, delay).y.iloc[-lookback:]
     if len(history) != lookback or not np.isfinite(history).all():
         raise ValidationError("LSTM needs a complete available history window")
-    # The neural decoder also sees known daily/weekly templates, supplied separately from calendar.
     decoder = features[calendar_columns].to_numpy(dtype=np.float32)
     sequence = history.to_numpy(dtype=np.float32)[:, None]
     return features, sequence, decoder, base
@@ -131,7 +130,7 @@ class ResidualLSTM(nn.Module):
 
 
 def scale_fit(samples):
-    # Repeated windows weight observations by their use as training inputs; never use stopping/test inputs.
+    # Repeated windows weight observations by how often they appear in training inputs.
     mean = float(samples.sequence.mean(dtype=np.float64))
     std = float(samples.sequence.std(dtype=np.float64))
     if not np.isfinite(std) or std <= 0:

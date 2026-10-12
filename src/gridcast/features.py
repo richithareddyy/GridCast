@@ -27,7 +27,6 @@ def calendar_features(index: pd.DatetimeIndex, timezone: str = "America/New_York
 
 
 def partition(frame: pd.DataFrame, bounds: dict) -> pd.DataFrame:
-    """Half-open interval-start partition; never include a neighboring split's label."""
     return frame.loc[
         (frame.index >= pd.Timestamp(bounds["start"])) & (frame.index < pd.Timestamp(bounds["end"]))
     ].copy()
@@ -77,8 +76,8 @@ def forecast_features(series: pd.Series, origin, horizon=24, delay=1):
     for window in [24, 168]:
         tail = history.iloc[-window:]
         complete = len(tail) == window and tail.notna().all()
-        for name, method in [("mean", "mean"), ("std", "std"), ("min", "min"), ("max", "max")]:
-            features[f"rolling_{window}_{name}"] = getattr(tail, method)() if complete else float("nan")
+        for stat in ["mean", "std", "min", "max"]:
+            features[f"rolling_{window}_{stat}"] = getattr(tail, stat)() if complete else float("nan")
     features.attrs["latest_history_start"] = str(history.index[-1])
     features.attrs["latest_history_available_at"] = str(history.index[-1] + pd.Timedelta(hours=delay + 1))
     return features

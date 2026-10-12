@@ -14,7 +14,7 @@ import pandas as pd
 from statsmodels.tsa.seasonal import STL
 from statsmodels.tsa.stattools import acf
 
-from gridcast.data import load_config, write_json
+from gridcast.data import load_config, update_readme, write_json
 from gridcast.features import partition
 from gridcast.validation import ValidationError
 
@@ -310,7 +310,7 @@ contribute to these findings or thresholds.
 def run(root: Path):
     evaluation = load_config(root, "evaluation.yaml")
     train_path = root / "data/processed/train.parquet"
-    train = pd.read_parquet(train_path)  # Deliberately never load a combined all-years data file.
+    train = pd.read_parquet(train_path)
     bounded = partition(train, evaluation["periods"]["train"])
     if len(bounded) != len(train):
         raise ValidationError("Training artifact contains rows from another partition")
@@ -341,13 +341,7 @@ def run(root: Path):
     plot_eda(train, summary, evaluation, root)
     text = report_text(summary)
     (root / "reports/eda_findings.md").write_text(text.replace("reports/eda_summary", "eda_summary"))
-    readme = root / "README.md"
-    start, end = "<!-- BEGIN EDA FINDINGS -->", "<!-- END EDA FINDINGS -->"
-    contents = readme.read_text()
-    if start in contents:
-        before, rest = contents.split(start, 1)
-        _, after = rest.split(end, 1)
-        readme.write_text(before + start + "\n" + text + end + after)
+    update_readme(root, "EDA FINDINGS", text)
     print(f"EDA complete: {len(train):,} training hours, 8 figures. Final test not read.")
     return summary
 

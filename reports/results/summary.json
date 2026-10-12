@@ -1,0 +1,1331 @@
+{
+  "anomaly_case": {
+    "actual_mw": 21575.0,
+    "detected_at_utc": "2024-06-19 01:00:00+00:00",
+    "lower_mw": 13475.914264718129,
+    "prediction_mw": 15164.663990170746,
+    "residual_mw": 6410.336009829254,
+    "selection": "largest absolute residual among 95% interval violations; retrospective diagnostic example",
+    "target_start_utc": "2024-06-18 23:00:00+00:00",
+    "upper_mw": 16853.413715623363
+  },
+  "anomaly_episodes": 175,
+  "anomaly_hours": 541,
+  "extreme_demand_threshold_mw": 17971.399999999994,
+  "forecast": {
+    "assumed_reporting_delay_hours": 1,
+    "available_demand": "interval_end <= origin - 1h",
+    "available_weather": "weather_hour_end <= origin - 1h",
+    "conditional_weather_experiment": "optional_separate_realized_weather_upper_information_benchmark",
+    "future_observed_weather": "excluded_from_primary_comparison",
+    "horizon_hours": 24,
+    "label": "average demand during [origin+h-1h, origin+h) for h=1..24",
+    "origin_hour_utc": 0,
+    "origin_stride_hours": 24,
+    "task": "next_24_hour_path",
+    "vintage": "retrospective_latest_revised_not_as_published"
+  },
+  "interval_coverage": [
+    {
+      "condition": "overall",
+      "coverage": 0.5125227686703097,
+      "interval_score_mw": 2313.6643667599997,
+      "level": 0.5,
+      "mean_width_mw": 1152.2248029847472,
+      "n": 8784
+    },
+    {
+      "condition": "normal_weekday",
+      "coverage": 0.5160325635487623,
+      "interval_score_mw": 2314.033487045824,
+      "level": 0.5,
+      "mean_width_mw": 1155.5642118791045,
+      "n": 6019
+    },
+    {
+      "condition": "weekend",
+      "coverage": 0.5173930427828869,
+      "interval_score_mw": 2264.9564151463564,
+      "level": 0.5,
+      "mean_width_mw": 1151.9240570545333,
+      "n": 2501
+    },
+    {
+      "condition": "holiday",
+      "coverage": 0.38636363636363635,
+      "interval_score_mw": 2766.682745492376,
+      "level": 0.5,
+      "mean_width_mw": 1078.9379220617511,
+      "n": 264
+    },
+    {
+      "condition": "peak_hours",
+      "coverage": 0.505464480874317,
+      "interval_score_mw": 2467.763277404032,
+      "level": 0.5,
+      "mean_width_mw": 1129.5193262192577,
+      "n": 1830
+    },
+    {
+      "condition": "extreme_demand",
+      "coverage": 0.25146198830409355,
+      "interval_score_mw": 5018.810936989471,
+      "level": 0.5,
+      "mean_width_mw": 1492.3452973169262,
+      "n": 342
+    },
+    {
+      "condition": "nonextreme_demand",
+      "coverage": 0.5230987917555082,
+      "interval_score_mw": 2204.074207198464,
+      "level": 0.5,
+      "mean_width_mw": 1138.4459343444246,
+      "n": 8442
+    },
+    {
+      "condition": "extreme_temperature",
+      "coverage": 0.34252539912917274,
+      "interval_score_mw": 3660.3286494401323,
+      "level": 0.5,
+      "mean_width_mw": 1437.3597936539995,
+      "n": 689
+    },
+    {
+      "condition": "weather_unknown",
+      "coverage": 0.46774193548387094,
+      "interval_score_mw": 1968.7496855287086,
+      "level": 0.5,
+      "mean_width_mw": 1026.6403105173952,
+      "n": 62
+    },
+    {
+      "condition": "winter",
+      "coverage": 0.4478021978021978,
+      "interval_score_mw": 2061.77203041108,
+      "level": 0.5,
+      "mean_width_mw": 955.0690342636294,
+      "n": 2184
+    },
+    {
+      "condition": "spring",
+      "coverage": 0.530584503851382,
+      "interval_score_mw": 2143.760213963886,
+      "level": 0.5,
+      "mean_width_mw": 1129.3378147376843,
+      "n": 2207
+    },
+    {
+      "condition": "summer",
+      "coverage": 0.432518115942029,
+      "interval_score_mw": 3266.4567553140037,
+      "level": 0.5,
+      "mean_width_mw": 1335.047246335047,
+      "n": 2208
+    },
+    {
+      "condition": "autumn",
+      "coverage": 0.6398169336384439,
+      "interval_score_mw": 1774.2344966821154,
+      "level": 0.5,
+      "mean_width_mw": 1187.660879429016,
+      "n": 2185
+    },
+    {
+      "condition": "overall",
+      "coverage": 0.7884790528233151,
+      "interval_score_mw": 3447.9161313143813,
+      "level": 0.8,
+      "mean_width_mw": 2268.524414186208,
+      "n": 8784
+    },
+    {
+      "condition": "normal_weekday",
+      "coverage": 0.7938195713573684,
+      "interval_score_mw": 3450.153017478263,
+      "level": 0.8,
+      "mean_width_mw": 2275.8998919583723,
+      "n": 6019
+    },
+    {
+      "condition": "weekend",
+      "coverage": 0.7868852459016393,
+      "interval_score_mw": 3362.094142710206,
+      "level": 0.8,
+      "mean_width_mw": 2267.4859007881573,
+      "n": 2501
+    },
+    {
+      "condition": "holiday",
+      "coverage": 0.6818181818181818,
+      "interval_score_mw": 4209.950130097113,
+      "level": 0.8,
+      "mean_width_mw": 2110.207449405408,
+      "n": 264
+    },
+    {
+      "condition": "peak_hours",
+      "coverage": 0.7786885245901639,
+      "interval_score_mw": 3862.5712611444283,
+      "level": 0.8,
+      "mean_width_mw": 2414.955829207941,
+      "n": 1830
+    },
+    {
+      "condition": "extreme_demand",
+      "coverage": 0.5818713450292398,
+      "interval_score_mw": 7619.326803424075,
+      "level": 0.8,
+      "mean_width_mw": 3173.2338170502708,
+      "n": 342
+    },
+    {
+      "condition": "nonextreme_demand",
+      "coverage": 0.796849087893864,
+      "interval_score_mw": 3278.925080631899,
+      "level": 0.8,
+      "mean_width_mw": 2231.873073771673,
+      "n": 8442
+    },
+    {
+      "condition": "extreme_temperature",
+      "coverage": 0.6415094339622641,
+      "interval_score_mw": 5338.099071259057,
+      "level": 0.8,
+      "mean_width_mw": 2824.0298899910613,
+      "n": 689
+    },
+    {
+      "condition": "weather_unknown",
+      "coverage": 0.7741935483870968,
+      "interval_score_mw": 2927.1705070579933,
+      "level": 0.8,
+      "mean_width_mw": 2022.3179998453395,
+      "n": 62
+    },
+    {
+      "condition": "winter",
+      "coverage": 0.728021978021978,
+      "interval_score_mw": 2925.988928504981,
+      "level": 0.8,
+      "mean_width_mw": 1822.5273241465654,
+      "n": 2184
+    },
+    {
+      "condition": "spring",
+      "coverage": 0.8133212505663797,
+      "interval_score_mw": 3018.444674473305,
+      "level": 0.8,
+      "mean_width_mw": 2126.0316484138843,
+      "n": 2207
+    },
+    {
+      "condition": "summer",
+      "coverage": 0.7146739130434783,
+      "interval_score_mw": 4991.762948360666,
+      "level": 0.8,
+      "mean_width_mw": 2717.9481671845365,
+      "n": 2208
+    },
+    {
+      "condition": "autumn",
+      "coverage": 0.8983981693363844,
+      "interval_score_mw": 2843.302284241517,
+      "level": 0.8,
+      "mean_width_mw": 2404.09033276094,
+      "n": 2185
+    },
+    {
+      "condition": "overall",
+      "coverage": 0.9384107468123861,
+      "interval_score_mw": 4997.449997241089,
+      "level": 0.95,
+      "mean_width_mw": 3939.8744789316593,
+      "n": 8784
+    },
+    {
+      "condition": "normal_weekday",
+      "coverage": 0.9406878218973251,
+      "interval_score_mw": 4986.3418591741465,
+      "level": 0.95,
+      "mean_width_mw": 3947.6389501176627,
+      "n": 6019
+    },
+    {
+      "condition": "weekend",
+      "coverage": 0.937624950019992,
+      "interval_score_mw": 4934.803417597612,
+      "level": 0.95,
+      "mean_width_mw": 3943.075839195037,
+      "n": 2501
+    },
+    {
+      "condition": "holiday",
+      "coverage": 0.8939393939393939,
+      "interval_score_mw": 5844.188552973127,
+      "level": 0.95,
+      "mean_width_mw": 3732.5223801162633,
+      "n": 264
+    },
+    {
+      "condition": "peak_hours",
+      "coverage": 0.9377049180327869,
+      "interval_score_mw": 5937.252593259312,
+      "level": 0.95,
+      "mean_width_mw": 4409.5772962862075,
+      "n": 1830
+    },
+    {
+      "condition": "extreme_demand",
+      "coverage": 0.8450292397660819,
+      "interval_score_mw": 11691.42367930056,
+      "level": 0.95,
+      "mean_width_mw": 5736.025721176325,
+      "n": 342
+    },
+    {
+      "condition": "nonextreme_demand",
+      "coverage": 0.9421937929400616,
+      "interval_score_mw": 4726.265562360215,
+      "level": 0.95,
+      "mean_width_mw": 3867.1092900134317,
+      "n": 8442
+    },
+    {
+      "condition": "extreme_temperature",
+      "coverage": 0.888243831640058,
+      "interval_score_mw": 7696.6168359620415,
+      "level": 0.95,
+      "mean_width_mw": 4726.236054619827,
+      "n": 689
+    },
+    {
+      "condition": "weather_unknown",
+      "coverage": 0.9516129032258065,
+      "interval_score_mw": 4158.251334003459,
+      "level": 0.95,
+      "mean_width_mw": 3601.540978262653,
+      "n": 62
+    },
+    {
+      "condition": "winter",
+      "coverage": 0.9194139194139194,
+      "interval_score_mw": 3893.8170392474913,
+      "level": 0.95,
+      "mean_width_mw": 2999.581747591256,
+      "n": 2184
+    },
+    {
+      "condition": "spring",
+      "coverage": 0.9510647938377889,
+      "interval_score_mw": 4072.5824538550987,
+      "level": 0.95,
+      "mean_width_mw": 3310.7754513798177,
+      "n": 2207
+    },
+    {
+      "condition": "summer",
+      "coverage": 0.9003623188405797,
+      "interval_score_mw": 7047.277121945937,
+      "level": 0.95,
+      "mean_width_mw": 4710.842696031773,
+      "n": 2208
+    },
+    {
+      "condition": "autumn",
+      "coverage": 0.9830663615560641,
+      "interval_score_mw": 4963.353318596965,
+      "level": 0.95,
+      "mean_width_mw": 4736.086403735918,
+      "n": 2185
+    }
+  ],
+  "periods": {
+    "calibration": {
+      "end": "2024-01-01T00:00:00Z",
+      "start": "2023-10-01T00:00:00Z"
+    },
+    "test": {
+      "end": "2025-01-01T00:00:00Z",
+      "start": "2024-01-01T00:00:00Z"
+    },
+    "train": {
+      "end": "2023-01-01T00:00:00Z",
+      "start": "2020-01-01T00:00:00Z"
+    },
+    "validation": {
+      "end": "2023-10-01T00:00:00Z",
+      "start": "2023-01-01T00:00:00Z"
+    }
+  },
+  "selected_model": "lightgbm",
+  "source_sha256": {
+    "configs/evaluation.yaml": "2efb3a39d075472f06a4b233a038ce06cd9b31e1d5ef3caeeb1b0b7f9c8209a8",
+    "reports/frozen_thresholds.json": "aeb75e7a59cfebfc275dc92d623a36686832f771f0fd23ef7364693a5261cd46",
+    "reports/model_selection.json": "e0a7c7d5fd0b101e8ed916371f92ffb1940a81dbeab492dd8a1fe48720f4b20a",
+    "reports/predictions/reserved.parquet": "bb954a39595d6a00cede67fb1c0029d903b50ba7b49374c3791863eceef3a360",
+    "reports/predictions/test_intervals.parquet": "4a19190aec86e44b94220807b7e044e5001b41074fb366420064f61d49f813f0",
+    "reports/predictions/validation.parquet": "aae6cad9ccc69c5605723d1f72936a22d230026fa947e2c47b2704b0991f8d49",
+    "reports/statistical_fits.json": "eede3d00ec8d4e81cbc77c7bf6db8a69e1dba5442ef9ec31f0c1eefc103f3dfd"
+  },
+  "test_conditions": [
+    {
+      "MAE": 892.4597109154345,
+      "MASE": 0.6638391399764868,
+      "RMSE": 1281.2859842948503,
+      "WAPE": 6.72550813584264,
+      "condition": "normal_weekday",
+      "model": "daily",
+      "n": 6019,
+      "partition": "test"
+    },
+    {
+      "MAE": 707.073066463379,
+      "MASE": 0.5257557247218286,
+      "RMSE": 1017.319934887295,
+      "WAPE": 5.328448559607037,
+      "condition": "normal_weekday",
+      "model": "lightgbm",
+      "n": 6019,
+      "partition": "test"
+    },
+    {
+      "MAE": 928.626149540184,
+      "MASE": 0.6905334671927347,
+      "RMSE": 1253.0082158407479,
+      "WAPE": 7.490533521522253,
+      "condition": "weekend",
+      "model": "daily",
+      "n": 2501,
+      "partition": "test"
+    },
+    {
+      "MAE": 685.4471084998946,
+      "MASE": 0.5098703159678526,
+      "RMSE": 961.3730550209593,
+      "WAPE": 5.5289898372895045,
+      "condition": "weekend",
+      "model": "lightgbm",
+      "n": 2501,
+      "partition": "test"
+    },
+    {
+      "MAE": 1061.3181818181818,
+      "MASE": 0.786889566861008,
+      "RMSE": 1396.5561186090026,
+      "WAPE": 7.883710015610527,
+      "condition": "holiday",
+      "model": "daily",
+      "n": 264,
+      "partition": "test"
+    },
+    {
+      "MAE": 850.2424483681581,
+      "MASE": 0.6299423650282937,
+      "RMSE": 1205.1326708663594,
+      "WAPE": 6.315792022345274,
+      "condition": "holiday",
+      "model": "lightgbm",
+      "n": 264,
+      "partition": "test"
+    },
+    {
+      "MAE": 941.9601092896174,
+      "MASE": 0.7009429918297815,
+      "RMSE": 1330.6453512561761,
+      "WAPE": 6.248495227901427,
+      "condition": "peak_hours",
+      "model": "daily",
+      "n": 1830,
+      "partition": "test"
+    },
+    {
+      "MAE": 732.0657804801864,
+      "MASE": 0.5448999563697017,
+      "RMSE": 1085.8803214270595,
+      "WAPE": 4.856160564262227,
+      "condition": "peak_hours",
+      "model": "lightgbm",
+      "n": 1830,
+      "partition": "test"
+    },
+    {
+      "MAE": 1615.233918128655,
+      "MASE": 1.2074278989305807,
+      "RMSE": 2067.569169098303,
+      "WAPE": 8.090287378677177,
+      "condition": "extreme_demand",
+      "model": "daily",
+      "n": 342,
+      "partition": "test"
+    },
+    {
+      "MAE": 1525.6199358946515,
+      "MASE": 1.1406696525129512,
+      "RMSE": 1904.4300321222324,
+      "WAPE": 7.64143420559577,
+      "condition": "extreme_demand",
+      "model": "lightgbm",
+      "n": 342,
+      "partition": "test"
+    },
+    {
+      "MAE": 879.1740108978915,
+      "MASE": 0.6535738556247986,
+      "RMSE": 1234.2780618343704,
+      "WAPE": 6.8976011491486835,
+      "condition": "nonextreme_demand",
+      "model": "daily",
+      "n": 8442,
+      "partition": "test"
+    },
+    {
+      "MAE": 671.9827047731033,
+      "MASE": 0.49939648549447124,
+      "RMSE": 954.040870794071,
+      "WAPE": 5.2720719893860934,
+      "condition": "nonextreme_demand",
+      "model": "lightgbm",
+      "n": 8442,
+      "partition": "test"
+    },
+    {
+      "MAE": 1173.7068214804065,
+      "MASE": 0.8767891740607698,
+      "RMSE": 1602.8144106018922,
+      "WAPE": 7.130768645406674,
+      "condition": "extreme_temperature",
+      "model": "daily",
+      "n": 689,
+      "partition": "test"
+    },
+    {
+      "MAE": 1117.2976942976686,
+      "MASE": 0.8344636872625496,
+      "RMSE": 1491.393227414356,
+      "WAPE": 6.788059181622461,
+      "condition": "extreme_temperature",
+      "model": "lightgbm",
+      "n": 689,
+      "partition": "test"
+    },
+    {
+      "MAE": 798.5967741935484,
+      "MASE": 0.5940854492995208,
+      "RMSE": 1091.9567151411889,
+      "WAPE": 6.1915629279028614,
+      "condition": "weather_unknown",
+      "model": "daily",
+      "n": 62,
+      "partition": "test"
+    },
+    {
+      "MAE": 591.9896060756057,
+      "MASE": 0.4402193588903854,
+      "RMSE": 806.0258204696266,
+      "WAPE": 4.589726651955151,
+      "condition": "weather_unknown",
+      "model": "lightgbm",
+      "n": 62,
+      "partition": "test"
+    },
+    {
+      "MAE": 766.4560439560439,
+      "MASE": 0.5697506946361856,
+      "RMSE": 1039.3904930629283,
+      "WAPE": 5.437536288085151,
+      "condition": "winter",
+      "model": "daily",
+      "n": 2184,
+      "partition": "test"
+    },
+    {
+      "MAE": 633.3844737034483,
+      "MASE": 0.4708547652382547,
+      "RMSE": 840.6453378125165,
+      "WAPE": 4.493474984287202,
+      "condition": "winter",
+      "model": "lightgbm",
+      "n": 2184,
+      "partition": "test"
+    },
+    {
+      "MAE": 864.8645219755324,
+      "MASE": 0.6469315091977114,
+      "RMSE": 1213.92316512959,
+      "WAPE": 7.531621167926155,
+      "condition": "spring",
+      "model": "daily",
+      "n": 2207,
+      "partition": "test"
+    },
+    {
+      "MAE": 667.9191638815366,
+      "MASE": 0.4995867500002037,
+      "RMSE": 947.7831366961803,
+      "WAPE": 5.8165342493908385,
+      "condition": "spring",
+      "model": "lightgbm",
+      "n": 2207,
+      "partition": "test"
+    },
+    {
+      "MAE": 1295.6779891304348,
+      "MASE": 0.9688943185547921,
+      "RMSE": 1720.4461308160319,
+      "WAPE": 8.80178788907593,
+      "condition": "summer",
+      "model": "daily",
+      "n": 2208,
+      "partition": "test"
+    },
+    {
+      "MAE": 985.6856847950265,
+      "MASE": 0.7367913958948697,
+      "RMSE": 1362.4576614248433,
+      "WAPE": 6.695950996811288,
+      "condition": "summer",
+      "model": "lightgbm",
+      "n": 2208,
+      "partition": "test"
+    },
+    {
+      "MAE": 700.6151029748283,
+      "MASE": 0.5121184518833182,
+      "RMSE": 997.8598503832415,
+      "WAPE": 5.933678666503354,
+      "condition": "autumn",
+      "model": "daily",
+      "n": 2185,
+      "partition": "test"
+    },
+    {
+      "MAE": 531.2753933584473,
+      "MASE": 0.38821235013138916,
+      "RMSE": 771.2273855416321,
+      "WAPE": 4.499499731341727,
+      "condition": "autumn",
+      "model": "lightgbm",
+      "n": 2185,
+      "partition": "test"
+    }
+  ],
+  "test_mae_improvement_pct": 22.318389568885166,
+  "test_metrics": [
+    {
+      "MAE": 907.8320810564663,
+      "MASE": 0.6751378450158025,
+      "RMSE": 1276.9363773210728,
+      "WAPE": 6.968768694207074,
+      "model": "daily",
+      "n": 8784
+    },
+    {
+      "MAE": 705.2185805749668,
+      "MASE": 0.5243640883087153,
+      "RMSE": 1007.9511755644086,
+      "WAPE": 5.413451748879427,
+      "model": "lightgbm",
+      "n": 8784
+    }
+  ],
+  "validation_conditions": [
+    {
+      "MAE": 856.7360372340426,
+      "MASE": 0.6386017536651101,
+      "RMSE": 1208.5489232043396,
+      "WAPE": 6.5038283838211255,
+      "condition": "normal_weekday",
+      "model": "daily",
+      "n": 4512
+    },
+    {
+      "MAE": 1004.0464613890078,
+      "MASE": 0.7482643543476901,
+      "RMSE": 1271.7839899031685,
+      "WAPE": 7.622121155705617,
+      "condition": "normal_weekday",
+      "model": "dhr_ar1",
+      "n": 4512
+    },
+    {
+      "MAE": 695.0588873869514,
+      "MASE": 0.5179201973300034,
+      "RMSE": 984.091928805861,
+      "WAPE": 5.276472009755634,
+      "condition": "normal_weekday",
+      "model": "lightgbm",
+      "n": 4512
+    },
+    {
+      "MAE": 735.5714390012898,
+      "MASE": 0.5482478274103678,
+      "RMSE": 1023.1658820370037,
+      "WAPE": 5.584019109024406,
+      "condition": "normal_weekday",
+      "model": "lstm",
+      "n": 4512
+    },
+    {
+      "MAE": 2439.035239361702,
+      "MASE": 1.8185490765639885,
+      "RMSE": 2925.4734428852016,
+      "WAPE": 18.51569903620983,
+      "condition": "normal_weekday",
+      "model": "naive",
+      "n": 4512
+    },
+    {
+      "MAE": 1427.629654255319,
+      "MASE": 1.0646967090054846,
+      "RMSE": 1988.3551413714013,
+      "WAPE": 10.837711807836559,
+      "condition": "normal_weekday",
+      "model": "weekly",
+      "n": 4512
+    },
+    {
+      "MAE": 1080.5961538461538,
+      "MASE": 0.8056472360620235,
+      "RMSE": 1465.6328338408903,
+      "WAPE": 8.76079510453313,
+      "condition": "weekend",
+      "model": "daily",
+      "n": 1872
+    },
+    {
+      "MAE": 1001.3634518207118,
+      "MASE": 0.7462501001260723,
+      "RMSE": 1286.4503964746284,
+      "WAPE": 8.118426107056344,
+      "condition": "weekend",
+      "model": "dhr_ar1",
+      "n": 1872
+    },
+    {
+      "MAE": 793.4445468050843,
+      "MASE": 0.5915315215111344,
+      "RMSE": 1103.7796160001396,
+      "WAPE": 6.432750178341042,
+      "condition": "weekend",
+      "model": "lightgbm",
+      "n": 1872
+    },
+    {
+      "MAE": 801.8730354064888,
+      "MASE": 0.597760275674889,
+      "RMSE": 1104.2475939458643,
+      "WAPE": 6.501083071637931,
+      "condition": "weekend",
+      "model": "lstm",
+      "n": 1872
+    },
+    {
+      "MAE": 2692.636217948718,
+      "MASE": 2.008034841436971,
+      "RMSE": 3178.9156033036406,
+      "WAPE": 21.83020373756783,
+      "condition": "weekend",
+      "model": "naive",
+      "n": 1872
+    },
+    {
+      "MAE": 1495.6228632478633,
+      "MASE": 1.1144575699347186,
+      "RMSE": 2032.4718049263347,
+      "WAPE": 12.12557106735286,
+      "condition": "weekend",
+      "model": "weekly",
+      "n": 1872
+    },
+    {
+      "MAE": 984.6770833333334,
+      "MASE": 0.7314219766299437,
+      "RMSE": 1269.8279082878382,
+      "WAPE": 7.779428284565658,
+      "condition": "holiday",
+      "model": "daily",
+      "n": 192
+    },
+    {
+      "MAE": 1220.2051417388204,
+      "MASE": 0.908360763985188,
+      "RMSE": 1529.1055879146586,
+      "WAPE": 9.640214597542354,
+      "condition": "holiday",
+      "model": "dhr_ar1",
+      "n": 192
+    },
+    {
+      "MAE": 729.6651181938486,
+      "MASE": 0.5429833934739329,
+      "RMSE": 981.6679970545798,
+      "WAPE": 5.7647096239129185,
+      "condition": "holiday",
+      "model": "lightgbm",
+      "n": 192
+    },
+    {
+      "MAE": 667.5844953159491,
+      "MASE": 0.49640227992611524,
+      "RMSE": 900.2544842743368,
+      "WAPE": 5.274242483249003,
+      "condition": "holiday",
+      "model": "lstm",
+      "n": 192
+    },
+    {
+      "MAE": 2646.4791666666665,
+      "MASE": 1.9692754721749506,
+      "RMSE": 3075.726160871066,
+      "WAPE": 20.908473683560814,
+      "condition": "holiday",
+      "model": "naive",
+      "n": 192
+    },
+    {
+      "MAE": 1372.53125,
+      "MASE": 1.0180742715325521,
+      "RMSE": 1747.861958818068,
+      "WAPE": 10.84366500290096,
+      "condition": "holiday",
+      "model": "weekly",
+      "n": 192
+    },
+    {
+      "MAE": 990.7437774524158,
+      "MASE": 0.739388950015773,
+      "RMSE": 1377.7167522707832,
+      "WAPE": 6.640535778239522,
+      "condition": "peak_hours",
+      "model": "daily",
+      "n": 1366
+    },
+    {
+      "MAE": 873.5539807752866,
+      "MASE": 0.6512912330709927,
+      "RMSE": 1177.66987313803,
+      "WAPE": 5.85506222252348,
+      "condition": "peak_hours",
+      "model": "dhr_ar1",
+      "n": 1366
+    },
+    {
+      "MAE": 823.2382665385861,
+      "MASE": 0.6144297248634458,
+      "RMSE": 1163.6605055202756,
+      "WAPE": 5.517817307944612,
+      "condition": "peak_hours",
+      "model": "lightgbm",
+      "n": 1366
+    },
+    {
+      "MAE": 838.4298302128497,
+      "MASE": 0.6259819420983511,
+      "RMSE": 1189.1086248759166,
+      "WAPE": 5.619639922834763,
+      "condition": "peak_hours",
+      "model": "lstm",
+      "n": 1366
+    },
+    {
+      "MAE": 957.7525622254758,
+      "MASE": 0.7141010232502581,
+      "RMSE": 1309.7905379465412,
+      "WAPE": 6.4194096404146315,
+      "condition": "peak_hours",
+      "model": "naive",
+      "n": 1366
+    },
+    {
+      "MAE": 1576.316251830161,
+      "MASE": 1.1763326331362798,
+      "RMSE": 2173.7557458140823,
+      "WAPE": 10.565379976460513,
+      "condition": "peak_hours",
+      "model": "weekly",
+      "n": 1366
+    },
+    {
+      "MAE": 1761.202380952381,
+      "MASE": 1.3193172079380624,
+      "RMSE": 2157.1738152146245,
+      "WAPE": 8.967903922719183,
+      "condition": "extreme_demand",
+      "model": "daily",
+      "n": 252
+    },
+    {
+      "MAE": 1415.4583482528387,
+      "MASE": 1.0591212746594103,
+      "RMSE": 1803.4377547090107,
+      "WAPE": 7.207402517181503,
+      "condition": "extreme_demand",
+      "model": "dhr_ar1",
+      "n": 252
+    },
+    {
+      "MAE": 1662.8045161747657,
+      "MASE": 1.2448837610935948,
+      "RMSE": 1971.5088119100192,
+      "WAPE": 8.46686973887417,
+      "condition": "extreme_demand",
+      "model": "lightgbm",
+      "n": 252
+    },
+    {
+      "MAE": 1618.8361842840436,
+      "MASE": 1.212880747468763,
+      "RMSE": 2003.4039784366041,
+      "WAPE": 8.242986453056103,
+      "condition": "extreme_demand",
+      "model": "lstm",
+      "n": 252
+    },
+    {
+      "MAE": 1663.6904761904761,
+      "MASE": 1.2463999270151704,
+      "RMSE": 2033.6038422715442,
+      "WAPE": 8.4713809775519,
+      "condition": "extreme_demand",
+      "model": "naive",
+      "n": 252
+    },
+    {
+      "MAE": 3202.4126984126983,
+      "MASE": 2.3940589020669685,
+      "RMSE": 3834.457539085238,
+      "WAPE": 16.306433440506154,
+      "condition": "extreme_demand",
+      "model": "weekly",
+      "n": 252
+    },
+    {
+      "MAE": 890.7977777777778,
+      "MASE": 0.6637359725731435,
+      "RMSE": 1241.6462158750476,
+      "WAPE": 7.038451451534046,
+      "condition": "nonextreme_demand",
+      "model": "daily",
+      "n": 6300
+    },
+    {
+      "MAE": 992.2130379629582,
+      "MASE": 0.7392831238593819,
+      "RMSE": 1258.5492624720814,
+      "WAPE": 7.8397628187882145,
+      "condition": "nonextreme_demand",
+      "model": "dhr_ar1",
+      "n": 6300
+    },
+    {
+      "MAE": 686.1481790920507,
+      "MASE": 0.5111396914099674,
+      "RMSE": 961.6640229108817,
+      "WAPE": 5.4214556519725114,
+      "condition": "nonextreme_demand",
+      "model": "lightgbm",
+      "n": 6300
+    },
+    {
+      "MAE": 717.2088722747026,
+      "MASE": 0.534331776040772,
+      "RMSE": 985.7822368156333,
+      "WAPE": 5.6668751921541975,
+      "condition": "nonextreme_demand",
+      "model": "lstm",
+      "n": 6300
+    },
+    {
+      "MAE": 2549.6106349206348,
+      "MASE": 1.9008561141485127,
+      "RMSE": 3035.48720727918,
+      "WAPE": 20.14521266428271,
+      "condition": "nonextreme_demand",
+      "model": "naive",
+      "n": 6300
+    },
+    {
+      "MAE": 1367.7093650793652,
+      "MASE": 1.019445233983645,
+      "RMSE": 1875.7086088297658,
+      "WAPE": 10.806668141824943,
+      "condition": "nonextreme_demand",
+      "model": "weekly",
+      "n": 6300
+    },
+    {
+      "MAE": 1509.8910411622276,
+      "MASE": 1.1288386864421893,
+      "RMSE": 1901.7314800665285,
+      "WAPE": 9.08385329544516,
+      "condition": "extreme_temperature",
+      "model": "daily",
+      "n": 413
+    },
+    {
+      "MAE": 1327.2924910046554,
+      "MASE": 0.9915855507038456,
+      "RMSE": 1620.61336770083,
+      "WAPE": 7.985298236587668,
+      "condition": "extreme_temperature",
+      "model": "dhr_ar1",
+      "n": 413
+    },
+    {
+      "MAE": 1418.1965330419764,
+      "MASE": 1.0596574522160283,
+      "RMSE": 1731.0054192323817,
+      "WAPE": 8.532197952738299,
+      "condition": "extreme_temperature",
+      "model": "lightgbm",
+      "n": 413
+    },
+    {
+      "MAE": 1391.2682552025913,
+      "MASE": 1.0401631090599057,
+      "RMSE": 1727.7352313495965,
+      "WAPE": 8.370191212699844,
+      "condition": "extreme_temperature",
+      "model": "lstm",
+      "n": 413
+    },
+    {
+      "MAE": 2106.63196125908,
+      "MASE": 1.5734654299404933,
+      "RMSE": 2503.1587729536877,
+      "WAPE": 12.673984520660072,
+      "condition": "extreme_temperature",
+      "model": "naive",
+      "n": 413
+    },
+    {
+      "MAE": 2666.9830508474574,
+      "MASE": 1.9915695930932924,
+      "RMSE": 3310.0878762026878,
+      "WAPE": 16.045186119316863,
+      "condition": "extreme_temperature",
+      "model": "weekly",
+      "n": 413
+    },
+    {
+      "MAE": 622.8,
+      "MASE": 0.46504020678287683,
+      "RMSE": 839.8709424667578,
+      "WAPE": 5.19662569776465,
+      "condition": "weather_unknown",
+      "model": "daily",
+      "n": 10
+    },
+    {
+      "MAE": 1085.137927101941,
+      "MASE": 0.8094739888337019,
+      "RMSE": 1136.8300868384802,
+      "WAPE": 9.054360368652874,
+      "condition": "weather_unknown",
+      "model": "dhr_ar1",
+      "n": 10
+    },
+    {
+      "MAE": 483.1296779143624,
+      "MASE": 0.3598391873496512,
+      "RMSE": 547.8083497486133,
+      "WAPE": 4.031220455366946,
+      "condition": "weather_unknown",
+      "model": "lightgbm",
+      "n": 10
+    },
+    {
+      "MAE": 761.0387508392334,
+      "MASE": 0.5693899191754703,
+      "RMSE": 880.8992361791252,
+      "WAPE": 6.350085949913084,
+      "condition": "weather_unknown",
+      "model": "lstm",
+      "n": 10
+    },
+    {
+      "MAE": 2481.0,
+      "MASE": 1.8486213129269047,
+      "RMSE": 2678.880213820693,
+      "WAPE": 20.701394277704072,
+      "condition": "weather_unknown",
+      "model": "naive",
+      "n": 10
+    },
+    {
+      "MAE": 1607.8,
+      "MASE": 1.1989636955889271,
+      "RMSE": 2055.2766237175956,
+      "WAPE": 13.41543801680476,
+      "condition": "weather_unknown",
+      "model": "weekly",
+      "n": 10
+    },
+    {
+      "MAE": 832.3068261787473,
+      "MASE": 0.6155491678736477,
+      "RMSE": 1119.5804155245744,
+      "WAPE": 6.089277460913586,
+      "condition": "winter",
+      "model": "daily",
+      "n": 1421
+    },
+    {
+      "MAE": 774.8735175718144,
+      "MASE": 0.5730794761458234,
+      "RMSE": 993.1220642409829,
+      "WAPE": 5.6690870448244315,
+      "condition": "winter",
+      "model": "dhr_ar1",
+      "n": 1421
+    },
+    {
+      "MAE": 646.3368774599955,
+      "MASE": 0.4781876677747214,
+      "RMSE": 889.510458908743,
+      "WAPE": 4.728694342378462,
+      "condition": "winter",
+      "model": "lightgbm",
+      "n": 1421
+    },
+    {
+      "MAE": 669.3559967377377,
+      "MASE": 0.49519215736630456,
+      "RMSE": 899.6792459064729,
+      "WAPE": 4.897105557785139,
+      "condition": "winter",
+      "model": "lstm",
+      "n": 1421
+    },
+    {
+      "MAE": 2269.5475017593244,
+      "MASE": 1.6775565838308222,
+      "RMSE": 2647.247892689377,
+      "WAPE": 16.604338705697227,
+      "condition": "winter",
+      "model": "naive",
+      "n": 1421
+    },
+    {
+      "MAE": 1313.5299085151303,
+      "MASE": 0.9718508632453094,
+      "RMSE": 1756.91013958153,
+      "WAPE": 9.609975329505838,
+      "condition": "winter",
+      "model": "weekly",
+      "n": 1421
+    },
+    {
+      "MAE": 781.5197100135931,
+      "MASE": 0.5796302480192617,
+      "RMSE": 1079.0732170259644,
+      "WAPE": 6.936450077690586,
+      "condition": "spring",
+      "model": "daily",
+      "n": 2207
+    },
+    {
+      "MAE": 1096.6916669682282,
+      "MASE": 0.8137823520647469,
+      "RMSE": 1299.1326759519102,
+      "WAPE": 9.733787774094749,
+      "condition": "spring",
+      "model": "dhr_ar1",
+      "n": 2207
+    },
+    {
+      "MAE": 647.1230742559136,
+      "MASE": 0.48004007235890556,
+      "RMSE": 878.1831374146207,
+      "WAPE": 5.7436003739684685,
+      "condition": "spring",
+      "model": "lightgbm",
+      "n": 2207
+    },
+    {
+      "MAE": 669.8363836767177,
+      "MASE": 0.49690408592426927,
+      "RMSE": 907.9162341325062,
+      "WAPE": 5.945194441114654,
+      "condition": "spring",
+      "model": "lstm",
+      "n": 2207
+    },
+    {
+      "MAE": 1994.4843679202538,
+      "MASE": 1.4806230373469118,
+      "RMSE": 2334.824525433825,
+      "WAPE": 17.7022294787325,
+      "condition": "spring",
+      "model": "naive",
+      "n": 2207
+    },
+    {
+      "MAE": 899.5450838241958,
+      "MASE": 0.6668773577875498,
+      "RMSE": 1235.0749368693494,
+      "WAPE": 7.983995140020205,
+      "condition": "spring",
+      "model": "weekly",
+      "n": 2207
+    },
+    {
+      "MAE": 1075.8903985507247,
+      "MASE": 0.8091116078637102,
+      "RMSE": 1496.2210320709953,
+      "WAPE": 7.665543386254177,
+      "condition": "summer",
+      "model": "daily",
+      "n": 2208
+    },
+    {
+      "MAE": 1106.2023835411892,
+      "MASE": 0.8316573240049766,
+      "RMSE": 1438.8060605737967,
+      "WAPE": 7.881511329067764,
+      "condition": "summer",
+      "model": "dhr_ar1",
+      "n": 2208
+    },
+    {
+      "MAE": 819.0141594386265,
+      "MASE": 0.6156986730825151,
+      "RMSE": 1168.0453201754094,
+      "WAPE": 5.835342132981487,
+      "condition": "summer",
+      "model": "lightgbm",
+      "n": 2208
+    },
+    {
+      "MAE": 859.0147871813716,
+      "MASE": 0.6459006730760564,
+      "RMSE": 1205.7579392171465,
+      "WAPE": 6.120340073154998,
+      "condition": "summer",
+      "model": "lstm",
+      "n": 2208
+    },
+    {
+      "MAE": 3028.985507246377,
+      "MASE": 2.27791131252498,
+      "RMSE": 3588.7132837005374,
+      "WAPE": 21.581027076186448,
+      "condition": "summer",
+      "model": "naive",
+      "n": 2208
+    },
+    {
+      "MAE": 1695.9230072463768,
+      "MASE": 1.2757631286711884,
+      "RMSE": 2141.4976070278008,
+      "WAPE": 12.083174465824404,
+      "condition": "summer",
+      "model": "weekly",
+      "n": 2208
+    },
+    {
+      "MAE": 1079.2751396648046,
+      "MASE": 0.8010430286608388,
+      "RMSE": 1490.7904950996065,
+      "WAPE": 8.217447964436051,
+      "condition": "autumn",
+      "model": "daily",
+      "n": 716
+    },
+    {
+      "MAE": 898.9511209482949,
+      "MASE": 0.667205703233489,
+      "RMSE": 1240.1390436111049,
+      "WAPE": 6.844486440462544,
+      "condition": "autumn",
+      "model": "dhr_ar1",
+      "n": 716
+    },
+    {
+      "MAE": 819.4576460363381,
+      "MASE": 0.6082052764081061,
+      "RMSE": 1162.0654055654388,
+      "WAPE": 6.239234387863533,
+      "condition": "autumn",
+      "model": "lightgbm",
+      "n": 716
+    },
+    {
+      "MAE": 838.2321138755527,
+      "MASE": 0.6221397737635171,
+      "RMSE": 1154.304606007962,
+      "WAPE": 6.3821805253763815,
+      "condition": "autumn",
+      "model": "lstm",
+      "n": 716
+    },
+    {
+      "MAE": 3026.4567039106146,
+      "MASE": 2.246250242514055,
+      "RMSE": 3478.8807258583333,
+      "WAPE": 23.043012450678734,
+      "condition": "autumn",
+      "model": "naive",
+      "n": 716
+    },
+    {
+      "MAE": 2551.895251396648,
+      "MASE": 1.8940285251440638,
+      "RMSE": 3340.878374238205,
+      "WAPE": 19.42976880349174,
+      "condition": "autumn",
+      "model": "weekly",
+      "n": 716
+    }
+  ],
+  "validation_metrics": [
+    {
+      "MAE": 924.2748778998779,
+      "MASE": 0.6889506354717944,
+      "RMSE": 1288.94011324702,
+      "WAPE": 7.15121209985972,
+      "model": "daily",
+      "n": 6552
+    },
+    {
+      "MAE": 1008.4917037433383,
+      "MASE": 0.7515845911978446,
+      "RMSE": 1283.7901201405903,
+      "WAPE": 7.8028065533971365,
+      "model": "dhr_ar1",
+      "n": 6552
+    },
+    {
+      "MAE": 723.711884364463,
+      "MASE": 0.5393606171670301,
+      "RMSE": 1019.1774458519774,
+      "WAPE": 5.599435090174607,
+      "model": "lightgbm",
+      "n": 6552
+    },
+    {
+      "MAE": 751.8868458135235,
+      "MASE": 0.560429813403387,
+      "RMSE": 1043.4372370890808,
+      "WAPE": 5.817427735052517,
+      "model": "lstm",
+      "n": 6552
+    },
+    {
+      "MAE": 2515.5367826617826,
+      "MASE": 1.8756847223356918,
+      "RMSE": 3003.1400824559414,
+      "WAPE": 19.46297309160642,
+      "model": "naive",
+      "n": 6552
+    },
+    {
+      "MAE": 1438.274877899878,
+      "MASE": 1.0723149904483884,
+      "RMSE": 1987.0749109993505,
+      "WAPE": 11.128084248197034,
+      "model": "weekly",
+      "n": 6552
+    }
+  ]
+}

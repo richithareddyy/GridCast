@@ -39,6 +39,16 @@ def write_json(path: Path, value) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n")
 
 
+def update_readme(root: Path, section: str, text: str) -> None:
+    path = root / "README.md"
+    contents = path.read_text()
+    begin, end = f"<!-- BEGIN {section} -->", f"<!-- END {section} -->"
+    if begin in contents:
+        before, rest = contents.split(begin, 1)
+        _, after = rest.split(end, 1)
+        path.write_text(before + begin + "\n" + text + end + after)
+
+
 def sha256(path: Path) -> str:
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
@@ -110,14 +120,14 @@ def download(root: Path, cfg: dict) -> dict:
         "https://www.iso-ne.com/static-assets/documents/2016/08/smd_hourly_template_v0.xlsx"
     )
 
-    def one(item):
+    def fetch_source(item):
         name, url = item
         return name, fetch_snapshot(url, root / "data/raw" / name, manifest.get(name))
 
     # Persist completed sources so failures are resumable without adopting unknown bytes.
     errors = []
     with ThreadPoolExecutor(max_workers=3) as pool:
-        futures = [pool.submit(one, item) for item in sources.items()]
+        futures = [pool.submit(fetch_source, item) for item in sources.items()]
         for future in as_completed(futures):
             try:
                 name, record = future.result()
@@ -311,19 +321,18 @@ def run(root: Path):
     evaluation = load_config(root, "evaluation.yaml")
     validate_periods(evaluation["periods"], cfg["start"], cfg["end_exclusive"])
     manifest = download(root, cfg)
-    LOG.info("Normalizing EIA load with explicit hour-end to hour-start conversion")
+    LOG.info("Normalizing EIA hour-ending demand")
     demand, demand_audit = read_eia(root, cfg)
-    LOG.info("QC and UTC alignment of NOAA observations; no interpolation")
+    LOG.info("Aligning quality-checked NOAA observations")
     weather, weather_audit = read_weather(root, cfg, demand.index)
     merged = align_weather(demand, weather)
     merged = merged.join(calendar_features(merged.index, cfg["calendar_timezone"]))
     merged["demand_available_at"] = merged.index + pd.Timedelta(hours=2)
+    split_report = {}
     for name, bounds in evaluation["periods"].items():
         part = partition(merged, bounds)
         part.to_parquet(root / f"data/processed/{name}.parquet")
-    split_report = {
-        name: {"rows": len(partition(merged, bounds)), **bounds} for name, bounds in evaluation["periods"].items()
-    }
+        split_report[name] = {"rows": len(part), **bounds}
     report = {
         "demand": demand_audit,
         "weather": weather_audit,

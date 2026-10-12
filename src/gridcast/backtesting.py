@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from gridcast.baselines import predict_baselines
-from gridcast.data import load_config, sha256, write_json
+from gridcast.data import load_config, sha256, update_readme, write_json
 from gridcast.evaluation import condition_scores, mase_scale, score_groups
 from gridcast.features import available_history, forecast_features, validate_history
 from gridcast.models import HarmonicAR1
@@ -39,7 +39,6 @@ def monthly_folds(evaluation: dict):
 
 
 def load_development(root: Path, evaluation: dict):
-    """Only two named development files can be loaded, never calibration/test."""
     parts = []
     for name in ["train", "validation"]:
         frame = pd.read_parquet(root / f"data/processed/{name}.parquet")
@@ -100,7 +99,7 @@ def backtest(development: pd.DataFrame, evaluation: dict, artifact_dir=None):
         print(f"Fold {fold}: {len(train):,} training hours, AR(1)={model.rho:.4f}", flush=True)
         for origin in pd.date_range(start, stop, freq="24h", inclusive="left"):
             history = available_history(y.to_frame("y"), origin, delay).y
-            # Pass only known observations to all prediction routines, even though they also guard cutoffs.
+            # Restrict inputs at the caller as well as inside each model.
             base = predict_baselines(history, origin, horizon, delay)
             model_predictions = base[["naive", "daily", "weekly"]].copy()
             model_predictions["dhr_ar1"] = model.predict(history, origin, horizon, delay)
@@ -129,7 +128,7 @@ def backtest(development: pd.DataFrame, evaluation: dict, artifact_dir=None):
                     "unavailable_target_lag_24_count": int(features.lag_24.isna().sum()),
                 }
             )
-            # Actuals and observed future weather join only AFTER all forecasts and predictors exist.
+            # Attach outcomes only after prediction so they cannot enter model inputs.
             context = development.reindex(model_predictions.index)
             for model_name in model_predictions.columns:
                 frame = pd.DataFrame(
@@ -303,13 +302,7 @@ def write_outputs(root, evaluation, predictions, features, origin_audit, fits):
         "not a correction for model selection or a final-test claim.\n"
     )
     (root / "reports/baseline_findings.md").write_text(findings)
-    readme = root / "README.md"
-    contents = readme.read_text()
-    start, end = "<!-- BEGIN BACKTEST RESULTS -->", "<!-- END BACKTEST RESULTS -->"
-    if start in contents:
-        before, rest = contents.split(start, 1)
-        _, after = rest.split(end, 1)
-        readme.write_text(before + start + "\n" + findings + end + after)
+    update_readme(root, "BACKTEST RESULTS", findings)
     print(f"Backtest complete: {len(predictions):,} predictions; calibration and test not loaded.")
     return predictions
 

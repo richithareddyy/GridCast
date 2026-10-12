@@ -77,13 +77,11 @@ def interval_tables(intervals, thresholds):
     from gridcast.evaluation import condition_masks
 
     groups = {"overall": np.ones(len(intervals), dtype=bool), **condition_masks(intervals, thresholds)}
-    condition_rows = [
-        {"condition": name, "level": level, **interval_metrics(frame.loc[mask])}
-        for level, frame in intervals.groupby("level")
-        for name, mask in {
-            name: pd.Series(mask, index=intervals.index).reindex(frame.index) for name, mask in groups.items()
-        }.items()
-    ]
+    condition_rows = []
+    for level, frame in intervals.groupby("level"):
+        for name, mask in groups.items():
+            selected = pd.Series(mask, index=intervals.index).reindex(frame.index)
+            condition_rows.append({"condition": name, "level": level, **interval_metrics(frame.loc[selected])})
 
     def grouped(columns):
         return pd.DataFrame(

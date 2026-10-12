@@ -1,6 +1,6 @@
 {
   "all_match": true,
-  "artifact_count": 98,
+  "artifact_count": 109,
   "artifacts": {
     "data/interim/demand.parquet": {
       "match": true,
@@ -137,6 +137,14 @@
     "reports/figures/20_extreme_demand_intervals.png": {
       "match": true,
       "sha256": "bc4ef0c9ecc47bdb7ce227676ac3a4b27fc4ff24b684599f8ef7821f3afe58ce"
+    },
+    "reports/figures/21_hour_season_errors.png": {
+      "match": true,
+      "sha256": "fa3bc068400e424632f913d0855a211a40ba6f7bbedf9d2f7d2d66d01c705591"
+    },
+    "reports/figures/22_anomaly_case_study.png": {
+      "match": true,
+      "sha256": "1cab90fe45abd2de865fcc2ac7543917504144f50f04e547e4c83f8405a01bb0"
     },
     "reports/frozen_thresholds.json": {
       "match": true,
@@ -302,6 +310,14 @@
       "match": true,
       "sha256": "587c6f49783b8c5988b21fca582dd5f2a4f1af997fd8efd2ab55e76c45d6d27e"
     },
+    "reports/results/findings.md": {
+      "match": true,
+      "sha256": "3e4df12020a1b8d0b7c17013edd77904d1b653058cc317b31abe36ba9f728aa0"
+    },
+    "reports/results/summary.json": {
+      "match": true,
+      "sha256": "b6b92d37624ac51fd70fdcb83ba3e00630d2d12624bebe9948b4bd7b7fedce68"
+    },
     "reports/source_definitions.json": {
       "match": true,
       "sha256": "33b687cbc5748c9a98c556bdbcb1cba5a42c87ad9f952c226a82f0bcd3433cfa"
@@ -313,6 +329,10 @@
     "reports/tables/anomaly_episodes.csv": {
       "match": true,
       "sha256": "a23ec8ad12d19fdee36ac96b28fbc03743b4fe99c7ad844c8c45eadf73f292c6"
+    },
+    "reports/tables/anomaly_summary.csv": {
+      "match": true,
+      "sha256": "0ef255a53f42ff1b589aff009e89aacd941e57c6a90c40edfac4423d8ce2a08f"
     },
     "reports/tables/condition_metrics.csv": {
       "match": true,
@@ -334,6 +354,18 @@
       "match": true,
       "sha256": "0e0a5329293e8695b5d0f790a310b6ae3e0853c4eee6a02efc4e2a14cb292328"
     },
+    "reports/tables/error_by_local_hour.csv": {
+      "match": true,
+      "sha256": "fb0564c999396865a702c7244636e7a9fe3b919219b8180c5a70342f4304517c"
+    },
+    "reports/tables/error_by_season.csv": {
+      "match": true,
+      "sha256": "11174ee28bf2111a74d6a400c0d71360f56b2344243087945fad4cb49e6cb12f"
+    },
+    "reports/tables/extreme_demand_metrics.csv": {
+      "match": true,
+      "sha256": "d346debbffdedb52ae06640c87bfc0fd12d6bbab36178e8610b79abc5eef94b4"
+    },
     "reports/tables/extreme_training_days.csv": {
       "match": true,
       "sha256": "3ef0f8fa6bfe205d8358edd8425257a7d5e7fffa58519033d94bc927546bd1cd"
@@ -354,6 +386,10 @@
       "match": true,
       "sha256": "57b005d68d193a3de5907c2184826b440f847826d7d73d05ae74d882fddb514e"
     },
+    "reports/tables/interval_coverage.csv": {
+      "match": true,
+      "sha256": "57b005d68d193a3de5907c2184826b440f847826d7d73d05ae74d882fddb514e"
+    },
     "reports/tables/interval_horizons.csv": {
       "match": true,
       "sha256": "56194ee4c5de56debfc9adfb4fcb00e457b331883a5bfe5942746e31e536fa14"
@@ -370,9 +406,17 @@
       "match": true,
       "sha256": "9f237e722cbb408903ce1b939c90f823b3fcb3f27958b54fe9c2afc750bf8d50"
     },
+    "reports/tables/overall_model_metrics.csv": {
+      "match": true,
+      "sha256": "1c3d90527daba3832af5817b64637903f9a66cbc9c946fe293f0fc17f2704ff2"
+    },
     "reports/tables/paired_comparisons.csv": {
       "match": true,
       "sha256": "598720ac95545a3f0c80edd3dc6a8bc1d370da1ce27940efbdf7855bec4fc61d"
+    },
+    "reports/tables/peak_hour_metrics.csv": {
+      "match": true,
+      "sha256": "1a93f52d8272ebc75babcb3ad4eaef074d66aee001d6b6decf86da04527231be"
     },
     "reports/tables/rolling_reliability.csv": {
       "match": true,
