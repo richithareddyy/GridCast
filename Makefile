@@ -9,7 +9,7 @@ export DYLD_LIBRARY_PATH := $(CURDIR)/.venv/lib/python3.12/site-packages/torch/l
 endif
 export MPLCONFIGDIR := $(CURDIR)/work/matplotlib
 
-.PHONY: data analysis test lint reproduce setup backtest reliability report
+.PHONY: data analysis test lint reproduce setup backtest reliability report verify
 setup:
 	python3.12 -m venv .venv
 	$(PYTHON) -m pip install -r requirements.lock
@@ -35,3 +35,6 @@ reliability:
 
 report:
 	$(PYTHON) -m gridcast.reporting --root .
+
+verify:
+	$(PYTHON) -m gridcast.audit --root . --saved-only

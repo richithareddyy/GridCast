@@ -1,4 +1,4 @@
-# Resolved dependency closure with CPython 3.12 on macOS arm64, Milestone 3.
+# Runtime and development dependency closure for CPython 3.12 on macOS arm64.
 contourpy==1.4.0
 cycler==0.12.1
 et-xmlfile==2.0.0

@@ -150,6 +150,7 @@ make backtest    # Refit the six-model validation study
 make reliability # Refit frozen-model calibration/test forecasts and evaluate reliability
 make test        # Offline tests, including time boundaries and future-mutation checks
 make lint        # Static checks
+make verify      # Audit saved forecast boundaries, results, README and artifact hashes
 make reproduce   # Isolated offline replay and artifact hash comparison; requires cached raw data
 ```
 
@@ -171,5 +172,21 @@ The repository separates `configs/`, reusable analysis in `src/gridcast/`, `test
 `data/` partitions, `notebooks/`, and generated `reports/figures`, `reports/tables`, `reports/results`.
 Saved predictions and model artifacts support auditing; raw/intermediate data and scratch work stay untracked.
 
-**Milestones 1–5 complete:** Data → Baselines + Backtesting → Machine Learning → Uncertainty + Anomalies
-→ Analysis + Reporting. **Milestone 6: Final Audit** remains next. Each milestone is committed and pushed to GitHub.
+## Verification
+
+[Research checks](https://github.com/richithareddyy/GridCast/actions/workflows/ci.yml) runs on pushes and pull
+requests using CPython 3.12.15 and macOS arm64. It installs the locked dependencies, builds the package,
+checks native runtime compatibility, runs lint and tests, audits saved evidence, and regenerates reports.
+CI checks numerical tables, machine-readable findings and the README for changes. Rendered image hashes
+are verified against the committed replay before rendering, but newly rendered images are not compared
+across runner image/font versions.
+
+The [saved-result audit](reports/final_audit.json) checks forecast completeness, label availability,
+inner stopping boundaries, frozen selection, calibration maturity, metrics, provenance and README links.
+Tests also mutate future data and corrupt saved evidence to check that leakage and stale results are rejected.
+The [full offline replay](reports/reproducibility.json) separately rebuilds the complete study from cached raw
+snapshots and compares 109 artifacts byte for byte on the recorded runtime. CI does not download raw sources
+or repeat full model fitting; use `make reproduce` for that check.
+
+**Milestones 1–6 complete:** Data → Baselines + Backtesting → Machine Learning → Uncertainty + Anomalies
+→ Analysis + Reporting → Final Audit. Each milestone is committed and pushed to GitHub.
