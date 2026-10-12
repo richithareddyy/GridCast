@@ -1,4 +1,5 @@
 PYTHON ?= .venv/bin/python
+VENV_PYTHON ?= python3.12
 export OPENBLAS_NUM_THREADS := 1
 export OMP_NUM_THREADS := 1
 export VECLIB_MAXIMUM_THREADS := 1
@@ -11,7 +12,7 @@ export MPLCONFIGDIR := $(CURDIR)/work/matplotlib
 
 .PHONY: data analysis test lint reproduce setup backtest reliability report verify
 setup:
-	python3.12 -m venv .venv
+	"$(VENV_PYTHON)" -m venv .venv
 	$(PYTHON) -m pip install -r requirements.lock
 	$(PYTHON) -m pip install --no-deps --no-build-isolation .
 	$(PYTHON) -m gridcast.learning

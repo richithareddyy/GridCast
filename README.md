@@ -175,7 +175,8 @@ Saved predictions and model artifacts support auditing; raw/intermediate data an
 ## Verification
 
 [Research checks](https://github.com/richithareddyy/GridCast/actions/workflows/ci.yml) runs on pushes and pull
-requests using CPython 3.12.15 and macOS arm64. It installs the locked dependencies, builds the package,
+requests using CPython 3.12.15 and macOS arm64. CI obtains the interpreter through pinned uv tooling;
+local setup uses `python3.12` (or `make setup VENV_PYTHON=/path/to/python`). It installs locked dependencies, builds the package,
 checks native runtime compatibility, runs lint and tests, audits saved evidence, and regenerates reports.
 CI checks numerical tables, machine-readable findings and the README for changes. Rendered image hashes
 are verified against the committed replay before rendering, but newly rendered images are not compared
