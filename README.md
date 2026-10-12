@@ -8,6 +8,10 @@ approaches on daily 24-hour paths, then evaluates the selected model's accuracy,
 and unusual demand periods on a reserved test year. The emphasis is on when models fail as well as
 which model has the lowest average error.
 
+**Stack:** Python, pandas, LightGBM, PyTorch, statsmodels, and Matplotlib.
+
+For a first pass, read the results and [forecasting protocol](#data-and-forecasting-protocol), then the [limits](#limits). To inspect the implementation, start with [`features.py`](src/gridcast/features.py) for data availability at forecast time and [`uncertainty.py`](src/gridcast/uncertainty.py) for interval calibration. [Reproduction commands](#reproduce-and-explore) are below.
+
 ## Results
 
 <!-- BEGIN RESULTS -->
@@ -189,5 +193,4 @@ The [full offline replay](reports/reproducibility.json) separately rebuilds the 
 snapshots and compares 109 artifacts byte for byte on the recorded runtime. CI does not download raw sources
 or repeat full model fitting; use `make reproduce` for that check.
 
-**Milestones 1–6 complete:** Data → Baselines + Backtesting → Machine Learning → Uncertainty + Anomalies
-→ Analysis + Reporting → Final Audit. Each milestone is committed and pushed to GitHub.
+The saved reports cover the full study, from source validation through final-test reliability and the offline replay audit.
