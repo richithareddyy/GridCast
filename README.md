@@ -1,6 +1,12 @@
 # GridCast
 
-New England electricity-demand forecasting with seasonal baselines, LightGBM, and an LSTM. Built in Python with chronological evaluation on EIA/NOAA data.
+How well can tomorrow's hourly electricity demand be forecast, and does a model actually beat a strong seasonal baseline when it matters? An average error hides the hours a grid cares about most, so this study of New England demand looks at where forecasts fail as well as which one wins.
+
+Python, pandas, LightGBM, PyTorch, statsmodels. Data is EIA-930 demand and NOAA weather for 2020–2024.
+
+## How the study is set up
+
+Each forecast starts at 00:00 UTC and predicts the next 24 hours, using only data that would have been reported by then. Models are chosen on nine monthly folds in 2023, and 2024 is held back as a final test that only the selected model and one predeclared baseline ever see. LightGBM and the LSTM both predict a correction to the daily seasonal baseline, not demand directly. Prediction intervals come from rolling 90-day residuals, computed separately for each forecast hour.
 
 ## Results
 
@@ -40,4 +46,6 @@ make test
 make verify
 ```
 
-[Setup, full-pipeline commands, methods, and limitations](GUIDE.md) · [Offline replay: 109 matching artifacts](reports/reproducibility.json)
+Weather is three stations standing in for a six-state grid, and the data is retrospective, so it may have been revised since it was first published. One region and a small model search say nothing about model families in general.
+
+[Methods, limits, and full-pipeline commands](GUIDE.md) · [Offline replay: 109 matching artifacts](reports/reproducibility.json)

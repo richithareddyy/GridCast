@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def saved_study(tmp_path):
     for folder in ["configs", "reports", "notebooks"]:
         shutil.copytree(ROOT / folder, tmp_path / folder)
-    shutil.copy2(ROOT / "README.md", tmp_path / "README.md")
+    for name in ["README.md", "GUIDE.md"]:
+        shutil.copy2(ROOT / name, tmp_path / name)
     return tmp_path
 
 
