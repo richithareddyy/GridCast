@@ -1,12 +1,14 @@
 # GridCast
 
-How well can tomorrow's hourly electricity demand be forecast, and does a model actually beat a strong seasonal baseline when it matters? An average error hides the hours a grid cares about most, so this study of New England demand looks at where forecasts fail as well as which one wins.
+How much electricity will New England need tomorrow, hour by hour? GridCast compares simple forecasts with LightGBM and an LSTM, then looks at when they get things wrong. The main question is whether the more complex models improve on a simple forecast based on yesterday’s demand, especially during unusually high demand.
 
 Python, pandas, LightGBM, PyTorch, statsmodels. Data is EIA-930 demand and NOAA weather for 2020–2024.
 
 ## How the study is set up
 
-Each forecast starts at 00:00 UTC and predicts the next 24 hours, using only data that would have been reported by then. Models are chosen on nine monthly folds in 2023, and 2024 is held back as a final test that only the selected model and one predeclared baseline ever see. LightGBM and the LSTM both predict a correction to the daily seasonal baseline, not demand directly. Prediction intervals come from rolling 90-day residuals, computed separately for each forecast hour.
+Each forecast starts at midnight UTC and covers the next 24 hours. Inputs respect the reporting delays used in the study. Nine monthly checks in 2023 select the model; 2024 is reserved for comparing that model with a baseline chosen in advance. LightGBM and the LSTM learn corrections to yesterday’s demand. Prediction intervals use the previous 90 days of forecast errors, separately for each hour ahead.
+
+MAE is the average absolute error in megawatts; lower is better. Interval coverage measures how often actual demand falls inside the predicted range.
 
 ## Results
 
@@ -46,6 +48,6 @@ make test
 make verify
 ```
 
-Weather is three stations standing in for a six-state grid, and the data is retrospective, so it may have been revised since it was first published. One region and a small model search say nothing about model families in general.
+Three weather stations represent a six-state grid, and historical data may include later revisions. These results describe this region and the models tested here; they do not establish that one model family is always better.
 
 [Methods, limits, and full-pipeline commands](GUIDE.md) · [Offline replay: 109 matching artifacts](reports/reproducibility.json)
