@@ -40,6 +40,7 @@ def backtest_figures(predictions, tables, root):
             title=f"Which model has the lowest validation {metric}?",
         )
         ax.tick_params(axis="x", labelsize=8)
+        ax.set_axisbelow(True)
         ax.grid(axis="y")
     save(fig, root, "09_model_comparison.png")
 

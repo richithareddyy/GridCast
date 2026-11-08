@@ -48,6 +48,8 @@ make test
 make verify
 ```
 
+The `data/` folders are intentionally empty in a fresh clone. After `make setup`, run `make data` to download and validate the source data, then `make analysis` to rebuild the full study. `make report` only uses the committed results and needs no data download.
+
 Three weather stations represent a six-state grid, and historical data may include later revisions. These results describe this region and the models tested here; they do not establish that one model family is always better.
 
 [Methods, limits, and full-pipeline commands](GUIDE.md) · [Offline replay: 109 matching artifacts](reports/reproducibility.json)

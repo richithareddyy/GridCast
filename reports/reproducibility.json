@@ -92,7 +92,7 @@
     },
     "reports/figures/09_model_comparison.png": {
       "match": true,
-      "sha256": "48f6f57d1873d81562948a1c2557fb0045d65e53a82e5b27ee8d5b7767c581aa"
+      "sha256": "a57daf4a150fa43d5e989367dc1ebf9224597444c6d072b9c9238666c48a0e15"
     },
     "reports/figures/10_fold_horizon_errors.png": {
       "match": true,
