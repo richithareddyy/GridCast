@@ -28,7 +28,7 @@ backtest:
 test:
 	$(PYTHON) -m pytest -q
 lint:
-	.venv/bin/ruff check src tests
+	.venv/bin/ruff check src tests notebooks
 reproduce:
 	$(PYTHON) -m gridcast.audit --root .
 reliability:
