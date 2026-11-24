@@ -2,7 +2,7 @@
 
 How much electricity will New England need tomorrow, hour by hour? GridCast compares simple forecasts with LightGBM and an LSTM, then looks at when they get things wrong. The main question is whether the more complex models improve on a simple forecast based on yesterday’s demand, especially during unusually high demand.
 
-Python, pandas, LightGBM, PyTorch, statsmodels. Data is EIA-930 demand and NOAA weather for 2020–2024.
+Python, pandas, LightGBM, PyTorch, statsmodels. Demand comes from EIA-930 for 2020–2024, while NOAA weather for the same period supports descriptive analysis and error slices, not forecasting inputs.
 
 ## How the study is set up
 
